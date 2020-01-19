@@ -81,6 +81,9 @@ public class ShiroConfig {
         // redis测试
         filterChainDefinitionMap.put("/test/jantdDemo/redisDemo/**", "anon");
 
+        //用户注册
+        filterChainDefinitionMap.put("/sys/register", "anon");
+
 
         // 添加自己的过滤器并且取名为jwt
         Map<String, Filter> filterMap = new HashMap<String, Filter>(1);
