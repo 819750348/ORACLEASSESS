@@ -1,0 +1,29 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" >
+<!--
+2013-9-30: Created.
+-->
+<svg>
+<metadata>
+Created by iconfont
+</metadata>
+<defs>
+
+<font id="anticon-zhishi" horiz-adv-x="1024" >
+  <font-face
+    font-family="anticon-zhishi"
+    font-weight="500"
+    font-stretch="normal"
+    units-per-em="1024"
+    ascent="896"
+    descent="-128"
+  />
+    <missing-glyph />
+    
+    <glyph glyph-name="check-homewok-copy" unicode="&#59121;" d="M330.66666688 814.2222225c-319.99999969-145.7777775-384-558.22222219-117.33333376-782.22222281 387.55555594-327.11111156 974.22222188 92.44444406 757.33333313 533.33333343-39.11111156 74.66666625-110.22222188 163.55555531-159.99999938 202.66666688C689.77777812 853.33333313 469.33333344 878.22222188 330.66666688 814.2222225z"  horiz-adv-x="1024" />
+
+    
+
+
+  </font>
+</defs></svg>

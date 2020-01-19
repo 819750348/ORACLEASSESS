@@ -337,7 +337,7 @@
       },
       loginSuccess () {
         this.loginBtn = false
-        this.$router.push({ name: "dashboard" })
+        this.$router.push({ name: "home" })
         this.$notification.success({
           message: '欢迎',
           description: `${timeFix()}，欢迎回来`,

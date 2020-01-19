@@ -80,19 +80,19 @@ export function formatDate(value, fmt) {
 
 // 生成首页路由
 export function generateIndexRouter(data) {
-let indexRouter = [{
-          path: '/',
-          name: 'dashboard',
-          //component: () => import('@/components/layouts/BasicLayout'),
-          component: resolve => require(['@/components/layouts/TabLayout'], resolve),
-          meta: { title: '首页' },
-          redirect: '/dashboard/analysis',
-          children: [
-            ...generateChildRouters(data)
-          ]
-        },{
-          "path": "*", "redirect": "/404", "hidden": true
-        }]
+  let indexRouter = [{
+    path: '/',
+    name: 'dashboard',
+    //component: () => import('@/components/layouts/BasicLayout'),
+    component: resolve => require(['@/components/layouts/TabLayout'], resolve),
+    meta: { title: '首页' },
+    redirect: '/dashboard/analysis',
+    children: [
+      ...generateChildRouters(data)
+    ]
+  },{
+    "path": "*", "redirect": "/404", "hidden": true
+  }]
   return indexRouter;
 }
 
@@ -103,9 +103,9 @@ function  generateChildRouters (data) {
   for (var item of data) {
     let component = "";
     if(item.component.indexOf("layouts")>=0){
-       component = "components/"+item.component;
+      component = "components/"+item.component;
     }else{
-       component = "views/"+item.component;
+      component = "views/"+item.component;
     }
 
     // eslint-disable-next-line
@@ -173,7 +173,7 @@ export function randomNumber() {
   }
   if (arguments.length === 1) {
     let [length] = arguments
-  // 生成指定长度的随机数字，首位一定不是 0
+    // 生成指定长度的随机数字，首位一定不是 0
     let nums = [...Array(length).keys()].map((i) => (i > 0 ? random(0, 9) : random(1, 9)))
     return parseInt(nums.join(''))
   } else if (arguments.length >= 2) {
@@ -202,46 +202,46 @@ export function randomString(length, chats) {
 }
 /**
  * 计算一个时间距离现在的时间
- * @param {} d1 
+ * @param {} d1
  */
- export function timeFromNow(d1) {
-    //di作为一个变量传进来
-    //如果时间格式是正确的，那下面这一步转化时间格式就可以不用了
-    var dateBegin = new Date(d1.replace(/-/g, "/"));//将-转化为/，使用new Date
-    var date1 = new Date(dateBegin);  //开始时间
-    var date2 = new Date();    //结束时间
-    var date3 = date2.getTime() - date1.getTime();  //时间差的毫秒数
-    //计算出相差天数
-    var days = Math.floor(date3 / (24 * 3600 * 1000));
-    //计算出小时数
+export function timeFromNow(d1) {
+  //di作为一个变量传进来
+  //如果时间格式是正确的，那下面这一步转化时间格式就可以不用了
+  var dateBegin = new Date(d1.replace(/-/g, "/"));//将-转化为/，使用new Date
+  var date1 = new Date(dateBegin);  //开始时间
+  var date2 = new Date();    //结束时间
+  var date3 = date2.getTime() - date1.getTime();  //时间差的毫秒数
+  //计算出相差天数
+  var days = Math.floor(date3 / (24 * 3600 * 1000));
+  //计算出小时数
 
-    var leave1 = date3 % (24 * 3600 * 1000);    //计算天数后剩余的毫秒数
-    var hours = Math.floor(leave1 / (3600 * 1000));
-    //计算相差分钟数
-    var leave2 = leave1 % (3600 * 1000);        //计算小时数后剩余的毫秒数
-    var minutes = Math.floor(leave2 / (60 * 1000));
+  var leave1 = date3 % (24 * 3600 * 1000);    //计算天数后剩余的毫秒数
+  var hours = Math.floor(leave1 / (3600 * 1000));
+  //计算相差分钟数
+  var leave2 = leave1 % (3600 * 1000);        //计算小时数后剩余的毫秒数
+  var minutes = Math.floor(leave2 / (60 * 1000));
 
-    //计算相差秒数
+  //计算相差秒数
 
-    var leave3 = leave2 % (60 * 1000);      //计算分钟数后剩余的毫秒数
-    var seconds = Math.round(leave3 / 1000);
-    return days + "天 " + hours + "小时 " + minutes + " 分钟" + seconds + " 秒"
-  }
-  /**
-   * 把时间转成年月日时分秒
-   * @param {*} date 
-   */
-  export function timeToChina(date) {
-    var date = new Date(date.replace(/-/g, "/"));//将-转化为/，使用new Date
-    var year = date.getFullYear();  // 获取完整的年份(4位,1970)
-    var month = date.getMonth() + 1;  // 获取月份(0-11,0代表1月,用的时候记得加上1)
-    var day = date.getDate();  // 获取日(1-31)
-    var time = date.getTime();  // 获取时间(从1970.1.1开始的毫秒数)
-    var hours = date.getHours();  // 获取小时数(0-23)
-    var minutes = date.getMinutes();  // 获取分钟数(0-59)
-    var seconds = date.getSeconds();  // 获取秒数(0-59)
-    return year + "年 " +  month + "月 " + day + "日 " + hours + "点 " + minutes + " 分" + seconds + " 秒"
-  }
+  var leave3 = leave2 % (60 * 1000);      //计算分钟数后剩余的毫秒数
+  var seconds = Math.round(leave3 / 1000);
+  return days + "天 " + hours + "小时 " + minutes + " 分钟" + seconds + " 秒"
+}
+/**
+ * 把时间转成年月日时分秒
+ * @param {*} date
+ */
+export function timeToChina(date) {
+  var date = new Date(date.replace(/-/g, "/"));//将-转化为/，使用new Date
+  var year = date.getFullYear();  // 获取完整的年份(4位,1970)
+  var month = date.getMonth() + 1;  // 获取月份(0-11,0代表1月,用的时候记得加上1)
+  var day = date.getDate();  // 获取日(1-31)
+  var time = date.getTime();  // 获取时间(从1970.1.1开始的毫秒数)
+  var hours = date.getHours();  // 获取小时数(0-23)
+  var minutes = date.getMinutes();  // 获取分钟数(0-59)
+  var seconds = date.getSeconds();  // 获取秒数(0-59)
+  return year + "年 " +  month + "月 " + day + "日 " + hours + "点 " + minutes + " 分" + seconds + " 秒"
+}
 
 /**
  * 随机生成uuid

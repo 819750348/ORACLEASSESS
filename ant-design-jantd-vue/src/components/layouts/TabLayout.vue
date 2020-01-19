@@ -31,7 +31,7 @@
   import Contextmenu from '@/components/menu/Contextmenu'
   import { mixin, mixinDevice } from '@/utils/mixin.js'
 
-  const indexKey = '/dashboard/analysis'
+  const indexKey = '/assessment'
 
   export default {
     name: 'TabLayout',

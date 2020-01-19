@@ -6,13 +6,13 @@ import { UserLayout, TabLayout, RouteView, BlankLayout, PageView } from '@/compo
  */
 export const asyncRouterMap = [
 
-  {
-    path: '/',
-    name: 'dashboard',
-    component: TabLayout,
-    meta: { title: '首页' },
-    redirect: '/dashboard/workplace',
-    children: [
+  // {
+    // path: '/',
+    // name: 'dashboard',
+    // component: TabLayout,
+    // meta: { title: '首页' },
+    // redirect: '/dashboard/workplace',
+    // children: [
       // // account
       // {
       //   path: '/account',
@@ -68,8 +68,8 @@ export const asyncRouterMap = [
       //     },
       //   ]
       // }
-    ]
-  },
+    // ]
+  // },
   {
     path: '*', redirect: '/404', hidden: true
   }
@@ -93,6 +93,26 @@ export const constantRouterMap = [
       }
     ]
   },
+  // {
+  //   path:'/firstPage',
+  //   component: () => import('@/views/FirstPage'),
+  //   redirect: '/firstPage/assessment',
+  //   hidden: true,
+  //   children:[
+  //     {
+  //       path:'/assessment',
+  //       name:'assessment',
+  //       component: () => import('@/views/Assessment')
+  //     },
+  //     {
+  //       path:'/teachingManagement',
+  //       name:'teachingManagement',
+  //       component: () =>import('@/views/TeachingManagement')
+  //     }
+  //   ]
+  // },
+
+
 
   // {
   //   path: '/',

@@ -1,0 +1,16 @@
+{
+  "id": "1613423",
+  "name": "zhishi",
+  "font_family": "anticon-zhishi",
+  "css_prefix_text": "anticon",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "12828160",
+      "name": "24_个人",
+      "font_class": "check-homewok-copy",
+      "unicode": "e6f1",
+      "unicode_decimal": 59121
+    }
+  ]
+}

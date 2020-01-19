@@ -18,6 +18,10 @@ import VueApexCharts from 'vue-apexcharts'
 import preview from 'vue-photo-preview'
 import 'vue-photo-preview/dist/skin.css'
 
+
+import Echarts from 'echarts'
+
+
 import {
   ACCESS_TOKEN,
   DEFAULT_COLOR,
@@ -36,6 +40,7 @@ import config from '@/defaultSettings'
 import JDictSelectTag from './components/dict/index.js'
 import hasPermission from '@/utils/hasPermission'
 import vueBus from '@/utils/vueBus';
+import '../src/assets/iconfont/iconfont.css'
 
 Vue.config.productionTip = false
 Vue.use(Storage, config.storageOptions)
@@ -48,6 +53,10 @@ Vue.use(VueApexCharts)
 Vue.component('apexchart', VueApexCharts)
 Vue.use(preview)
 Vue.use(vueBus);
+
+
+Vue.prototype.echarts = Echarts
+Vue.use(Echarts)
 
 new Vue({
   router,
