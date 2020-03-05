@@ -74,10 +74,15 @@ spring:
         connectionProperties: druid.stat.mergeSql\=true;druid.stat.slowSqlMillis\=5000
       datasource:
         master:
-          url: jdbc:mysql://127.0.0.1:3306/assessment?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false&zeroDateTimeBehavior=convertToNull
-          username: root
-          password: root
-          driver-class-name: com.mysql.jdbc.Driver
+          url: jdbc:oracle:thin:@localhost:1521:orcl
+          username: C##test
+          password: 123456
+          driver-class-name: oracle.jdbc.driver.OracleDriver
+
+#          url: jdbc:mysql://127.0.0.1:3306/assessment?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false&zeroDateTimeBehavior=convertToNull
+#          username: root
+#          password: root
+#          driver-class-name: com.mysql.jdbc.Driver
           # 多数据源配置
           #multi-datasource1:
           #url: jdbc:mysql://localhost:3306/jantd-boot2?useUnicode=true&characterEncoding=utf8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true

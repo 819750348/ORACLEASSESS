@@ -2,8 +2,8 @@
   <div id="teachProgree">
     <a-card style="background-color: rgba( 0,0,0,0.2);margin-top: 30px">
       <span slot="title">
-        <img src=".././assets/img/jiaoxuejindu.png" style="width: 18px;height: 18px;margin-top: -2px">
-        <apn style="color: rgb(12,152,220);margin-left: 5px">
+        <img src="@/assets/img/jiaoxuejindu.png" style="width: 26px;height: 26px;margin-top: -10px">
+        <apn style="color: rgb(12,152,220);margin-left: 12px;font-size: 30px;" >
           {{ "教学进度" }}
         </apn>
       </span>
@@ -11,24 +11,24 @@
         <a-row type="flex">
           <a-col>
             <span>
-              <span style="color: white">{{ "所属装备:" }}</span>>
-              <a-select defaultValue="全部" style="width: 138px" @change="handleChange">
+              <span style="color: white;font-size: 18px">{{ "所属装备:" }}</span>
+              <a-select defaultValue="全部" style="width: 188px;margin-left: 13px;font-size: 18px" @change="handleChange">
                 <a-select-option value="全部">全部</a-select-option>
                 <a-select-option value="1">武器系统基本组成</a-select-option>
                 <a-select-option value="3">通讯专业</a-select-option>
               </a-select>
             </span>
             <span style="margin-left: 20px">
-              <span style="color: white">{{ "人员分组:" }}</span>>
-              <a-select defaultValue="全部" style="width: 138px" @change="handleChange">
+              <span style="color: white;font-size: 18px">{{ "人员分组:" }}</span>
+              <a-select defaultValue="全部" style="width: 188px;margin-left: 13px;font-size: 18px" @change="handleChange">
                 <a-select-option value="全部">全部</a-select-option>
                 <a-select-option value="1">武器系统基本组成</a-select-option>
                 <a-select-option value="3">通讯专业</a-select-option>
               </a-select>
             </span>
             <span style="margin-left: 20px;">
-              <span style="color: white">{{ "岗位:" }}</span>>
-              <a-select defaultValue="全部" style="width: 138px" @change="handleChange">
+              <span style="color: white;font-size: 18px">{{ "岗位:" }}</span>
+              <a-select defaultValue="全部" style="width: 188px;margin-left: 13px;font-size: 18px" @change="handleChange">
                 <a-select-option value="全部">全部</a-select-option>
                 <a-select-option value="1">武器系统基本组成</a-select-option>
                 <a-select-option value="3">通讯专业</a-select-option>
@@ -36,13 +36,13 @@
             </span>
           </a-col>
         </a-row>
-        <a-row type="flex" style="margin-top: 30px" v-for="item in studentInfos" :key="item" >
-          <a-col :span="2">
-            <span style="color: white">
+        <a-row type="flex" style="margin-top: 45px" v-for="item in studentInfos" :key="item" >
+          <a-col :span="3">
+            <span style="color: white;font-size: 24px">
               {{ item.studentName + ":" }}
             </span>
           </a-col>
-          <a-col :span="18" style="margin-left: 10px">
+          <a-col :span="21">
             <a-steps :current="1">
               <a-popover slot="progressDot" slot-scope="{index, status, prefixCls}">
                 <template slot="content">

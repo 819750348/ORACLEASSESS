@@ -4,12 +4,12 @@
       <template>
         <span slot="title">
           <!--<a-icon type="question-circle" style="color: RGB(46,110,164)"/>-->
-          <img src=".././assets/img/answerCard.png" style="width: 18px;height: 18px;margin-top: -2px">
-          <span style="color: rgb(12,152,220);margin-left: 5px">
+          <img src="@/assets/img/answerCard.png" style="width: 26px;height: 26px;margin-top: -12px">
+          <span style="color: rgb(12,152,220);margin-left: 12px;font-size: 30px">
             {{ "考试分析" }}
           </span>
         </span>
-        <div id="echarts" :style="{width: '400px', height: '180px'}"></div>
+        <div id="echarts" :style="{width: '600px', height: '280px'}"></div>
       </template>
     </a-card>
   </div>
@@ -17,8 +17,7 @@
 <script>
   import './ExaminationAnalysis.less'
     export default {
-
-        name: "Kaoshifenxi",
+      name: "Kaoshifenxi",
       mounted() {
         var dom = document.getElementById('echarts')
         var myChart = this.echarts.init(dom)
@@ -93,7 +92,7 @@
           grid:{
             x: 30,
             y: 6,
-            x2: 3,
+            x2: 1,
             y2:20
           }
         });

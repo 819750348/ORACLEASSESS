@@ -1,41 +1,41 @@
 <template>
   <div id="teachingManagement">
     <a-card style="background-color: RGB(10,19,49)">
-      <a-row>
+      <a-row style="padding: 30px 0 10px 0">
         <a-col>
           <span>
-            <span style="color: white">{{ "所属装备:" }}</span>
-            <a-select defaultValue="全部" style="width: 180px;margin-left: 10px" @change="handleChange">
+            <span style="color: white;" class="fontSize">{{ "所属装备:" }}</span>
+            <a-select class="fontSize" defaultValue="全部" style="width: 210px;margin-left: 10px" @change="handleChange">
               <a-select-option value="全部">全部</a-select-option>
               <a-select-option value="1">武器系统基本组成</a-select-option>
               <a-select-option value="3">通信专业</a-select-option>
             </a-select>
           </span>
-          <span style="margin-left: 20px">
-            <span style="color: white">{{ "人员分组:" }}</span>
-            <a-select defaultValue="全部" style="width: 180px;margin-left: 10px" @change="handleChange">
+          <span style="margin-left: 43px">
+            <span style="color: white" class="fontSize">{{ "人员分组:" }}</span>
+            <a-select class="fontSize" defaultValue="全部" style="width: 210px;margin-left: 10px" @change="handleChange">
               <a-select-option value="全部">全部</a-select-option>
               <a-select-option value="1">武器系统基本组成</a-select-option>
               <a-select-option value="3">通信专业</a-select-option>
             </a-select>
           </span>
-          <span style="margin-left: 20px;">
-            <span style="color: white">{{ "岗位:" }}</span>
-            <a-select defaultValue="全部" style="width: 180px;margin-left: 10px" @change="handleChange">
+          <span style="margin-left: 43px;">
+            <span style="color: white" class="fontSize">{{ "岗位:" }}</span>
+            <a-select class="fontSize" defaultValue="全部" style="width: 210px;margin-left: 10px" @change="handleChange">
               <a-select-option value="全部">全部</a-select-option>
               <a-select-option value="1">武器系统基本组成</a-select-option>
               <a-select-option value="3">通信专业</a-select-option>
             </a-select>
           </span>
-          <span style="margin-left: 20px">
-            <a-input placeholder="请输入试卷名称" style="width: 180px;margin-left: 10px"/>
-            <a-button style="margin-left: 10px">
+          <span style="margin-left: 43px">
+            <a-input placeholder="请输入试卷名称" style="width: 210px;margin-left: 10px" class="fontSize"/>
+            <a-button style="margin-left: 26px;top: -1px">
               <a-icon type="search" />
             </a-button>
           </span>
         </a-col>
       </a-row>
-      <a-row type="flex" style="margin-top: 20px" justify="center" align="center">
+      <a-row type="flex" style="margin-top: 20px;margin-bottom: 30px" justify="center" align="center">
         <a-col :span="12">
           <a-table :dataSource="userData" :pagination="false" :columns="userDataColumns">
             <!--<a-table-column title="姓名" dataIndex="name"/>-->
@@ -55,23 +55,23 @@
           </a-table>
         </a-col>
         <a-col :span="2">
-          <img src=".././assets/img/jiaotou3.png" style="width: 28px;height: 28px;margin-top: 220px;margin-left: 30px">
+          <img src="@/assets/img/jiaotou3.png" style="width: 28px;height: 28px;margin-top: 300px;margin-left: 50px">
         </a-col>
         <a-col :span="10">
           <a-table :dataSource="courseData" :pagination="false" :columns="courseColumns">
             <span slot="status" slot-scope="text,record">
               <span v-if="text ==='1'">
-                <img src=".././assets/img/yiwancheng.png" style="position:relative;bottom:2px;width: 14px;height: 14px;">
+                <img src="@/assets/img/yiwancheng.png" style="position:relative;bottom:2px;width: 14px;height: 14px;">
                 <span style="margin-left: 6px">{{ "已完成" }}</span>
               </span>
               <span v-else>
-                <img src=".././assets/img/weiwancheng.png" style="position:relative;bottom:2px;width: 14px;height: 14px;">
+                <img src="@/assets/img/weiwancheng.png" style="position:relative;bottom:2px;width: 14px;height: 14px;">
                 <sapn style="margin-left: 6px">{{ "未完成" }}</sapn>
               </span>
             </span>
             <a slot="edit" href="javascript:;">
-              <img src=".././assets/img/shangyi.png" style="width: 12px;height: 16px;">
-              <img src=".././assets/img/shanchu.png" style="width: 12px;height: 16px;margin-left: 10px">
+              <img src="@/assets/img/shangyi.png" style="width: 12px;height: 16px;">
+              <img src="@/assets/img/shanchu.png" style="width: 12px;height: 16px;margin-left: 10px">
             </a>
             <span slot="footer">
               <a-row type="flex">
@@ -85,7 +85,7 @@
                     :showTotal="total => `共 ${total} 条`"/>
                 </a-col>
                 <a-col :span="4">
-                  <a-button size="small" type="primary " @click="visibleModal">{{ "课程管理" }}</a-button>
+                  <a-button type="primary " @click="visibleModal">{{ "课程管理" }}</a-button>
                 </a-col>
               </a-row>
             </span>
@@ -95,11 +95,11 @@
     </a-card>
     <a-modal
       v-model="visible"
-      width="900px"
+      width="1200px"
     >
       <span slot="title">
-        <img src=".././assets/img/shezhi.png" style="width: 14px;height: 14px;margin-top: -2px">
-        {{ "课程设置" }}
+        <img src="@/assets/img/shezhi.png" style="width: 26px;height: 26px;">
+        <span style="font-size: 30px;margin-left: 12px;">{{"课程设置"}}</span>
       </span>
       <div>
         <span>
@@ -350,39 +350,43 @@
     '通信专业','电子雷达专业','机电专业'
   ]
 
-import './TeachingManagement.less'
-    export default {
-        name: "TeachingManagement",
-      data(){
-          return{
-            userData,
-            courseData,
-            userDataColumns,
-            courseColumns,
-            /**
-             * 课程管理模态框
-             *
-             * @Author 尘埃Friend
-             * @date 2019-12-03
-             */
-            visible:false,
-            plainOptions,
-            /**
-             * modal选中类容
-             *
-             * @Author 尘埃Friend
-             * @date 2019-12-03
-             */
-            checkedList:''
-          }
-      },
-      methods:{
-        visibleModal(){
-          this.visible=true
-        }
+  import './TeachingManagement.less'
+  import './antTable.less'
+  export default {
+    name: "TeachingManagement",
+    data(){
+      return{
+        userData,
+        courseData,
+        userDataColumns,
+        courseColumns,
+        /**
+         * 课程管理模态框
+         *
+         * @Author 尘埃Friend
+         * @date 2019-12-03
+         */
+        visible:false,
+        plainOptions,
+        /**
+         * modal选中类容
+         *
+         * @Author 尘埃Friend
+         * @date 2019-12-03
+         */
+        checkedList:''
+      }
+    },
+    methods:{
+      visibleModal(){
+        this.visible=true
       }
     }
+  }
 </script>
 
 <style scoped>
+  .fontSize{
+    font-size: 18px;
+  }
 </style>

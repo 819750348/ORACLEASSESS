@@ -2,8 +2,8 @@
   <div id="examinationPaper">
     <a-card style="background-color: rgba( 0,0,0,0.2)" >
       <span slot="title">
-        <img src=".././assets/img/countDown.png" style="width: 18px;height: 18px;margin-top: -2px">
-        <span style="color: rgb(12,152,220);margin-left: 5px">
+        <img src="@/assets/img/countDown.png" style="width: 26px;height: 26px;margin-top: -12px">
+        <span style="color: rgb(12,152,220);margin-left: 12px;font-size: 30px">
           {{ "考试" }}
         </span>
       </span>
@@ -19,10 +19,10 @@
           <!--<a-table-column title="操作" dataIndex="operation" key="operation" />-->
           <span slot="customTitle">标题</span>
           <a slot="lookUp" slot-scope="text,record" href="javascript:;">
-            <img src=".././assets/img/bianji.png" style="width: 14px;height: 14px;margin-top: -2px">
+            <img src="@/assets/img/bianji.png" style="width: 20px;height: 20px;margin-top: -2px">
           </a>
           <a slot="operation" slot-scope="text,record" href="javascript:;">
-            <img src=".././assets/img/shanchu.png" style="width: 12px;height: 14px;margin-top: -2px">
+            <img src="@/assets/img/shanchu.png" style="width: 16px;height: 20px;margin-top: -2px">
           </a>
         </a-table>
       </template>
@@ -107,6 +107,7 @@
 
 
 import './ExaminationPaper.less'
+  import './antTable.less'
     export default {
         name: "Kaoshi",
       data(){
