@@ -5,17 +5,17 @@
     <div>
       <a-row type="flex" align="center" justify="center">
         <acol :span="24">
-          <span style="font-size: 40px;color: RGB(132,210,250)">
+          <span style="font-size: 72px;color: RGB(132,210,250)">
             <span>{{ myHours }}</span> :
             <span>{{ myMinutes }}</span> :
             <span>{{ mySeconds }}</span>
           </span>
         </acol>
       </a-row>
-      <a-row type="flex" align="center" justify="center" style="margin-bottom: 20px;margin-top: 20px">
+      <a-row type="flex" align="center" justify="center" style="margin-bottom: 40px;margin-top: 20px">s
         <acol :span="24">
-          <span>
-            <img src=".././assets/img/tijiaoshijuan.png" style="width: 120px;height: 38px;">
+          <span>s
+            <img src=".././assets/img/tijiaoshijuan.png" style="width: 220px;height: 68px; cursor:pointer;">
           </span>
         </acol>
       </a-row>

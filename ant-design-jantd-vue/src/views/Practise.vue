@@ -1,7 +1,7 @@
 <template>
   <div id="practise">
     <a-card style="background-color: RGB(10,19,49)">
-      <a-row>
+      <a-row style="padding: 30px 0 10px 0">
         <span>
           <a-input placeholder="请输入试卷名称" style="width: 180px;"/>
         </span>
@@ -34,8 +34,8 @@
           <a-button>{{ "错题练习" }}</a-button>
         </span>
       </a-row>
-      <a-row style="margin-top: 20px">
-        <a-col>
+      <a-row type="flex" style="margin-top: 20px;margin-bottom: 30px" justify="center" align="center">
+        <a-col :span="24">
           <a-table :dataSource="examinationPaperData" :pagination="false" :columns="examinationPaperColumns">
             <span slot="status" slot-scope="text,record">
               <span v-if="text ==='1'">
@@ -55,9 +55,6 @@
                 <img src=".././assets/img/chakanshijuan.png" style="position:relative;bottom:2px;width: 70px;height: 24px;">
               </a>
             </span>
-
-
-
             <span slot="footer">
               <a-pagination
                 size="small"
