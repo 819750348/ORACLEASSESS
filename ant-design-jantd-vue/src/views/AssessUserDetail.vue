@@ -39,7 +39,7 @@
                 {{ "培训分组:" }}
               </span>
               <span style="font-weight: bold;font-size: 26px">
-                {{ userInfo.staffGroup }}
+                {{ userInfo.staffGroupStr }}
               </span>
             </a-col>
           </a-row>
@@ -81,7 +81,7 @@
         userInfo: {
           name: "null",
           staffTypeStr: "null",
-          staffGroup: "null",
+          staffGroupStr: "null",
           examCount: 0,
           userName: '0'
         }
@@ -99,7 +99,6 @@
       let that = this
       console.log("获取用户")
       getAssessUserDetail({
-         id: '1'
       }).then(function (res) {
         console.log(res)
         Object.assign(that.userInfo,res.result)
