@@ -1,6 +1,6 @@
 <template>
   <div id="examinationPaper">
-    <a-card style="background-color: rgba( 0,0,0,0.2)" >
+    <a-card style="background-color: rgba( 0,0,0,0.2)">
       <span slot="title">
         <img src="@/assets/img/countDown.png" style="width: 26px;height: 26px;margin-top: -12px">
         <span style="color: rgb(12,152,220);margin-left: 12px;font-size: 30px">
@@ -8,7 +8,7 @@
         </span>
       </span>
       <template>
-        <a-table :columns="columns" :dataSource="data" :pagination="false">
+        <a-table :columns="columns" :dataSource="exaData" :pagination="false">
           <!--<a-table-column title="标题" dataIndex="title" key="title" />-->
           <!--<a-table-column title="总分" dataIndex="totalScore" key="totalScore" />-->
           <!--<a-table-column title="指定学员" dataIndex="designatedStudent" key="designatedStudent" />-->
@@ -41,7 +41,7 @@
             <img src=".././assets/img/bianji.png" style="width: 14px;height: 16px;">
             <img src=".././assets/img/shanchu.png" style="width: 12px;height: 16px;margin-left: 10px">
           </a>
-          <span slot="footer" >
+          <span slot="footer">
             <a-row type="flex">
               <a-col :span="2" style="margin-left: 16px">
                 <a-checkbox @change="onChange">全选</a-checkbox>
@@ -71,77 +71,40 @@
 <script>
   const columns = [
     {
-      dataIndex: 'title',
-      slots: { title: 'customTitle' },
-      scopedSlots: { customRender: 'title' },
-      align:'center'
+      dataIndex: 'name',
+      slots: {title: 'customTitle'},
+      scopedSlots: {customRender: 'name'},
+      align: 'center'
     },
     {
       title: '总分',
-      dataIndex: 'totalScore',
-      align:'center'
+      dataIndex: 'totalScores',
+      align: 'center'
     },
     {
       title: '指定学员',
-      dataIndex: 'designatedStudent',
-      align:'center'
+      dataIndex: 'students',
+      align: 'center'
     },
     {
-      title:'状态',
-      dataIndex: 'status',
-      align:'center'
+      title: '状态',
+      dataIndex: 'sendStatusStr',
+      align: 'center'
     },
     {
-      title:'查看',
+      title: '查看',
       dataIndex: 'lookUp',
-      scopedSlots: {customRender : 'lookUp'},
-      align:'center'
+      scopedSlots: {customRender: 'lookUp'},
+      align: 'center'
     },
     {
-      title:'操作',
+      title: '操作',
       dataIndex: 'operation',
-      scopedSlots: {customRender : 'operation'},
-      align:'center'
+      scopedSlots: {customRender: 'operation'},
+      align: 'center'
     }
   ];
 
-  const data = [
-    {
-      key: '1',
-      title: '(车型+专业)卷子',
-      totalScore: 100,
-      designatedStudent: '一啊啊',
-      status: '已发送'
-    },
-    {
-      key: '1',
-      title: '(车型+专业)卷子',
-      totalScore: 100,
-      designatedStudent: '一啊啊',
-      status: '已发送'
-    },
-    {
-      key: '1',
-      title: '(车型+专业)卷子',
-      totalScore: 100,
-      designatedStudent: '一啊啊',
-      status: '已发送'
-    },
-    {
-      key: '1',
-      title: '(车型+专业)卷子',
-      totalScore: 100,
-      designatedStudent: '一啊啊',
-      status: '已发送'
-    },
-  {
-    key: '1',
-      title: '(车型+专业)卷子',
-    totalScore: 100,
-    designatedStudent: '一啊啊',
-    status: '已发送'
-  }
-  ];
 
   const lowerHairColumns = [
     {
@@ -288,26 +251,42 @@
   ]
 
 
-import './ExaminationPaper.less'
+  import './ExaminationPaper.less'
   import './antTable.less'
-    export default {
-        name: "Kaoshi",
-      data(){
-          return{
-            data,
-            columns,
-            lowerHairColumns,
-            lowerHairData,
-            visible:false
-          }
-      },
-      methods:{
-        lowerHair(){
-        this.visible=true
-        }
-      }
+  import {getExaminationPaper} from '@/api/assessment.js'
 
+  export default {
+    name: "Kaoshi",
+    data() {
+      return {
+        exaData: [],
+        columns,
+        lowerHairColumns,
+        lowerHairData,
+        visible: false
+      }
+    },
+    methods: {
+      lowerHair() {
+        this.visible = true
+      },
+      initData() {
+        let that = this
+        getExaminationPaper({
+          id: '1'
+        }).then(function (res) {
+          that.exaData = res.result
+          console.log(res)
+        }).catch(function (err) {
+          console.log(err)
+        })
+      }
+    },
+    mounted() {
+      this.initData()
     }
+
+  }
 </script>
 
 <style scoped>

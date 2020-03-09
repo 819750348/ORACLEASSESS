@@ -16,9 +16,19 @@
 </template>
 <script>
   import './ExaminationAnalysis.less'
+  import {getExaminationAnalysis} from  '@/api/assessment.js'
     export default {
       name: "Kaoshifenxi",
       mounted() {
+        //初始化考试分析
+        getExaminationAnalysis({
+
+        }).then(function (res) {
+          console.log(res)
+        }).catch(function (err) {
+          console.log(err)
+        })
+
         var dom = document.getElementById('echarts')
         var myChart = this.echarts.init(dom)
         // 绘制图表

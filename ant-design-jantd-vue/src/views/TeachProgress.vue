@@ -72,6 +72,7 @@
 <script>
     import ARadioGroup from "ant-design-vue/es/radio/Group";
     import './TeachProgree.less'
+    import {getTeachProgress} from '@/api/assessment.js'
     export default {
         name: "TeachProgram",
       data(){
@@ -112,7 +113,16 @@
       },
       components: {
         ARadioGroup,
-        }
+        },
+      mounted(){
+        getTeachProgress({
+
+        }).then(function (res) {
+          console.log(res)
+        }).catch(function (err) {
+          console.log(err)
+        })
+      }
     }
 </script>
 
