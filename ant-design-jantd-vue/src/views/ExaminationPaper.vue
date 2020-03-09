@@ -19,13 +19,51 @@
           <!--<a-table-column title="操作" dataIndex="operation" key="operation" />-->
           <span slot="customTitle">标题</span>
           <a slot="lookUp" slot-scope="text,record" href="javascript:;">
-            <img src="@/assets/img/bianji.png" style="width: 20px;height: 20px;margin-top: -2px">
+            <img src="@/assets/img/bianji.png" style="width: 20px;height: 20px;margin-top: -2px" @click="lowerHair">
           </a>
           <a slot="operation" slot-scope="text,record" href="javascript:;">
             <img src="@/assets/img/shanchu.png" style="width: 16px;height: 20px;margin-top: -2px">
           </a>
         </a-table>
       </template>
+
+      <a-modal
+        v-model="visible"
+        width="1200px"
+        class="eModalIowerHair"
+        :footer="null"
+      >
+        <a-table :dataSource="lowerHairData" :pagination="false" :columns="lowerHairColumns">
+          <span slot="checkBox" slot-scope="text,record">
+            <a-checkbox @change="onChange"></a-checkbox>
+          </span>
+          <a slot="operation" href="javascript:;">
+            <img src=".././assets/img/bianji.png" style="width: 14px;height: 16px;">
+            <img src=".././assets/img/shanchu.png" style="width: 12px;height: 16px;margin-left: 10px">
+          </a>
+          <span slot="footer" >
+            <a-row type="flex">
+              <a-col :span="2" style="margin-left: 16px">
+                <a-checkbox @change="onChange">全选</a-checkbox>
+                <a href="javascript:;">
+                  <img
+                    src=".././assets/img/shanchu.png"
+                    style="width: 12px;height: 16px;margin-left: 10px;position:relative;bottom:2px">
+                </a>
+              </a-col>
+              <a-col :span="20">
+                <a-pagination
+                  size="small"
+                  style="text-align: center;"
+                  :total="50"
+                  :showSizeChanger="false"
+                  showQuickJumper
+                  :showTotal="total => `共 ${total} 条`"/>
+              </a-col>
+            </a-row>
+          </span>
+        </a-table>
+      </a-modal>
     </a-card>
   </div>
 </template>
@@ -105,6 +143,150 @@
   }
   ];
 
+  const lowerHairColumns = [
+    {
+      title: '',
+      dataIndex: 'checkBox',
+      scopedSlots: {customRender: 'checkBox'},
+      align: 'center'
+    },
+    {
+      title: '序号',
+      dataIndex: 'No',
+      scopedSlots: {customRender: 'No'},
+      align: 'center'
+    },
+    {
+      title: '标题',
+      dataIndex: 'title',
+      scopedSlots: {customRender: 'title'},
+      align: 'center'
+    },
+    {
+      title: '总分',
+      dataIndex: 'totalScore',
+      scopedSlots: {customRender: 'totalScore'},
+      align: 'center'
+    },
+    {
+      title: '指定学员',
+      dataIndex: 'userName',
+      scopedSlots: {customRender: 'userName'},
+      align: 'center'
+    },
+    {
+      title: '发送',
+      dataIndex: 'sendOut',
+      scopedSlots: {customRender: 'sendOut'},
+      align: 'center'
+    },
+    {
+      title: "状态",
+      dataIndex: 'state',
+      scopedSlots: {customRender: 'state'},
+      align: 'center'
+    },
+    {
+      title: '操作',
+      dataIndex: 'operation',
+      scopedSlots: {customRender: 'operation'},
+      align: 'center'
+    }
+  ]
+
+  const lowerHairData = [
+    {
+      No: '1',
+      title: 'xxx试卷1',
+      totalScore: '100',
+      userName: '张珊',
+      sendOut: '张三',
+      state: '发送',
+      operation: '操作'
+    },
+    {
+      No: '2',
+      title: 'xxx试卷1',
+      totalScore: '100',
+      userName: '张珊',
+      sendOut: '张三',
+      state: '发送',
+      operation: '操作'
+    },
+    {
+      No: '3',
+      title: 'xxx试卷1',
+      totalScore: '100',
+      userName: '张珊',
+      sendOut: '张三',
+      state: '发送',
+      operation: '操作'
+    },
+    {
+      No: '4',
+      title: 'xxx试卷1',
+      totalScore: '100',
+      userName: '张珊',
+      sendOut: '张三',
+      state: '发送',
+      operation: '操作'
+    },
+    {
+      No: '5',
+      title: 'xxx试卷1',
+      totalScore: '100',
+      userName: '张珊',
+      sendOut: '张三',
+      state: '发送',
+      operation: '操作'
+    },
+    {
+      No: '6',
+      title: 'xxx试卷1',
+      totalScore: '100',
+      userName: '张珊',
+      sendOut: '张三',
+      state: '发送',
+      operation: '操作'
+    },
+    {
+      No: '7',
+      title: 'xxx试卷1',
+      totalScore: '100',
+      userName: '张珊',
+      sendOut: '张三',
+      state: '发送',
+      operation: '操作'
+    },
+    {
+      No: '8',
+      title: 'xxx试卷1',
+      totalScore: '100',
+      userName: '张珊',
+      sendOut: '张三',
+      state: '发送',
+      operation: '操作'
+    },
+    {
+      No: '9',
+      title: 'xxx试卷1',
+      totalScore: '100',
+      userName: '张珊',
+      sendOut: '张三',
+      state: '发送',
+      operation: '操作'
+    },
+    {
+      No: '10',
+      title: 'xxx试卷1',
+      totalScore: '100',
+      userName: '张珊',
+      sendOut: '张三',
+      state: '发送',
+      operation: '操作'
+    }
+  ]
+
 
 import './ExaminationPaper.less'
   import './antTable.less'
@@ -113,8 +295,16 @@ import './ExaminationPaper.less'
       data(){
           return{
             data,
-            columns
+            columns,
+            lowerHairColumns,
+            lowerHairData,
+            visible:false
           }
+      },
+      methods:{
+        lowerHair(){
+        this.visible=true
+        }
       }
 
     }
