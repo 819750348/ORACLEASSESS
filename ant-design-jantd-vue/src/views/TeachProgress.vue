@@ -32,7 +32,7 @@
           @change="selectChange"
           placeholder="全部"
         >
-          <a-select-option v-for="item in selectData" :key="item">{{ item.itemText }}</a-select-option>
+          <a-select-option v-for="item in selectData" :key="item.itemText">{{ item.itemText }}</a-select-option>
         </a-select>
 
 

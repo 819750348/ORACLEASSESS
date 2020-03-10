@@ -32,11 +32,11 @@
     },
     methods: {
       getExaminationAnalysis() {
-        let that =this
+        let that = this
         getExaminationAnalysis({})
           .then(function (res) {
-           that.chartsData = res.resultValue
-           that.chartsDate = res.resultDate
+            that.chartsData = res.resultValue
+            that.chartsDate = res.resultDate
             that.initEcharts()
             console.log(res)
           }).catch(function (err) {
@@ -97,7 +97,21 @@
               smooth: true,
               areaStyle: {
                 normal: {
-                  color: 'RGB(18,111,149)' //改变区域颜色
+                  // color: 'RGB(18,111,149)' //改变区域颜色
+                    color: {
+                      type: 'linear',
+                      x: 0,
+                      y: 0,
+                      x2: 0,
+                      y2: 1,
+                      colorStops: [{
+                        offset: 0, color: 'RGB(18,119,158)' // 0% 处的颜色
+                      }, {
+                        offset: 1, color: 'RGBA(17,42,69,0.01)' // 100% 处的颜色
+                      }],
+                      globalCoord: false // 缺省为 false
+                    }
+
                 }
               },
               itemStyle: {

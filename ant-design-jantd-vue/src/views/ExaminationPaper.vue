@@ -18,10 +18,14 @@
           <!--</a-table-column>-->
           <!--<a-table-column title="操作" dataIndex="operation" key="operation" />-->
           <span slot="customTitle">标题</span>
-          <a slot="lookUp" slot-scope="text,record" href="javascript:;">
+          <span slot="sendStatusStr" slot-scope="text,record">
+            <span v-if="text === '已发送'" style="color: #18af1f">{{ text }}</span>
+            <span v-if="text === '发送失败'" style="color: red">{{ text }}</span>
+          </span>
+          <a slot="lookUp" href="javascript:;">
             <img src="@/assets/img/bianji.png" style="width: 20px;height: 20px;margin-top: -2px" @click="lowerHair">
           </a>
-          <a slot="operation" slot-scope="text,record" href="javascript:;">
+          <a slot="operation" href="javascript:;">
             <img src="@/assets/img/shanchu.png" style="width: 16px;height: 20px;margin-top: -2px">
           </a>
         </a-table>
@@ -89,6 +93,7 @@
     {
       title: '状态',
       dataIndex: 'sendStatusStr',
+      scopedSlots: {customRender: 'sendStatusStr'},
       align: 'center'
     },
     {
