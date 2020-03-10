@@ -5,21 +5,21 @@
 #examinationPaperSettings .ant-table-thead > tr > th {
   //padding: 10px 10px 10px 30px !important;
   background-color: RGB(0,31,77);
-  color: RGB(78,141,231);
-  border-bottom: 1px solid RGB(19,61,110);
+  color: white;
+  border: 1px solid RGB(19,61,110);
 }
 #examinationPaperSettings .ant-table-tbody > tr > td {
   padding: 19px 20px 19px 20px !important;
   background-color: RGB(4,40,94);
   color: white;
-  border-bottom: 1px solid RGB(19,61,110);
+  border: 1px solid RGB(19,61,110);
 }
 #examinationPaperSettings .ant-table-footer{
   //padding: 10px 10px 10px 30px;
   background: RGB(0,31,77);
   border-radius: 0 0 4px 4px;
   position: relative;
-  border-top: 1px solid RGB(19,61,110);
+  border: 1px solid RGB(19,61,110);
 }
 #examinationPaperSettings .ant-table-footer::before {
   content: '';
@@ -56,12 +56,21 @@
   background-color: RGB(4,40,94);
 }
 
-#examinationPaperSettings .ant-input {
+#examinationPaperSettings .write .ant-input {
   color: white !important;
   background-color: RGB(4,40,94);
   border: 1px solid RGB(9,109,217);
   font-size: 18px;
 }
+
+#examinationPaperSettings  .ant-input-disabled {
+  color: white !important;
+  background-color: RGB(79,79,79);
+  border: 1px solid RGB(79,79,79);
+  font-size: 18px;
+}
+
+
 #examinationPaperSettings .ant-input::placeholder {
   color: white;
   opacity: 1;
@@ -82,6 +91,19 @@
 }
 
 .ant-table.ant-table-bordered .ant-table-title {
-  width: 240px;
+  width: 450px;
 }
+#examinationPaperSettings .ant-table.ant-table-bordered .ant-table-title {
+  border: 1px solid RGB(19,61,110);
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+#examinationPaperSettings .ant-divider, .ant-divider-vertical {
+  margin: 0 78px;
+}
+
+#examinationPaperSettings .ant-divider {
+   background: RGB(19,61,110);
+ }
 

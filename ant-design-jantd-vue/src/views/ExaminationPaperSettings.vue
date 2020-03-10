@@ -109,8 +109,8 @@
           <span style="color: RGB(2,144,215);margin: 0 10px 0 10px;font-size: 24px">
             {{ ":" }}
           </span>
-          <span style="margin-left: 10px">
-            <a-input style="width: 210px" placeholder="" />
+          <span style="margin-left: 10px" class="write">
+            <a-input style="width: 210px" placeholder=""/>
             <span style="font-size: 14px;color: white">
               {{ "分钟" }}
             </span>
@@ -122,7 +122,7 @@
             {{ ":" }}
           </span>
           <span style="margin-left: 10px">
-            <a-input style="width: 210px" placeholder="" />
+            <a-input style="width: 210px" class="read" disabled placeholder=""/>
             <span style="font-size: 14px;color: white">
               {{ "分" }}
             </span>
@@ -141,59 +141,162 @@
         <a-col :span="19">
           <a-table :columns="columns" :dataSource="data" bordered :pagination="false">
             <template slot="title">
-              <span style="color: white">
+              <a style="color: white;margin-left: 58px">
                 {{ "自选考题" }}
-              </span>
-              <a-divider type="vertical" />
-              <span style="color: white">
+              </a>
+              <!--<a-divider type="vertical"/>-->
+              <a style="color: white;position: relative;margin-left:150px;">
                 {{ "随机考题" }}
-              </span>
+              </a>
+              <div
+                style="position: relative;margin-left:160px;width: 88px;border-bottom:1px solid RGB(19,61,110);-moz-transform: rotate(90deg);-webkit-transform: rotate(90deg);"></div>
             </template>
-          </a-table>
+            <!--style="transform:rotate(25deg);"-->
+            <span slot="customTitle">
+              <span style="position: relative;left: 80px;bottom: 16px;">
+                {{ "题目" }}
+              </span>
+              <span style="position: relative;top: 16px;right: 80px">
+                {{ "题型" }}
+              </span>
+              <!--<span style="border:1px solid red; "></span>-->
+              <div
+                style="position: relative;bottom:13px;margin-left:-20px;margin-right:-20px;border-bottom:1px solid RGB(19,61,110);-moz-transform: rotate(17deg);-webkit-transform: rotate(17deg);"></div>
+            </span>
+            <span slot="zhkzc">
+              <a-select
+                style="width: 120px"
+                defaultValue="10"
+              >
+                <a-select-option value="10">10%</a-select-option>
+                <a-select-option value="20">20%</a-select-option>
+                <a-select-option value="30">30%</a-select-option>
+                <a-select-option value="40">40%</a-select-option>
+                <a-select-option value="50">50%</a-select-option>
+                <a-select-option value="60">60%</a-select-option>
+                <a-select-option value="70">70%</a-select-option>
+                <a-select-option value="80">80%</a-select-option>
+                <a-select-option value="90">90%</a-select-option>
+                <a-select-option value="100">100%</a-select-option>
+              </a-select>
+            </span>
+            <span slot="xkxt">
+              <a-select
+                style="width: 120px"
+                defaultValue="10"
+              >
+                <a-select-option value="10">10%</a-select-option>
+                <a-select-option value="20">20%</a-select-option>
+                <a-select-option value="30">30%</a-select-option>
+                <a-select-option value="40">40%</a-select-option>
+                <a-select-option value="50">50%</a-select-option>
+                <a-select-option value="60">60%</a-select-option>
+                <a-select-option value="70">70%</a-select-option>
+                <a-select-option value="80">80%</a-select-option>
+                <a-select-option value="90">90%</a-select-option>
+                <a-select-option value="100">100%</a-select-option>
+              </a-select>
+            </span>
+            <span slot="txxt">
+              <a-select
+                style="width: 120px"
+                defaultValue="10"
+              >
+                <a-select-option value="10">10%</a-select-option>
+                <a-select-option value="20">20%</a-select-option>
+                <a-select-option value="30">30%</a-select-option>
+                <a-select-option value="40">40%</a-select-option>
+                <a-select-option value="50">50%</a-select-option>
+                <a-select-option value="60">60%</a-select-option>
+                <a-select-option value="70">70%</a-select-option>
+                <a-select-option value="80">80%</a-select-option>
+                <a-select-option value="90">90%</a-select-option>
+                <a-select-option value="100">100%</a-select-option>
+              </a-select>
+            </span>
+            <span slot="xtjg">
+              <a-select
+                style="width: 120px"
+                defaultValue="10"
+              >
+                <a-select-option value="10">10%</a-select-option>
+                <a-select-option value="20">20%</a-select-option>
+                <a-select-option value="30">30%</a-select-option>
+                <a-select-option value="40">40%</a-select-option>
+                <a-select-option value="50">50%</a-select-option>
+                <a-select-option value="60">60%</a-select-option>
+                <a-select-option value="70">70%</a-select-option>
+                <a-select-option value="80">80%</a-select-option>
+                <a-select-option value="90">90%</a-select-option>
+                <a-select-option value="100">100%</a-select-option>
+              </a-select>
+            </span>
+          </a-table>5
+        </a-col>
+      </a-row>
+      <a-row type="flex" justify="center" style="margin-top: 80px;margin-bottom: 50px">
+        <a-col>
+          <img
+            src="@/assets/img/shengchengshijuan.png"
+            style="width: 140px;height: 50px;margin-top: -2px"
+            @click="lowerHair">
         </a-col>
       </a-row>
     </a-card>
+
   </div>
 </template>
 
 <script>
   import './ExaminationPaperSettings.less'
+
   const columns = [
     {
-      title: 'Name',
-      dataIndex: 'name',
-      scopedSlots: { customRender: 'name' },
+      dataIndex: 'type',
+      slots: {title: 'customTitle'},
+      scopedSlots: {customRender: 'type'},
+      align: 'center'
+
     },
     {
-      title: 'Cash Assets',
-      className: 'column-money',
-      dataIndex: 'money',
+      title: '指挥控制车',
+      dataIndex: 'zhkzc',
+      scopedSlots: {customRender: 'zhkzc'},
+      align: 'center'
     },
     {
-      title: 'Address',
-      dataIndex: 'address',
+      title: '显控系统',
+      dataIndex: 'xkxt',
+      scopedSlots: {customRender: 'xkxt'},
+      align: 'center'
     },
+    {
+      title: '通讯系统',
+      dataIndex: 'txxt',
+      scopedSlots: {customRender: 'txxt'},
+      align: 'center'
+    },
+    {
+      title: '系统接口',
+      dataIndex: 'xtjg',
+      scopedSlots: {customRender: 'xtjg'},
+      align: 'center'
+    }
   ];
 
   const data = [
     {
       key: '1',
-      name: 'John Brown',
-      money: '￥300,000.00',
-      address: 'New York No. 1 Lake Park',
+      type: '单选'
     },
     {
       key: '2',
-      name: 'Jim Green',
-      money: '￥1,256,000.00',
-      address: 'London No. 1 Lake Park',
+      type: '多选'
     },
     {
       key: '3',
-      name: 'Joe Black',
-      money: '￥120,000.00',
-      address: 'Sidney No. 1 Lake Park',
-    },
+      type: '判断'
+    }
   ];
   export default {
     name: "ExaminationPaperSettings",
