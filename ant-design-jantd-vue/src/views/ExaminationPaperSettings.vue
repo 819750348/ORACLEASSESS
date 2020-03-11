@@ -33,17 +33,6 @@
                 </a-checkbox>
               </a-select-option>
             </a-select>
-            <!--<a-select defaultValue="指挥指控车" style="width: 220px" @change="handleChange">-->
-            <!--<div slot="dropdownRender" slot-scope="menu">-->
-            <!--<v-nodes :vnodes="menu" />-->
-            <!--&lt;!&ndash;<a-divider style="margin: 4px 0;" />&ndash;&gt;-->
-            <!--<div style="padding: 8px; cursor: pointer;">-->
-            <!--<a-checkbox-group :options="plainOptions" v-model="checkedList" @change="onChange" />-->
-            <!--</div>-->
-            <!--</div>-->
-            <!--&lt;!&ndash;<a-select-option value="指挥指控车">指挥指控车</a-select-option>&ndash;&gt;-->
-            <!--&lt;!&ndash;<a-select-option value="作战拦截操作手">作战拦截操作手</a-select-option>&ndash;&gt;-->
-            <!--</a-select>-->
           </span>
           <span style="margin-left: 10px">
             <span v-for="(item , i) in subordinateEquipment" :key="item">
@@ -80,17 +69,6 @@
                 </a-checkbox>
               </a-select-option>
             </a-select>
-            <!--<a-select defaultValue="指挥指控车" style="width: 220px" @change="handleChange">-->
-            <!--<div slot="dropdownRender" slot-scope="menu">-->
-            <!--<v-nodes :vnodes="menu" />-->
-            <!--&lt;!&ndash;<a-divider style="margin: 4px 0;" />&ndash;&gt;-->
-            <!--<div style="padding: 8px; cursor: pointer;">-->
-            <!--<a-checkbox-group :options="plainOptions" v-model="checkedList" @change="onChange" />-->
-            <!--</div>-->
-            <!--</div>-->
-            <!--&lt;!&ndash;<a-select-option value="指挥指控车">指挥指控车</a-select-option>&ndash;&gt;-->
-            <!--&lt;!&ndash;<a-select-option value="作战拦截操作手">作战拦截操作手</a-select-option>&ndash;&gt;-->
-            <!--</a-select>-->
           </span>
           <span style="margin-left: 10px">
             <span v-for="(item , i) in subordinateEquipment" :key="item">
@@ -450,10 +428,10 @@
       //   console.log(value, value1)
       //   this.subordinateEquipment = value
       // },
-      closeTags(value, value2, value3) {
+      closeTags(value) {
         // this.subordinateEquipment.splice(value,1)
-        this.equipmentOption = this.subordinateEquipment
-        console.log(value, value2, value3)
+        this.subordinateEquipment[value].visible = false
+        console.log(value)
       },
       changeSelect(i) {
         if (this.equipmentOption[i].visible === false) {
