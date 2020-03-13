@@ -19,14 +19,14 @@
             <a-select
               mode="multiple"
               style="width: 210px"
-              placeholder="请选择"
+              placeholder="全部"
               maxTagCount="0"
               notFoundContent="空"
-              maxTagPlaceholder="请选择"
+              maxTagPlaceholder="全部"
             >
               <a-select-option
-                v-for="(item, i) in equipmentOption"
-                :key="item"
+                v-for="(item, i) in equipment"
+                :key="item + i"
               >
                 <a-checkbox @change="changeSelect(i)" :checked="item.visible">
                   {{ item.name }}
@@ -35,7 +35,7 @@
             </a-select>
           </span>
           <span style="margin-left: 10px">
-            <span v-for="(item , i) in subordinateEquipment" :key="item">
+            <span v-for="(item , i) in tabsEquipment" :key="item + 1">
               <a-tag closable v-model="item.visible" @close="closeTags(i)">
                 {{ item.name }}
               </a-tag>
@@ -55,24 +55,24 @@
             <a-select
               mode="multiple"
               style="width: 210px"
-              placeholder="请选择"
+              placeholder="全部"
               maxTagCount="0"
               notFoundContent="空"
-              maxTagPlaceholder="请选择"
+              maxTagPlaceholder="全部"
             >
               <a-select-option
-                v-for="(item, i) in equipmentOption"
-                :key="item"
+                v-for="(item, i) in stations"
+                :key="item + i"
               >
-                <a-checkbox @change="changeSelect(i)" :checked="item.visible">
+                <a-checkbox @change="changeStation(i)" :checked="item.visible">
                   {{ item.name }}
                 </a-checkbox>
               </a-select-option>
             </a-select>
           </span>
           <span style="margin-left: 10px">
-            <span v-for="(item , i) in subordinateEquipment" :key="item">
-              <a-tag closable v-model="item.visible" @close="closeTags(i)">
+            <span v-for="(item , i) in tabsStation" :key="item + i">
+              <a-tag closable v-model="item.visible" @close="closeTagsStation(i)">
                 {{ item.name }}
               </a-tag>
             </span>
@@ -100,7 +100,7 @@
             {{ ":" }}
           </span>
           <span style="margin-left: 10px">
-            <a-input style="width: 210px" class="read" disabled placeholder=""/>
+            <a-input style="width: 210px" class="read" disabled placeholder="100"/>
             <span style="font-size: 14px;color: white">
               {{ "分" }}
             </span>
@@ -209,7 +209,8 @@
                 <a-select-option value="100">100%</a-select-option>
               </a-select>
             </span>
-          </a-table>5
+          </a-table>
+          5
         </a-col>
       </a-row>
       <a-row type="flex" justify="center" style="margin-top: 80px;margin-bottom: 50px">
@@ -217,7 +218,7 @@
           <img
             src="@/assets/img/shengchengshijuan.png"
             style="width: 140px;height: 50px;margin-top: -2px"
-            @click="lowerHair">
+          >
         </a-col>
       </a-row>
     </a-card>
@@ -282,133 +283,9 @@
       return {
         data,
         columns,
-        subordinateEquipment: [],
-        equipmentOption: [
+        tabsEquipment: [],
+        equipment: [
           {
-            name: '指挥控制操作手',
-            visible: false
-          },
-          {
-            name: '作战拦截操作手',
-            visible: false
-          },
-          {
-            name: '空情处理操作手',
-            visible: false
-          },
-          {
-            name: '指挥控制操作手',
-            visible: false
-          },
-          {
-            name: '作战拦截操作手',
-            visible: false
-          },
-          {
-            name: '空情处理操作手',
-            visible: false
-          }, {
-            name: '指挥控制操作手',
-            visible: false
-          },
-          {
-            name: '作战拦截操作手',
-            visible: false
-          },
-          {
-            name: '空情处理操作手',
-            visible: false
-          }, {
-            name: '指挥控制操作手',
-            visible: false
-          },
-          {
-            name: '作战拦截操作手',
-            visible: false
-          },
-          {
-            name: '空情处理操作手',
-            visible: false
-          }, {
-            name: '指挥控制操作手',
-            visible: false
-          },
-          {
-            name: '作战拦截操作手',
-            visible: false
-          },
-          {
-            name: '空情处理操作手',
-            visible: false
-          }, {
-            name: '指挥控制操作手',
-            visible: false
-          },
-          {
-            name: '作战拦截操作手',
-            visible: false
-          },
-          {
-            name: '空情处理操作手',
-            visible: false
-          }, {
-            name: '指挥控制操作手',
-            visible: false
-          },
-          {
-            name: '作战拦截操作手',
-            visible: false
-          },
-          {
-            name: '空情处理操作手',
-            visible: false
-          },
-          {
-            name: '指挥控制操作手',
-            visible: false
-          },
-          {
-            name: '作战拦截操作手',
-            visible: false
-          },
-          {
-            name: '空情处理操作手',
-            visible: false
-          }, {
-            name: '指挥控制操作手',
-            visible: false
-          },
-          {
-            name: '作战拦截操作手',
-            visible: false
-          },
-          {
-            name: '空情处理操作手',
-            visible: false
-          },
-          {
-            name: '指挥控制操作手',
-            visible: false
-          },
-          {
-            name: '作战拦截操作手',
-            visible: false
-          },
-          {
-            name: '空情处理操作手',
-            visible: false
-          }, {
-            name: '指挥控制操作手',
-            visible: false
-          },
-          {
-            name: '作战拦截操作手',
-            visible: false
-          },
-          {
-            name: '空情处理操作手',
-            visible: false
-          }, {
             name: '指挥控制操作手',
             visible: false
           },
@@ -420,26 +297,48 @@
             name: '空情处理操作手',
             visible: false
           }
-        ]
+        ],
+        stations:[
+          {
+            name: '指挥控制操作手',
+            visible: false
+          },
+          {
+            name: '作战拦截操作手',
+            visible: false
+          },
+          {
+            name: '空情处理操作手',
+            visible: false
+          }
+        ],
+        tabsStation:[]
       }
     },
     methods: {
-      // changeEquipment(value, value1) {
-      //   console.log(value, value1)
-      //   this.subordinateEquipment = value
-      // },
       closeTags(value) {
-        // this.subordinateEquipment.splice(value,1)
-        this.subordinateEquipment[value].visible = false
+        this.tabsEquipment[value].visible = false
         console.log(value)
       },
       changeSelect(i) {
-        if (this.equipmentOption[i].visible === false) {
-          this.equipmentOption[i].visible = true
-        } else if (this.equipmentOption[i].visible === true) {
-          this.equipmentOption[i].visible = false
+        if (this.equipment[i].visible === false) {
+          this.equipment[i].visible = true
+        } else if (this.equipment[i].visible === true) {
+          this.equipment[i].visible = false
         }
-        this.subordinateEquipment = this.equipmentOption
+        this.tabsEquipment = this.equipment
+      },
+      closeTagsStation(value) {
+        this.tabsStation[value].visible = false
+        console.log(value)
+      },
+      changeStation(i) {
+        if (this.stations[i].visible === false) {
+          this.stations[i].visible = true
+        } else if (this.stations[i].visible === true) {
+          this.stations[i].visible = false
+        }
+        this.tabsStation = this.stations
       }
     }
   }

@@ -1,5 +1,5 @@
 <template>
-  <div id="teachProgree" class="teachProgree">
+  <div id="teachProgree" class="teachProgree" style="height: 705px">
     <a-card style="background-color: rgba( 0,0,0,0.2);margin-top: 30px">
       <span slot="title">
         <img src="@/assets/img/jiaoxuejindu.png" style="width: 26px;height: 26px;margin-top: -10px">
