@@ -165,24 +165,18 @@ public class LoginController {
 
     /**
      * 登陆成功选择用户当前部门
+     *
      * @param user
      * @return
      */
-    @RequestMapping(value = "/selectDepart", method = RequestMethod.PUT)
-    public Result<JSONObject> selectDepart(@RequestBody SysUser user) {
-        Result<JSONObject> result = new Result<JSONObject>();
+    @AutoLog(value = "登陆成功选择用户当前部门")
+    @ApiOperation(value = "登陆成功选择用户当前部门")
+    @PutMapping(value = "/selectDepart")
+    public Result<Object> selectDepart(@RequestBody SysUser user) {
         String username = user.getUsername();
-        if(oConvertUtils.isEmpty(username)) {
-            LoginUser sysUser = (LoginUser)SecurityUtils.getSubject().getPrincipal();
-            username = sysUser.getUsername();
-        }
-        String orgCode= user.getOrgCode();
+        String orgCode = user.getOrgCode();
         this.sysUserService.updateUserDepart(username, orgCode);
-        SysUser sysUser = sysUserService.getUserByName(username);
-        JSONObject obj = new JSONObject();
-        obj.put("userInfo", sysUser);
-        result.setResult(obj);
-        return result;
+        return Result.ok();
     }
 
     /**

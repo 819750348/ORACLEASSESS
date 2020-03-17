@@ -1,36 +1,39 @@
 <template>
   <div id="teachingManagement">
     <a-card style="background-color: RGB(10,19,49)">
-      <a-row style="padding: 30px 0 10px 0">
-        <a-col>
-          <span>
-            <span style="color: white;" class="fontSize">{{ "所属装备:" }}</span>
-            <a-select class="fontSize" defaultValue="全部" style="width: 210px;margin-left: 10px" @change="handleChange">
-              <a-select-option value="全部">全部</a-select-option>
-              <a-select-option value="1">武器系统基本组成</a-select-option>
-              <a-select-option value="3">通信专业</a-select-option>
-            </a-select>
-          </span>
-          <span style="margin-left: 43px">
-            <span style="color: white" class="fontSize">{{ "人员分组:" }}</span>
-            <a-select class="fontSize" defaultValue="全部" style="width: 210px;margin-left: 10px" @change="handleChange">
-              <a-select-option value="全部">全部</a-select-option>
-              <a-select-option value="1">武器系统基本组成</a-select-option>
-              <a-select-option value="3">通信专业</a-select-option>
-            </a-select>
-          </span>
-          <span style="margin-left: 43px;">
-            <span style="color: white" class="fontSize">{{ "岗位:" }}</span>
-            <a-select class="fontSize" defaultValue="全部" style="width: 210px;margin-left: 10px" @change="handleChange">
-              <a-select-option value="全部">全部</a-select-option>
-              <a-select-option value="1">武器系统基本组成</a-select-option>
-              <a-select-option value="3">通信专业</a-select-option>
-            </a-select>
-          </span>
-          <span style="margin-left: 43px">
-            <a-input placeholder="请输入试卷名称" style="width: 210px;margin-left: 10px" class="fontSize"/>
-            <a-button style="margin-left: 26px;top: -1px">
-              <a-icon type="search" />
+      <a-row type="flex" style="padding: 30px 0 10px 0">
+        <a-col :span="24">
+          <a-radio-group @change="radioChange" v-model="dictCode" :defaultValue="1">
+            <a-row tyle="flex">
+              <a-radio value="equip">
+                <span style="font-size: 18px;position: relative;bottom:2px">
+                  {{ "所属装备" }}
+                </span>
+              </a-radio>
+              <a-radio value="staff_group">
+                <span style="font-size: 18px;position: relative;bottom:2px">
+                  {{ "人员分组" }}
+                </span>
+              </a-radio>
+              <a-radio value="position">
+                <span style="font-size: 18px;position: relative;bottom:2px">
+                  {{ "岗位" }}
+                </span>
+              </a-radio>
+            </a-row>
+          </a-radio-group>
+          <a-select
+            style="width: 220px;margin-left: 10px;position: relative;bottom:4px"
+            placeholder="全部"
+            class="fontSize"
+          >
+            <a-select-option v-for="item in selectData" :key="item.itemText" class="fontSize">{{ item.itemText }}
+            </a-select-option>
+          </a-select>
+          <span style="margin-left: 20px;position: relative;bottom:4px">
+            <a-input class="fontSize" placeholder="请输入试卷名称" style="width: 210px;margin-left: 10px"/>
+            <a-button style="margin-left: 10px;position: relative;bottom:4px">
+              <a-icon type="search"/>
             </a-button>
           </span>
         </a-col>
@@ -38,11 +41,6 @@
       <a-row type="flex" style="margin-top: 20px;margin-bottom: 30px" justify="center" align="center">
         <a-col :span="12">
           <a-table :dataSource="userData" :pagination="false" :columns="userDataColumns">
-            <!--<a-table-column title="姓名" dataIndex="name"/>-->
-            <!--<a-table-column title="用户编号" dataIndex="userNum" />-->
-            <!--<a-table-column title="所属装备" dataIndex="equid" />-->
-            <!--<a-table-column title="岗位" dataIndex="station" />-->
-            <!--<a-table-column title="人员分组" dataIndex="personnelGrouping" />-->
             <span slot="footer">
               <a-pagination
                 size="small"
@@ -98,43 +96,50 @@
       width="1200px"
     >
       <span slot="title">
-        <img src="@/assets/img/shezhi.png" style="width: 26px;height: 26px;">
-        <span style="font-size: 30px;margin-left: 12px;">{{"课程设置"}}</span>
+        <img src="@/assets/img/shezhi.png" style="width: 26px;height: 26px;position: relative;bottom: 3px">
+        <span style="font-size: 22px;margin-left: 12px;">{{ "课程设置" }}</span>
       </span>
       <div>
-        <span>
-          <span style="color: white">{{ "所属装备:" }}</span>
-          <a-select defaultValue="全部" style="width: 140px" @change="handleChange">
-            <a-select-option value="全部">全部</a-select-option>
-            <a-select-option value="1">武器系统基本组成</a-select-option>
-            <a-select-option value="3">通信专业</a-select-option>
-          </a-select>
-        </span>
-        <span style="margin-left: 20px">
-          <span style="color: white">{{ "人员分组:" }}</span>
-          <a-select defaultValue="全部" style="width: 140px" @change="handleChange">
-            <a-select-option value="全部">全部</a-select-option>
-            <a-select-option value="1">武器系统基本组成</a-select-option>
-            <a-select-option value="3">通信专业</a-select-option>
-          </a-select>
-        </span>
-        <span style="margin-left: 20px;">
-          <span style="color: white">{{ "岗位:" }}</span>
-          <a-select defaultValue="全部" style="width: 140px" @change="handleChange">
-            <a-select-option value="全部">全部</a-select-option>
-            <a-select-option value="1">武器系统基本组成</a-select-option>
-            <a-select-option value="3">通信专业</a-select-option>
-          </a-select>
-        </span>
-        <span style="margin-left: 20px">
-          <a-input placeholder="请输入试卷名称" style="width: 140px;margin-left: 10px" />
-          <a-button style="margin-left: 10px">
-            <a-icon type="search" />
-          </a-button>
-        </span>
+        <a-row type="flex">
+          <a-col :span="24">
+            <a-radio-group @change="radioChange" v-model="dictCode" :defaultValue="1">
+              <a-row tyle="flex">
+                <a-radio value="equip">
+                  <span style="font-size: 18px;position: relative;bottom:2px">
+                    {{ "所属装备" }}
+                  </span>
+                </a-radio>
+                <a-radio value="staff_group">
+                  <span style="font-size: 18px;position: relative;bottom:2px">
+                    {{ "人员分组" }}
+                  </span>
+                </a-radio>
+                <a-radio value="position">
+                  <span style="font-size: 18px;position: relative;bottom:2px">
+                    {{ "岗位" }}
+                  </span>
+                </a-radio>
+              </a-row>
+            </a-radio-group>
+            <a-select
+              style="width: 220px;margin-left: 10px;position: relative;bottom:4px"
+              placeholder="全部"
+              class="fontSize"
+            >
+              <a-select-option v-for="item in selectData" :key="item.itemText" class="fontSize">{{ item.itemText }}
+              </a-select-option>
+            </a-select>
+            <span style="margin-left: 20px;position: relative;bottom:4px">
+              <a-input class="fontSize" placeholder="请输入试卷名称" style="width: 210px;margin-left: 10px"/>
+              <a-button style="margin-left: 10px;position: relative;bottom:4px">
+                <a-icon type="search"/>
+              </a-button>
+            </span>
+          </a-col>
+        </a-row>
       </div>
       <div>
-        <a-checkbox-group :options="plainOptions" v-model="checkedList" @change="onChange" />
+        <a-checkbox-group :options="plainOptions" v-model="checkedList" @change="onChange"/>
       </div>
       <span slot="footer">
         <a-row>
@@ -154,133 +159,132 @@
 </template>
 
 <script>
-  const userDataColumns=[
+  const userDataColumns = [
     {
-      title:"姓名",
+      title: "姓名",
       dataIndex: 'name',
-      scopedSlots:{customRender: 'name'},
+      scopedSlots: {customRender: 'name'},
       align: 'center'
     },
     {
-      title:"用户编号",
+      title: "用户编号",
       dataIndex: 'userCode',
-      scopedSlots: { customRender: 'userCode'},
-      align:"center"
+      scopedSlots: {customRender: 'userCode'},
+      align: "center"
     },
     {
-      title:"所属装备",
+      title: "所属装备",
       dataIndex: 'equid',
-      scopedSlots: { customRender : 'equid'},
+      scopedSlots: {customRender: 'equid'},
       align: "center",
-    },{
-      title:"岗位",
+    }, {
+      title: "岗位",
       dataIndex: 'station',
-      scopedSlots:{customRender : 'station'},
+      scopedSlots: {customRender: 'station'},
       align: 'center'
     },
     {
-      title:"人员分组",
-      dataIndex:'personnelGrouping',
-      scopedSlots: {customRender :'personnelGrouping'},
+      title: "人员分组",
+      dataIndex: 'personnelGrouping',
+      scopedSlots: {customRender: 'personnelGrouping'},
       align: 'center'
     }
   ]
-
 
 
   const userData = [
     {
-      name:'张三',
+      name: '张三',
       userCode: '1234567',
       equid: '指控指挥车',
-      station:' 指挥官',
+      station: ' 指挥官',
       personnelGrouping: '指挥发射组'
     },
     {
-      name:'张三',
+      name: '张三',
       userCode: '1234567',
       equid: '指控指挥车',
-      station:' 指挥官',
+      station: ' 指挥官',
       personnelGrouping: '指挥发射组'
     },
     {
-      name:'张三',
+      name: '张三',
       userCode: '1234567',
       equid: '指控指挥车',
-      station:' 指挥官',
+      station: ' 指挥官',
       personnelGrouping: '指挥发射组'
     },
     {
-      name:'张三',
+      name: '张三',
       userCode: '1234567',
       equid: '指控指挥车',
-      station:' 指挥官',
+      station: ' 指挥官',
       personnelGrouping: '指挥发射组'
     },
     {
-      name:'张三',
+      name: '张三',
       userCode: '1234567',
       equid: '指控指挥车',
-      station:' 指挥官',
+      station: ' 指挥官',
       personnelGrouping: '指挥发射组'
     },
     {
-      name:'张三',
+      name: '张三',
       userCode: '1234567',
       equid: '指控指挥车',
-      station:' 指挥官',
+      station: ' 指挥官',
       personnelGrouping: '指挥发射组'
     },
     {
-      name:'张三',
+      name: '张三',
       userCode: '1234567',
       equid: '指控指挥车',
-      station:' 指挥官',
+      station: ' 指挥官',
       personnelGrouping: '指挥发射组'
     },
     {
-      name:'张三',
+      name: '张三',
       userCode: '1234567',
       equid: '指控指挥车',
-      station:' 指挥官',
+      station: ' 指挥官',
       personnelGrouping: '指挥发射组'
     },
     {
-      name:'张三',
+      name: '张三',
       userCode: '1234567',
       equid: '指控指挥车',
-      station:' 指挥官',
+      station: ' 指挥官',
       personnelGrouping: '指挥发射组'
     },
     {
-      name:'张三',
+      name: '张三',
       userCode: '1234567',
       equid: '指控指挥车',
-      station:' 指挥官',
+      station: ' 指挥官',
       personnelGrouping: '指挥发射组'
     }
   ]
-  const courseColumns =[
+  const courseColumns = [
     {
-      title:'序号',
+      title: '序号',
       dataIndex: 'No',
-      scopedSlots:{customRender: 'No' },
+      scopedSlots: {customRender: 'No'},
       align: 'center'
     },
     {
-      title:'课程',
-      dataIndex:'course',
+      title: '课程',
+      dataIndex: 'course',
       scopedSlots: {customRender: 'course'},
       align: 'center'
     },
     {
-      title:'状态',
+      title: '状态',
       dataIndex: 'status',
       scopedSlots: {customRender: 'status'},
       align: 'center'
     },
     {
-      title:'编辑',
+      title: '编辑',
       dataIndex: 'edit',
       scopedSlots: {customRender: 'edit'},
       align: 'center'
@@ -288,74 +292,74 @@
   ]
 
 
-
-  const courseData =[
+  const courseData = [
     {
-      No:'1',
-      course:'基本组成',
+      No: '1',
+      course: '基本组成',
       status: '1'
     },
     {
-      No:'2',
-      course:'基本组成',
+      No: '2',
+      course: '基本组成',
       status: '1'
     },
     {
-      No:'3',
-      course:'基本组成',
+      No: '3',
+      course: '基本组成',
       status: '1'
     },
     {
-      No:'4',
-      course:'基本组成',
+      No: '4',
+      course: '基本组成',
       status: '1'
     },
     {
-      No:'5',
-      course:'基本组成',
+      No: '5',
+      course: '基本组成',
       status: '0'
     },
     {
-      No:'6',
-      course:'基本组成',
+      No: '6',
+      course: '基本组成',
       status: '0'
     },
     {
-      No:'7',
-      course:'基本组成',
+      No: '7',
+      course: '基本组成',
       status: '0'
     },
     {
-      No:'8',
-      course:'基本组成',
+      No: '8',
+      course: '基本组成',
       status: '0'
     },
     {
-      No:'9',
-      course:'基本组成',
+      No: '9',
+      course: '基本组成',
       status: '0'
     },
     {
-      No:'10',
-      course:'基本组成',
+      No: '10',
+      course: '基本组成',
       status: '已完成'
     }
   ]
 
-  const plainOptions =[
-    '武器系统和导弹概述','武器系统工作状态','指挥车作战使命',
-    '武器系统基本组成','武器系统工作原理、作战方式','指挥车战机指标',
-    '武器系统作战使命','指挥车系统概述','指挥车工作过程和工作原理',
-    '指挥车控制操作手','作战拦截操作手','空勤处理操作手',
-    '通信专业','电子雷达专业','机电专业'
+  const plainOptions = [
+    '武器系统和导弹概述', '武器系统工作状态', '指挥车作战使命',
+    '武器系统基本组成', '武器系统工作原理、作战方式', '指挥车战机指标',
+    '武器系统作战使命', '指挥车系统概述', '指挥车工作过程和工作原理',
+    '指挥车控制操作手', '作战拦截操作手', '空勤处理操作手',
+    '通信专业', '电子雷达专业', '机电专业'
   ]
 
   import './TeachingManagement.less'
   import './antTable.less'
+
   export default {
     name: "TeachingManagement",
-    data(){
-      return{
+    data() {
+      return {
         userData,
         courseData,
         userDataColumns,
@@ -366,7 +370,7 @@
          * @Author 尘埃Friend
          * @date 2019-12-03
          */
-        visible:false,
+        visible: false,
         plainOptions,
         /**
          * modal选中类容
@@ -374,19 +378,20 @@
          * @Author 尘埃Friend
          * @date 2019-12-03
          */
-        checkedList:''
+        checkedList: '',
+        dictCode: 'equip'
       }
     },
-    methods:{
-      visibleModal(){
-        this.visible=true
+    methods: {
+      visibleModal() {
+        this.visible = true
       }
     }
   }
 </script>
 
 <style scoped>
-  .fontSize{
+  .fontSize {
     font-size: 18px;
   }
 </style>

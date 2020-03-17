@@ -1,5 +1,5 @@
 <template>
-  <div id="examinationPaper">
+  <div id="examinationPaper" style="height: 440px">
     <a-card style="background-color: rgba( 0,0,0,0.2)">
       <span slot="title">
         <img src="@/assets/img/countDown.png" style="width: 26px;height: 26px;margin-top: -12px">

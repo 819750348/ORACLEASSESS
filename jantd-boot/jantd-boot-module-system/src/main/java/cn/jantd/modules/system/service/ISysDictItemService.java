@@ -1,6 +1,8 @@
 package cn.jantd.modules.system.service;
 
 import cn.jantd.modules.system.entity.SysDictItem;
+import cn.jantd.modules.system.vo.SysDictItemVO;
+import com.alibaba.fastjson.JSONArray;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
@@ -21,4 +23,12 @@ public interface ISysDictItemService extends IService<SysDictItem> {
      * @return
      */
     List<SysDictItem> selectItemsByMainId(String mainId);
+
+    /**
+     * 查询字典属性
+     * @return
+     */
+    List<SysDictItemVO> queryEPSG();
+
+
 }

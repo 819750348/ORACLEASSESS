@@ -1,5 +1,5 @@
 <template>
-  <div id="examinationAnalysis" style="height: 407px">
+  <div id="examinationAnalysis">
     <a-card style="background-color: rgba( 0,0,0,0.2); margin-top: 30px">
       <template>
         <span slot="title">

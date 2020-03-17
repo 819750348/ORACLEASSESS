@@ -26,35 +26,35 @@ public class AnnouncementSendModel implements Serializable {
      * id
      */
     @TableId(type = IdType.UUID)
-    private java.lang.String id;
+    private String id;
     /**
      * 通告id
      */
-    private java.lang.String anntId;
+    private String anntId;
     /**
      * 用户id
      */
-    private java.lang.String userId;
+    private String userId;
     /**
      * 标题
      */
-    private java.lang.String titile;
+    private String titile;
     /**
      * 内容
      */
-    private java.lang.String msgContent;
+    private String msgContent;
     /**
      * 发布人
      */
-    private java.lang.String sender;
+    private String sender;
     /**
      * 优先级（L低，M中，H高）
      */
-    private java.lang.String priority;
+    private String priority;
     /**
      * 阅读状态
      */
-    private java.lang.String readFlag;
+    private String readFlag;
     /**
      * 发布时间
      */
@@ -64,13 +64,13 @@ public class AnnouncementSendModel implements Serializable {
     /**
      * 页数
      */
-    private java.lang.Integer pageNo;
+    private Integer pageNo;
     /**
      * 大小
      */
-    private java.lang.Integer pageSize;
+    private Integer pageSize;
     /**
      * 消息类型1:通知公告2:系统消息
      */
-    private java.lang.String msgCategory;
+    private String msgCategory;
 }

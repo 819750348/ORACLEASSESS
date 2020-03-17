@@ -2,7 +2,13 @@ package cn.jantd.modules.system.controller;
 
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,13 +24,11 @@ import cn.jantd.core.system.query.QueryGenerator;
 import cn.jantd.core.system.vo.LoginUser;
 import cn.jantd.core.util.PasswordUtil;
 import cn.jantd.core.util.oConvertUtils;
-import cn.jantd.modules.system.entity.SysDepart;
 import cn.jantd.modules.system.entity.SysUser;
 import cn.jantd.modules.system.entity.SysUserDepart;
 import cn.jantd.modules.system.entity.SysUserRole;
 import cn.jantd.modules.system.model.DepartIdModel;
 import cn.jantd.modules.system.model.SysUserDepartsVO;
-import cn.jantd.modules.system.service.ISysDepartService;
 import cn.jantd.modules.system.service.ISysUserDepartService;
 import cn.jantd.modules.system.service.ISysUserRoleService;
 import cn.jantd.modules.system.service.ISysUserService;
@@ -74,9 +78,6 @@ public class SysUserController {
 
     @Autowired
     private ISysUserRoleService userRoleService;
-
-    @Autowired
-    private ISysDepartService sysDepartService;
 
     /**
      * 分页列表查询
@@ -176,7 +177,6 @@ public class SysUserController {
         Result<SysUser> result = new Result<>();
         // 定义SysUserDepart实体类的数据库查询LambdaQueryWrapper
         LambdaQueryWrapper<SysUserDepart> query = new LambdaQueryWrapper<>();
-        LambdaQueryWrapper<SysUserRole> sysUserRoleLambdaQueryWrapper = new LambdaQueryWrapper<>();
         SysUser sysUser = sysUserService.getById(id);
         if (sysUser == null) {
             result.error500("未找到对应实体");
@@ -185,8 +185,6 @@ public class SysUserController {
             query.eq(SysUserDepart::getUserId, id);
             boolean ok = sysUserService.removeById(id);
             sysUserDepartService.remove(query);
-            sysUserRoleLambdaQueryWrapper.eq(SysUserRole::getUserId,id);
-            sysUserRoleService.remove(sysUserRoleLambdaQueryWrapper);
             if (ok) {
                 result.success("删除成功!");
             }
@@ -206,7 +204,7 @@ public class SysUserController {
     @DeleteMapping(value = "/deleteBatch")
     public Result<SysUser> deleteBatch(@RequestParam(name = "ids", required = true) String ids) {
         // 定义SysUserDepart实体类的数据库查询对象LambdaQueryWrapper
-
+        LambdaQueryWrapper<SysUserDepart> query = new LambdaQueryWrapper<>();
         String[] idArry = ids.split(",");
         Result<SysUser> result = new Result<>();
         if (StringUtils.isEmpty(ids)) {
@@ -215,11 +213,7 @@ public class SysUserController {
             this.sysUserService.removeByIds(Arrays.asList(ids.split(",")));
             // 当批量删除时,删除在SysUserDepart中对应的所有部门数据
             for (String id : idArry) {
-                LambdaQueryWrapper<SysUserDepart> query = new LambdaQueryWrapper<>();
-                LambdaQueryWrapper<SysUserRole> sysUserRoleLambdaQueryWrapper = new LambdaQueryWrapper<>();
                 query.eq(SysUserDepart::getUserId, id);
-                sysUserRoleLambdaQueryWrapper.eq(SysUserRole::getUserId,id);
-                this.sysUserRoleService.remove(sysUserRoleLambdaQueryWrapper);
                 this.sysUserDepartService.remove(query);
             }
             result.success("删除成功!");
@@ -533,7 +527,7 @@ public class SysUserController {
         //导出文件名称
         mv.addObject(NormalExcelConstants.FILE_NAME, "用户列表");
         mv.addObject(NormalExcelConstants.CLASS, SysUser.class);
-        mv.addObject(NormalExcelConstants.PARAMS, new ExportParams("用户列表数据", "导出人:" + user.getRealname(), "导出信息"));
+        mv.addObject(NormalExcelConstants.PARAMS, new ExportParams("用户列表数据", "导出人:"+user.getRealname(), "导出信息"));
         mv.addObject(NormalExcelConstants.DATA_LIST, pageList);
         return mv;
     }
@@ -853,29 +847,6 @@ public class SysUserController {
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             result.error500("删除失败！");
-        }
-        return result;
-    }
-
-    /**
-     * 查询当前用户的所有部门/当前部门编码
-     *
-     * @return
-     */
-    @RequestMapping(value = "/getCurrentUserDeparts", method = RequestMethod.GET)
-    public Result<Map<String, Object>> getCurrentUserDeparts() {
-        Result<Map<String, Object>> result = new Result<Map<String, Object>>();
-        try {
-            LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-            List<SysDepart> list = this.sysDepartService.queryUserDeparts(sysUser.getId());
-            Map<String, Object> map = new HashMap<String, Object>();
-            map.put("list", list);
-            map.put("orgCode", sysUser.getOrgCode());
-            result.setSuccess(true);
-            result.setResult(map);
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            result.error500("查询失败！");
         }
         return result;
     }

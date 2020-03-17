@@ -12,20 +12,28 @@
         style="margin-top: 20px;margin-bottom: 30px"
         justify="center"
         align="center"
-        v-if="tabsVisible1 ===true ">
+        v-if="tabsVisible1 ===true">
         <a-col :span="24">
-          <a-table :dataSource="facultyEstablishmentData" :pagination="false" :columns="facultyEstablishmentColumns">
+          <!--<a-input v-model="staffList.records[0].visibleCheck"></a-input>-->
+          <a-table :dataSource="staffList.records" :pagination="false" :columns="facultyEstablishmentColumns">
             <span slot="checkBox" slot-scope="text,record">
-              <a-checkbox @change="onChange"></a-checkbox>
+              <a-checkbox
+                @change="checkRow(record)"
+                :checked="text"
+              >
+              </a-checkbox>
             </span>
-            <a slot="operation" href="javascript:;">
+            <a slot="operation" href="javascript:;" slot-scope="text,record">
               <img src=".././assets/img/bianji.png" style="width: 14px;height: 16px;">
-              <img src=".././assets/img/shanchu.png" style="width: 12px;height: 16px;margin-left: 10px">
+              <img
+                @click="deleteRow(record)"
+                src=".././assets/img/shanchu.png"
+                style="width: 12px;height: 16px;margin-left: 10px">
             </a>
             <span slot="footer">
               <a-row type="flex">
                 <a-col :span="2" style="margin-left: 16px">
-                  <a-checkbox @change="onChange">全选</a-checkbox>
+                  <a-checkbox @change="checkAll" style="color: #ffffff;">全选</a-checkbox>
                   <a href="javascript:;">
                     <img
                       src=".././assets/img/shanchu.png"
@@ -34,9 +42,11 @@
                 </a-col>
                 <a-col :span="20">
                   <a-pagination
+                    @change="setPage"
                     size="small"
                     style="text-align: center;"
-                    :total="50"
+                    :total="staffList.total"
+                    v-model="page"
                     :showSizeChanger="false"
                     showQuickJumper
                     :showTotal="total => `共 ${total} 条`"/>
@@ -55,8 +65,6 @@
           </a-table>
         </a-col>
       </a-row>
-
-
       <a-row
         type="flex"
         style="margin-top: 20px;margin-bottom: 30px"
@@ -64,7 +72,7 @@
         align="center"
         v-if="tabsVisible2 ===true ">
         <a-col :span="24">
-          <a-table :dataSource="facultyEstablishmentData2" :pagination="false" :columns="facultyEstablishmentColumns">
+          <a-table :dataSource="studentList.records" :pagination="false" :columns="facultyEstablishmentColumns">
             <span slot="checkBox" slot-scope="text,record">
               <a-checkbox @change="onChange"></a-checkbox>
             </span>
@@ -75,20 +83,23 @@
             <span slot="footer">
               <a-row type="flex">
                 <a-col :span="2" style="margin-left: 16px">
-                  <a-checkbox @change="onChange">全选</a-checkbox>
+                  <a-checkbox @change="onChange" style="color: #ffffff">全选</a-checkbox>
                   <a href="javascript:;">
                     <img
+                      @click="deleteAll"
                       src=".././assets/img/shanchu.png"
                       style="width: 12px;height: 16px;margin-left: 10px;position:relative;bottom:2px">
                   </a>
                 </a-col>
                 <a-col :span="20">
                   <a-pagination
+                    @change="setStudentPage"
                     size="small"
                     style="text-align: center;"
-                    :total="50"
+                    :total="studentList.total"
                     :showSizeChanger="false"
                     showQuickJumper
+                    v-model="studentPage"
                     :showTotal="total => `共 ${total} 条`"/>
                 </a-col>
                 <a-col :span="1">
@@ -112,14 +123,17 @@
       width="800px"
     >
       <span slot="title">
-        <img src="@/assets/img/shezhi.png" style="width: 26px;height: 26px;">
+        <img src="@/assets/img/tianjiaB.png" style="width: 26px;height: 26px;">
         <span style="font-size: 30px;position: relative;left: 12px;top:5px;">{{ "添加" }}</span>
       </span>
       <div>
         <a-row type="flex" justify="center" style="margin-top: 30px">
           <a-col :span="14">
             <a-input style="width: 280px"></a-input>
-            <a-upload action="http://192.168.43.160:8080/jantd-boot/teacher/staff/importExcel?staffType=1">
+            <a-upload
+              action="http://192.168.43.160:8080/jantd-boot/teacher/staff/importExcel?staffType=1"
+              accept=".xlsx"
+              @change="handleImportExcel">
               <a-button style="margin-left: 20px">
                 <a-icon type="upload"/>
                 选择
@@ -216,16 +230,16 @@
       scopedSlots: {customRender: 'No'},
       align: 'center'
     },
-    {
-      title: '用户IP',
-      dataIndex: 'userIP',
-      scopedSlots: {customRender: 'userName'},
-      align: 'center'
-    },
+    // {
+    //   title: '用户IP',
+    //   dataIndex: 'userIP',
+    //   scopedSlots: {customRender: 'userName'},
+    //   align: 'center'
+    // },
     {
       title: '登入名称',
-      dataIndex: 'loginName',
-      scopedSlots: {customRender: 'loginName'},
+      dataIndex: 'name',
+      scopedSlots: {customRender: 'name'},
       align: 'center'
     },
     {
@@ -236,26 +250,26 @@
     },
     {
       title: '创建时间',
-      dataIndex: 'creationTime',
-      scopedSlots: {customRender: 'creationTime'},
+      dataIndex: 'createTime',
+      scopedSlots: {customRender: 'createTime'},
       align: 'center'
     },
     {
       title: "所属装备",
-      dataIndex: 'equid',
-      scopedSlots: {customRender: 'equid'},
+      dataIndex: 'equipStr',
+      scopedSlots: {customRender: 'equipStr'},
       align: 'center'
     },
     {
       title: '岗位',
-      dataIndex: 'station',
-      scopedSlots: {customRender: 'station'},
+      dataIndex: 'positionStr',
+      scopedSlots: {customRender: 'positionStr'},
       align: 'center'
     },
     {
       title: '人员分组',
-      dataIndex: 'personnelGrouping',
-      scopedSlots: {customRender: 'personnelGrouping'},
+      dataIndex: 'staffGroupStr',
+      scopedSlots: {customRender: 'staffGroupStr'},
       align: 'center'
     },
     {
@@ -473,6 +487,7 @@
     }
   ]
   import './FacultyManagement.less'
+  import {getStaffList, deleteRow, deleteAll, editRow} from '@/api/facultyManagement'
 
   export default {
     name: "FacultyManagement",
@@ -484,23 +499,142 @@
         tabsVisible1: true,
         tabsVisible2: false,
         modelVisible: false,
-        qType: ''
+        qType: '',
+        page: 1,
+        studentPage: 1,
+        staffList: {},
+        studentList: {},
+        checkList: []
       }
     },
     methods: {
       tabsChang(key) {
         if (key === '1') {
           this.tabsVisible1 = true
+          this.page = 1
           this.tabsVisible2 = false
+          this.initStaffList()
         } else if (key === '2') {
+          this.studentPage = 1
           this.tabsVisible2 = true
           this.tabsVisible1 = false
+          this.initStudentList()
         }
-
       },
       importData() {
         this.modelVisible = true
+      },
+      handleImportExcel(info) {
+        if (info.file.status !== 'uploading') {
+          console.log(info.file, info.fileList);
+        }
+        if (info.file.status === 'done') {
+          if (info.file.response.success) {
+            this.$message.success(`${info.file.name} 文件上传成功`);
+          } else {
+            this.$message.error(`${info.file.name} ${info.file.response.message}.`);
+          }
+        } else if (info.file.status === 'error') {
+          this.$message.error(`文件上传失败: ${info.file.msg} `);
+        }
+      },
+      initStaffList() {
+        let that = this
+        getStaffList({
+          staffType: 1,
+          pageNo: that.page
+        }).then(function (res) {
+          console.log(res)
+          that.staffList = res.result
+          that.staffList.isCheckAll = false
+          let i = 1
+          that.staffList.records.map(item => {
+            item.visibleCheck = false
+            item.No = i
+            i++
+          })
+        }).catch(function (err) {
+          console.log(err)
+        })
+      },
+      initStudentList() {
+        let that = this
+        getStaffList({
+          staffType: 2,
+          pageNo: that.studentPage
+        }).then(function (res) {
+          console.log(res)
+          that.studentList = res.result
+          let i = 1
+          that.studentList.records.map(item => {
+            item.No = i
+            i++
+          })
+        }).catch(function (err) {
+          console.log(err)
+        })
+      },
+      setPage(page) {
+        this.page = page
+        this.initStaffList()
+      },
+      setStudentPage(page) {
+        this.studentPage = page
+        this.initStudentList()
+      },
+      deleteRow(row) {
+        console.log(row)
+        deleteRow({
+          id: row.id
+        }).then(function (res) {
+          console.log(res)
+          this.$message.success("上传成功");
+        }).catch(function (err) {
+          this.$message.error("上传失败")
+          console.log(err)
+        })
+      },
+      deleteAll() {
+        deleteAll({}).then(function (res) {
+          console.log(res)
+        }).catch(function (err) {
+          console.log(err)
+        })
+      },
+      editRow() {
+        editRow({}).then(function (res) {
+          console.log(res)
+        }).catch(function (err) {
+          console.log(err)
+        })
+      },
+      checkRow(row) {
+        if (row.visibleCheck === false) {
+          this.staffList.records.map(item => {
+            if (item.id === row.id) {
+              item.visibleCheck = true
+            }
+          })
+        } else if (row.visibleCheck === true) {
+          this.staffList.records.map(item => {
+            if (item.id === row.id) {
+              item.visibleCheck = false
+            }
+          })
+        }
+        console.log(this.staffList.records)
+        console.log(this.staffList.records)
+      },
+      checkAll() {
+        console.log(this.staffList)
+        console.log(this.staffList)
       }
+    },
+    mounted() {
+      this.page = 1
+      this.studentPage = 1
+      this.initStaffList()
+      this.initStudentList()
     }
   }
 </script>
