@@ -3,7 +3,7 @@
     <a-card style="background-color: RGB(10,19,49)">
       <a-row style="padding: 30px 0 10px 0">
         <span>
-          <a-input placeholder="请输入试卷名称" style="width: 180px;"/>
+          <a-input placeholder="请输入关键字" style="width: 180px;"/>
         </span>
         <span style="margin-left: 20px">
           <a-date-picker
@@ -31,7 +31,9 @@
           </a-button>
         </span>
         <span style="float: right;">
-          <a-button>{{ "错题练习" }}</a-button>
+          <router-link to="/practiceOperation">
+            <a-button>{{ "错题练习" }}</a-button>
+          </router-link>
         </span>
       </a-row>
       <a-row type="flex" style="margin-top: 20px;margin-bottom: 30px" justify="center" align="center">
@@ -108,61 +110,61 @@
   const examinationPaperData=[
     {
       No: '1',
-      nameOfExaminationPaper: 'xxxx试卷1',
+      nameOfExaminationPaper: '基础设置试卷',
       updateTime: '2019-02-28 13:22:12',
       status: '0'
     },
     {
       No: '2',
-      nameOfExaminationPaper: 'xxxx试卷1',
+      nameOfExaminationPaper: '指挥试卷',
       updateTime: '2019-02-28 13:22:12',
       status: '0'
     },
     {
       No: '3',
-      nameOfExaminationPaper: 'xxxx试卷1',
+      nameOfExaminationPaper: '发射组试卷',
       updateTime: '2019-02-28 13:22:12',
       status: '0'
     },
     {
       No: '4',
-      nameOfExaminationPaper: 'xxxx试卷1',
+      nameOfExaminationPaper: '作战指挥试卷',
       updateTime: '2019-02-28 13:22:12',
       status: '0'
     },
     {
       No: '5',
-      nameOfExaminationPaper: 'xxxx试卷1',
+      nameOfExaminationPaper: '组成原理试卷',
       updateTime: '2019-02-28 13:22:12',
       status: '0'
     },
     {
       No: '6',
-      nameOfExaminationPaper: 'xxxx试卷1',
+      nameOfExaminationPaper: '故障排除试卷',
       updateTime: '2019-02-28 13:22:12',
       status: '0'
     },
     {
       No: '7',
-      nameOfExaminationPaper: 'xxxx试卷1',
+      nameOfExaminationPaper: '维修课程试卷',
       updateTime: '2019-02-28 13:22:12',
       status: '1'
     },
     {
       No: '8',
-      nameOfExaminationPaper: 'xxxx试卷1',
+      nameOfExaminationPaper: '设计原理试卷',
       updateTime: '2019-02-28 13:22:12',
       status: '1'
     },
     {
       No: '9',
-      nameOfExaminationPaper: 'xxxx试卷1',
+      nameOfExaminationPaper: '故障修复试卷',
       updateTime: '2019-02-28 13:22:12',
       status: '1'
     },
     {
       No: '10',
-      nameOfExaminationPaper: 'xxxx试卷1',
+      nameOfExaminationPaper: '基本组成试卷',
       updateTime: '2019-02-28 13:22:12',
       status: '1'
     }

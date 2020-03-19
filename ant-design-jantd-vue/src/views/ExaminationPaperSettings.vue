@@ -1,6 +1,6 @@
 <template>
   <div id="examinationPaperSettings">
-    <a-card style="background-color: RGB(10,19,49)">
+    <a-card style="background-color: RGB(10,19,49);height:955px">
       <a-row style="padding: 30px 0 10px 0">
         <a-tabs @tabClick="tabsChang">
           <a-tab-pane tab="考试设置" key="1"/>
@@ -120,7 +120,7 @@
           <a-col :span="19">
             <a-table :columns="columns" bordered :dataSource="tableData" :pagination="false">
               <template slot="title">
-                <a style="color: white;margin-left: 58px">
+                <a style="color: white;margin-left: 58px" @click="optional">
                   {{ "自选考题" }}
                 </a>
                 <a style="color: white;position: relative;margin-left:150px;">
@@ -201,7 +201,7 @@
             </a-table>
           </a-col>
         </a-row>
-        <a-row type="flex" justify="center" style="margin-top: 80px;margin-bottom: 50px">
+        <a-row type="flex" justify="center" style="margin-top: 100px;margin-bottom: 50px">
           <a-col>
             <img
               src="@/assets/img/shengchengshijuan.png"
@@ -281,6 +281,55 @@
           </a-col>
         </a-row>
       </div>
+      <!--自选考题-->
+      <a-modal
+        v-model="optionalModal"
+        width="1200px"
+      >
+        <span slot="title">
+          <a-select defaultValue="全部" style="width: 220px" @change="handleChange">
+            <a-select-option value="指挥控制车">指挥控制车</a-select-option>
+            <a-select-option value="指挥官">指挥官</a-select-option>
+            <a-select-option value="全部">全部</a-select-option>
+          </a-select>
+          <a-input placeholder="" style="width:220px;margin-left: 20px;position: relative;top: 3px"></a-input>
+          <a-button style="margin-left: 20px">{{ "搜索" }}</a-button>
+          <!--<a-button style="margin-left: 20px">{{ "选择" }}</a-button>-->
+        </span>
+        <div>
+          <a-table
+            :dataSource="examinationD"
+            :pagination="false"
+            :columns="examinationC"
+            :rowSelection="rowSelection">
+            <a slot="chakan" href="javascript:;">
+              <img src="@/assets/img/bianji.png" style="width: 16px;height: 16px;">
+            </a>
+            <span slot="footer">
+              <a-pagination
+                size="small"
+                style="text-align: center;"
+                :total="5"
+                :showSizeChanger="false"
+                showQuickJumper
+                :showTotal="total => `共 ${total} 条`"/>
+            </span>
+          </a-table>
+        </div>
+        <div>
+          <a-checkbox-group :options="plainOptions" v-model="checkedList" @change="onChange"/>
+        </div>
+        <span slot="footer">
+          <a-row type="flex" justify="center">
+            <a-col :span="4">
+              <a-button>
+                <a-icon type="upload"/>
+                确定
+              </a-button>
+            </a-col>
+          </a-row>
+        </span>
+      </a-modal>
     </a-card>
 
   </div>
@@ -288,6 +337,65 @@
 
 <script>
   import './ExaminationPaperSettings.less'
+  const rowSelection = {
+    onChange: (selectedRowKeys, selectedRows) => {
+      console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+    },
+    onSelect: (record, selected, selectedRows) => {
+      console.log(record, selected, selectedRows);
+    },
+    onSelectAll: (selected, selectedRows, changeRows) => {
+      console.log(selected, selectedRows, changeRows);
+    },
+  };
+  const examinationC = [{
+    title: '题库分类',
+    dataIndex: 'tikufenlei',
+    scopedSlots: {customRender: 'tikufenlei'},
+    align: 'center'
+  }, {
+    title: '题目',
+    dataIndex: 'timu',
+    scopedSlots: {customRender: 'timu'},
+    align: 'center'
+  },
+    {
+      title: '题型',
+      dataIndex: 'tixing',
+      scopedSlots: {customRender: 'tixing'},
+      align: 'center'
+    },
+    {
+      title: '查看',
+      scopedSlots: {customRender: 'chakan'},
+      align: 'center'
+    }
+  ]
+  const examinationD = [
+    {
+      tikufenlei: '指控控制车/指挥军官',
+      timu: '多目标操作流程',
+      tixing: '选择题',
+    },
+    {
+      tikufenlei: '指控控制车/指挥军官',
+      timu: '多目标操作流程',
+      tixing: '选择题',
+    },
+    {
+      tikufenlei: '指控控制车/指挥军官',
+      timu: '多目标操作流程',
+      tixing: '选择题',
+    }, {
+      tikufenlei: '指控控制车/指挥军官',
+      timu: '多目标操作流程',
+      tixing: '选择题',
+    }, {
+      tikufenlei: '指控控制车/指挥军官',
+      timu: '多目标操作流程',
+      tixing: '选择题',
+    }
+  ]
 
   const columns = [
     {
@@ -474,9 +582,13 @@
         columns,
         examinationData,
         examinationColumns,
+        examinationC,
+        examinationD,
+        rowSelection,
         tabsVisible1: true,
         tabsVisible2: false,
         tabsEquipment: [],
+        optionalModal: false,
         equipment: [
           {
             name: '指挥控制操作手',
@@ -542,6 +654,9 @@
           this.tabsVisible1 = false
         }
       },
+      optional() {
+        this.optionalModal = true
+      }
     }
   }
 </script>

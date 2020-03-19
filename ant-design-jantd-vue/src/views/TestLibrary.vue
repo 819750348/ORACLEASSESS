@@ -4,7 +4,7 @@
       <a-row style="padding: 30px 0 10px 0">
         <a-tabs>
           <a-tab-pane tab="指挥控制车复习题" key="1"/>
-          <a-tab-pane tab="下发试卷" key="2"/>
+          <!--<a-tab-pane tab="下发试卷" key="2"/>-->
         </a-tabs>
       </a-row>
       <a-row type="flex" style="margin-top: 20px;margin-bottom: 30px" justify="center" align="center">
@@ -31,7 +31,7 @@
                   <a-pagination
                     size="small"
                     style="text-align: center;"
-                    :total="50"
+                    :total="10"
                     :showSizeChanger="false"
                     showQuickJumper
                     :showTotal="total => `共 ${total} 条`"/>

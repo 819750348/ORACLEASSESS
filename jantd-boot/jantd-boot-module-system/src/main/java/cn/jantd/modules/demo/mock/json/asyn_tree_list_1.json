@@ -16,14 +16,14 @@
 			"component": "layouts/RouteView",
 			"orderNum": 2,
 			"hasChildren": true
-		},
-		{
-			"id": 13,
-			"name": "常见案例",
-			"component": "layouts/RouteView",
-			"orderNum": 3,
-			"hasChildren": true
 		}
+//		{
+//			"id": 13,
+//			"name": "常见案例",
+//			"component": "layouts/RouteView",
+//			"orderNum": 3,
+//			"hasChildren": true
+//		}
 	],
 	"timestamp": 1554950583837
 }

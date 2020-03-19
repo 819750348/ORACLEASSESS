@@ -24,52 +24,52 @@ public class SysUserAgent implements Serializable {
 
 	/**序号*/
 	@TableId(type = IdType.UUID)
-	private String id;
+	private java.lang.String id;
 	/**用户名*/
 	@Excel(name = "用户名", width = 15)
-	private String userName;
+	private java.lang.String userName;
 	/**代理人用户名*/
 	@Excel(name = "代理人用户名", width = 15)
-	private String agentUserName;
+	private java.lang.String agentUserName;
 	/**代理开始时间*/
 	@Excel(name = "代理开始时间", width = 20, format = "yyyy-MM-dd HH:mm:ss")
 	@JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
-	private Date startTime;
+	private java.util.Date startTime;
 	/**代理结束时间*/
 	@Excel(name = "代理结束时间", width = 20, format = "yyyy-MM-dd HH:mm:ss")
 	@JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
-	private Date endTime;
+	private java.util.Date endTime;
 	/**状态0无效1有效*/
 	@Excel(name = "状态0无效1有效", width = 15)
-	private String status;
+	private java.lang.String status;
 	/**创建人名称*/
 	@Excel(name = "创建人名称", width = 15)
-	private String createName;
+	private java.lang.String createName;
 	/**创建人登录名称*/
 	@Excel(name = "创建人登录名称", width = 15)
-	private String createBy;
+	private java.lang.String createBy;
 	/**创建日期*/
 	@Excel(name = "创建日期", width = 20, format = "yyyy-MM-dd HH:mm:ss")
 	@JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
-	private Date createTime;
+	private java.util.Date createTime;
 	/**更新人名称*/
 	@Excel(name = "更新人名称", width = 15)
-	private String updateName;
+	private java.lang.String updateName;
 	/**更新人登录名称*/
 	@Excel(name = "更新人登录名称", width = 15)
-	private String updateBy;
+	private java.lang.String updateBy;
 	/**更新日期*/
 	@Excel(name = "更新日期", width = 20, format = "yyyy-MM-dd HH:mm:ss")
 	@JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
-	private Date updateTime;
+	private java.util.Date updateTime;
 	/**所属部门*/
 	@Excel(name = "所属部门", width = 15)
-	private String sysOrgCode;
+	private java.lang.String sysOrgCode;
 	/**所属公司*/
 	@Excel(name = "所属公司", width = 15)
-	private String sysCompanyCode;
+	private java.lang.String sysCompanyCode;
 }

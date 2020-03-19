@@ -2,12 +2,9 @@ package cn.jantd;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
-import org.springframework.web.client.RestTemplate;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.net.InetAddress;
@@ -23,6 +20,18 @@ import java.net.UnknownHostException;
 @SpringBootApplication
 public class JantdApplication {
 
+    /**
+     * title : 姓名
+     * dataIndex : name
+     * scopedSlots : {"customRender":"name"}
+     * align : center
+     */
+
+    private String title;
+    private String dataIndex;
+    private ScopedSlotsBean scopedSlots;
+    private String align;
+
     public static void main(String[] args) throws UnknownHostException {
 
         ConfigurableApplicationContext application = SpringApplication.run(JantdApplication.class, args);
@@ -30,6 +39,7 @@ public class JantdApplication {
         String ip = InetAddress.getLocalHost().getHostAddress();
         String port = env.getProperty("server.port");
         String path = env.getProperty("server.servlet.context-path");
+
         log.info("\n----------------------------------------------------------\n\t" +
                 "Application Jantd-Boot is running! Access URLs:\n\t" +
                 "Local: \t\thttp://localhost:" + port + path + "/\n\t" +
@@ -39,8 +49,52 @@ public class JantdApplication {
                 "----------------------------------------------------------");
 
     }
-    @Bean
-    public RestTemplate restTemplate(){
-        return new RestTemplate();
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDataIndex() {
+        return dataIndex;
+    }
+
+    public void setDataIndex(String dataIndex) {
+        this.dataIndex = dataIndex;
+    }
+
+    public ScopedSlotsBean getScopedSlots() {
+        return scopedSlots;
+    }
+
+    public void setScopedSlots(ScopedSlotsBean scopedSlots) {
+        this.scopedSlots = scopedSlots;
+    }
+
+    public String getAlign() {
+        return align;
+    }
+
+    public void setAlign(String align) {
+        this.align = align;
+    }
+
+    public static class ScopedSlotsBean {
+        /**
+         * customRender : name
+         */
+
+        private String customRender;
+
+        public String getCustomRender() {
+            return customRender;
+        }
+
+        public void setCustomRender(String customRender) {
+            this.customRender = customRender;
+        }
     }
 }

@@ -93,14 +93,18 @@ public class MybatisInterceptor implements Interceptor {
                     }
                     if ("updateTime".equals(field.getName())) {
                         field.setAccessible(true);
-                        field.set(parameter, new Date());
+                        Object localUpdateDate = field.get(parameter);
                         field.setAccessible(false);
+                        if (localUpdateDate == null || "".equals(localUpdateDate)) {
+                            field.setAccessible(true);
+                            field.set(parameter, new Date());
+                            field.setAccessible(false);
+                        }
                     }
                 } catch (Exception e) {
                 }
             }
         }
-
     }
 
     /**

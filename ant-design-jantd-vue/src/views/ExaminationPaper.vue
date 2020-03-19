@@ -77,14 +77,14 @@
     {
       dataIndex: 'name',
       slots: {title: 'customTitle'},
-      scopedSlots: {customRender: 'name'},
+      scopedSlots: {customRender: 'title'},
       align: 'center'
     },
-    {
-      title: '总分',
-      dataIndex: 'totalScores',
-      align: 'center'
-    },
+    // {
+    //   title: '总分',
+    //   dataIndex: 'totalScore',
+    //   align: 'center'
+    // },
     {
       title: '指定学员',
       dataIndex: 'students',
@@ -110,6 +110,43 @@
     }
   ];
 
+  const data = [
+    {
+      key: '1',
+      title: '(车型+专业)卷子',
+      totalScore: 100,
+      designatedStudent: '于杰',
+      status: '已发送'
+    },
+    {
+      key: '1',
+      title: '(车型+专业)卷子',
+      totalScore: 100,
+      designatedStudent: '王学勇',
+      status: '已发送'
+    },
+    {
+      key: '1',
+      title: '(车型+专业)卷子',
+      totalScore: 100,
+      designatedStudent: '李瑞',
+      status: '已发送'
+    },
+    {
+      key: '1',
+      title: '(车型+专业)卷子',
+      totalScore: 100,
+      designatedStudent: '张伟',
+      status: '已发送'
+    },
+    {
+      key: '1',
+      title: '(车型+专业)卷子',
+      totalScore: 100,
+      designatedStudent: '李荣荣',
+      status: '已发送'
+    }
+  ];
 
   const lowerHairColumns = [
     {

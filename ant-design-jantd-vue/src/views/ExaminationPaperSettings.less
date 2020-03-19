@@ -31,7 +31,7 @@
   border-bottom: 1px solid RGB(19, 61, 110);
 }
 
-#examinationPaperSettings .ant-table-footer {
+ .ant-table-footer {
   //padding: 10px 10px 10px 30px;
   background: RGB(0, 31, 77);
   border-radius: 0 0 4px 4px;
@@ -39,7 +39,7 @@
   border: 1px solid RGB(19, 61, 110);
 }
 
-#examinationPaperSettings .ant-table-footer::before {
+ .ant-table-footer::before {
   content: '';
   height: 1px;
   background: RGB(0, 31, 77);
@@ -175,6 +175,19 @@
 }
 .ant-checkbox-wrapper {
   color: white;
+}
+.ant-table-thead > tr, .ant-table-tbody > tr {
+  transition: all 0.3s, height 0s;
+  background-color: RGB(4,40,94);
+  color: white;
+}
+.ant-table-thead > tr > th {
+  background:RGB(4,40,94);
+  border-bottom: 1px solid RGB(18,79,160);
+  color: #0ca5ec;
+}
+.ant-table-tbody > tr > td {
+  border-bottom: 1px solid RGB(18,79,160);
 }
 
 

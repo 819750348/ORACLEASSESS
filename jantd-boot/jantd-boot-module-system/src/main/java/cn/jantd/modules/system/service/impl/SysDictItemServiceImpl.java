@@ -3,9 +3,6 @@ package cn.jantd.modules.system.service.impl;
 import cn.jantd.modules.system.service.ISysDictItemService;
 import cn.jantd.modules.system.entity.SysDictItem;
 import cn.jantd.modules.system.mapper.SysDictItemMapper;
-import cn.jantd.modules.system.vo.SysDictItemVO;
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,11 +26,5 @@ public class SysDictItemServiceImpl extends ServiceImpl<SysDictItemMapper, SysDi
     @Override
     public List<SysDictItem> selectItemsByMainId(String mainId) {
         return sysDictItemMapper.selectItemsByMainId(mainId);
-    }
-
-    @Override
-    public List<SysDictItemVO> queryEPSG(){
-        List<SysDictItemVO> dilist = sysDictItemMapper.queryEPSG();
-        return dilist;
     }
 }

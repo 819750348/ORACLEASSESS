@@ -118,7 +118,7 @@ public class SysPermissionTree implements Serializable {
     private boolean hidden;
 
     /**按钮权限状态(0无效1有效)*/
-	private String status;
+	private java.lang.String status;
 
 
 	public SysPermissionTree() {
@@ -347,11 +347,11 @@ public class SysPermissionTree implements Serializable {
 		this.permsType = permsType;
 	}
 
-	public String getStatus() {
+	public java.lang.String getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(java.lang.String status) {
 		this.status = status;
 	}
 
