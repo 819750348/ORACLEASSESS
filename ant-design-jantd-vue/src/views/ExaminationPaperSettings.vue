@@ -1,6 +1,6 @@
 <template>
   <div id="examinationPaperSettings">
-    <a-card style="background-color: RGB(10,19,49);height:955px">
+    <a-card style="background-color: RGB(10,19,49);height:958px">
       <a-row style="padding: 30px 0 10px 0">
         <a-tabs @tabClick="tabsChang">
           <a-tab-pane tab="考试设置" key="1"/>
@@ -261,7 +261,7 @@
                     <a-pagination
                       size="small"
                       style="text-align: center;"
-                      :total="50"
+                      :total="10"
                       :showSizeChanger="false"
                       showQuickJumper
                       :showTotal="total => `共 ${total} 条`"/>
@@ -373,25 +373,25 @@
   ]
   const examinationD = [
     {
-      tikufenlei: '指控控制车/指挥军官',
+      tikufenlei: '指控控制车',
       timu: '多目标操作流程',
       tixing: '选择题',
     },
     {
-      tikufenlei: '指控控制车/指挥军官',
+      tikufenlei: '指挥车作战使命',
       timu: '多目标操作流程',
       tixing: '选择题',
     },
     {
-      tikufenlei: '指控控制车/指挥军官',
+      tikufenlei: '空勤处理操作手',
       timu: '多目标操作流程',
       tixing: '选择题',
     }, {
-      tikufenlei: '指控控制车/指挥军官',
+      tikufenlei: '指挥车系统概述',
       timu: '多目标操作流程',
       tixing: '选择题',
     }, {
-      tikufenlei: '指控控制车/指挥军官',
+      tikufenlei: '指挥车战机指标',
       timu: '多目标操作流程',
       tixing: '选择题',
     }
@@ -438,84 +438,84 @@
   const examinationData = [
     {
       No: '1',
-      title: 'xxx试卷1',
+      title: '武器系统和导弹概述试卷',
       totalScore: '100',
-      userName: '张珊',
-      sendOut: '张三',
-      updateTime: '2019-11-12 12:12:12',
+      userName: '梅文文，张杰，吴风',
+      sendOut: '',
+      updateTime: '2019-11-12 11:10:12',
       state: '已完成'
     },
     {
       No: '2',
-      title: 'xxx试卷1',
+      title: '武器系统工作状态试卷',
       totalScore: '100',
       userName: '',
-      sendOut: '张三',
-      updateTime: '2019-11-12 12:12:12',
+      sendOut: '',
+      updateTime: '2019-11-12 14:14:12',
       state: '已完成'
     }, {
       No: '3',
-      title: 'xxx试卷1',
+      title: '指挥车作战使命试卷',
       totalScore: '100',
-      userName: '张珊',
-      sendOut: '张三',
-      updateTime: '2019-11-12 12:12:12',
+      userName: '张军，王岚',
+      sendOut: '',
+      updateTime: '2019-11-12 15:15:12',
       state: '已完成'
     }
     , {
       No: '4',
-      title: 'xxx试卷1',
+      title: '武器系统基本组成试卷',
       totalScore: '100',
       userName: '',
-      sendOut: '张三',
-      updateTime: '2019-11-12 12:12:12',
+      sendOut: '',
+      updateTime: '2019-11-12 08:12:12',
       state: '已完成'
     }, {
       No: '5',
-      title: 'xxx试卷1',
+      title: '武器系统作战试卷',
       totalScore: '100',
       userName: '',
-      sendOut: '张三',
-      updateTime: '2019-11-12 12:12:12',
+      sendOut: '',
+      updateTime: '2019-11-12 09:13:12',
       state: '未完成'
     }, {
       No: '6',
-      title: 'xxx试卷1',
+      title: '空勤处理操作试卷',
       totalScore: '100',
       userName: '',
-      sendOut: '张三',
+      sendOut: '',
       updateTime: '2019-11-12 12:12:12',
       state: '已完成'
     }, {
       No: '7',
-      title: 'xxx试卷1',
+      title: '电子雷达专业试卷',
       totalScore: '100',
-      userName: '张珊',
-      sendOut: '张三',
+      userName: '',
+      sendOut: '',
       updateTime: '2019-11-12 12:12:12',
       state: '已完成'
     }, {
       No: '8',
-      title: 'xxx试卷1',
+      title: '机电专业试卷',
       totalScore: '100',
-      userName: '张珊',
+      userName: '徐军，李璐',
       sendOut: '张三',
-      updateTime: '2019-11-12 12:12:12',
+      updateTime: '2019-11-12 11:13:12',
       state: '已完成'
     }, {
       No: '9',
-      title: 'xxx试卷1',
+      title: '指挥车控制操作试卷',
       totalScore: '100',
-      userName: '张珊',
-      sendOut: '张三',
-      updateTime: '2019-11-12 12:12:12',
+      userName: '赵玲，李瑞',
+      sendOut: '',
+      updateTime: '2019-11-12 10:12:10',
       state: '已完成',
       operation: '操作'
     }, {
       No: '10',
-      title: 'xxx试卷1',
+      title: '武器系统工作原理试卷',
       totalScore: '100',
-      userName: '张珊',
+      userName: '王杰，李冰冰',
       sendOut: '张三',
       updateTime: '2019-11-12 12:12:12',
       state: '已完成'
@@ -541,11 +541,11 @@
       dataIndex: 'title',
       align: 'center'
     },
-    {
-      title: '总分',
-      dataIndex: 'totalScore',
-      align: 'center'
-    },
+    // {
+    //   title: '总分',
+    //   dataIndex: 'totalScore',
+    //   align: 'center'
+    // },
     {
       title: '上传时间',
       dataIndex: 'updateTime',

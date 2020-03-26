@@ -1,6 +1,6 @@
 <template>
   <div id="teachingManagement">
-    <a-card style="background-color: RGB(10,19,49)">
+    <a-card style="background-color: RGB(10,19,49);height: 957px;">
       <a-row type="flex" style="padding: 30px 0 10px 0">
         <a-col :span="24">
           <a-radio-group @change="radioChange" v-model="dictCode" :defaultValue="1">
@@ -31,7 +31,7 @@
             </a-select-option>
           </a-select>
           <span style="margin-left: 20px;position: relative;bottom:4px">
-            <a-input class="fontSize" placeholder="请输入试卷名称" style="width: 210px;margin-left: 10px"/>
+            <a-input class="fontSize" placeholder="请输入关键字" style="width: 210px;margin-left: 10px"/>
             <a-button style="margin-left: 10px;position: relative;bottom:4px">
               <a-icon type="search"/>
             </a-button>
@@ -40,12 +40,13 @@
       </a-row>
       <a-row type="flex" style="margin-top: 20px;margin-bottom: 30px" justify="center" align="center">
         <a-col :span="12">
-          <a-table :dataSource="userData" :pagination="false" :columns="userDataColumns">
+          <a-table :dataSource="userData" :pagination="false" :columns="userDataColumns" :rowSelection="rowSelection"
+                   :customRow="rowClick">
             <span slot="footer">
               <a-pagination
                 size="small"
                 style="text-align: center;"
-                :total="50"
+                :total="10"
                 :showSizeChanger="false"
                 showQuickJumper
                 :showTotal="total => `共 ${total} 条`"/>
@@ -77,7 +78,7 @@
                   <a-pagination
                     size="small"
                     style="text-align: center;"
-                    :total="50"
+                    :total="10"
                     :showSizeChanger="false"
                     showQuickJumper
                     :showTotal="total => `共 ${total} 条`"/>
@@ -130,7 +131,7 @@
               </a-select-option>
             </a-select>
             <span style="margin-left: 20px;position: relative;bottom:4px">
-              <a-input class="fontSize" placeholder="请输入试卷名称" style="width: 210px;margin-left: 10px"/>
+              <a-input class="fontSize" placeholder="" style="width: 210px;margin-left: 10px"/>
               <a-button style="margin-left: 10px;position: relative;bottom:4px">
                 <a-icon type="search"/>
               </a-button>
@@ -147,7 +148,7 @@
             <a-pagination
               style="text-align: center;"
               size="small"
-              :total="50"
+              :total="10"
               :showSizeChanger="false"
               showQuickJumper
               :showTotal="total => `共 ${total} 条`"/>
@@ -159,6 +160,17 @@
 </template>
 
 <script>
+  const rowSelection = {
+    onChange: (selectedRowKeys, selectedRows) => {
+      console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+    },
+    onSelect: (record, selected, selectedRows) => {
+      console.log(record, selected, selectedRows);
+    },
+    onSelectAll: (selected, selectedRows, changeRows) => {
+      console.log(selected, selectedRows, changeRows);
+    },
+  };
   const userDataColumns = [
     {
       title: "姓名",
@@ -194,71 +206,71 @@
 
   const userData = [
     {
-      name: '张三',
-      userCode: '1234567',
+      name: '李珊珊',
+      userCode: '32564723',
       equid: '指控指挥车',
       station: ' 指挥官',
       personnelGrouping: '指挥发射组'
     },
     {
-      name: '张三',
-      userCode: '1234567',
+      name: '赵雪',
+      userCode: '56743452',
       equid: '指控指挥车',
       station: ' 指挥官',
       personnelGrouping: '指挥发射组'
     },
     {
-      name: '张三',
-      userCode: '1234567',
+      name: '李玲玲',
+      userCode: '36234671',
       equid: '指控指挥车',
       station: ' 指挥官',
       personnelGrouping: '指挥发射组'
     },
     {
-      name: '张三',
-      userCode: '1234567',
+      name: '王苗苗',
+      userCode: '67452341',
       equid: '指控指挥车',
       station: ' 指挥官',
       personnelGrouping: '指挥发射组'
     },
     {
-      name: '张三',
-      userCode: '1234567',
+      name: '鹏宇',
+      userCode: '23123545',
       equid: '指控指挥车',
       station: ' 指挥官',
       personnelGrouping: '指挥发射组'
     },
     {
-      name: '张三',
-      userCode: '1234567',
+      name: '解灵灵',
+      userCode: '45623451',
       equid: '指控指挥车',
       station: ' 指挥官',
       personnelGrouping: '指挥发射组'
     },
     {
-      name: '张三',
-      userCode: '1234567',
+      name: '张谢成',
+      userCode: '23411467',
       equid: '指控指挥车',
       station: ' 指挥官',
       personnelGrouping: '指挥发射组'
     },
     {
-      name: '张三',
-      userCode: '1234567',
+      name: '王佳佳',
+      userCode: '89765146',
       equid: '指控指挥车',
       station: ' 指挥官',
       personnelGrouping: '指挥发射组'
     },
     {
-      name: '张三',
-      userCode: '1234567',
+      name: '张伟',
+      userCode: '23126732',
       equid: '指控指挥车',
       station: ' 指挥官',
       personnelGrouping: '指挥发射组'
     },
     {
-      name: '张三',
-      userCode: '1234567',
+      name: '赵燕',
+      userCode: '78873213',
       equid: '指控指挥车',
       station: ' 指挥官',
       personnelGrouping: '指挥发射组'
@@ -295,52 +307,52 @@
   const courseData = [
     {
       No: '1',
-      course: '基本组成',
+      course: '武器系统和导弹概述',
       status: '1'
     },
     {
       No: '2',
-      course: '基本组成',
+      course: '武器系统工作状态',
       status: '1'
     },
     {
       No: '3',
-      course: '基本组成',
+      course: '指挥车作战使命',
       status: '1'
     },
     {
       No: '4',
-      course: '基本组成',
+      course: '武器系统基本组成',
       status: '1'
     },
     {
       No: '5',
-      course: '基本组成',
+      course: '武器系统工作原理、作战方式',
       status: '0'
     },
     {
       No: '6',
-      course: '基本组成',
+      course: '指挥车战机指标',
       status: '0'
     },
     {
       No: '7',
-      course: '基本组成',
+      course: '武器系统作战使命',
       status: '0'
     },
     {
       No: '8',
-      course: '基本组成',
+      course: '指挥车系统概述',
       status: '0'
     },
     {
       No: '9',
-      course: '基本组成',
+      course: '指挥车工作过程和工作原理',
       status: '0'
     },
     {
       No: '10',
-      course: '基本组成',
+      course: '空勤处理操作手',
       status: '已完成'
     }
   ]
@@ -364,6 +376,66 @@
         courseData,
         userDataColumns,
         courseColumns,
+        rowSelection,
+        rowClick: record => ({
+          on: {
+            click: () => {
+              console.log(record, 'record')
+              this.courseData = [
+                {
+                  No: '1',
+                  course: '指挥车系统概述',
+                  status: '1'
+                },
+                {
+                  No: '2',
+                  course: '指挥车工作过程和工作原理',
+                  status: '1'
+                },
+                {
+                  No: '3',
+                  course: '设计原理',
+                  status: '1'
+                },
+                {
+                  No: '4',
+                  course: '指挥车战机指标',
+                  status: '1'
+                },
+                {
+                  No: '5',
+                  course: '故障排查',
+                  status: '0'
+                },
+                {
+                  No: '6',
+                  course: '武器系统基本组成',
+                  status: '0'
+                },
+                {
+                  No: '7',
+                  course: '武器系统工作状态',
+                  status: '0'
+                },
+                {
+                  No: '8',
+                  course: '空勤处理操作手',
+                  status: '0'
+                },
+                {
+                  No: '9',
+                  course: '电子雷达专业',
+                  status: '0'
+                },
+                {
+                  No: '10',
+                  course: '武器系统工作原理、作战方式',
+                  status: '已完成'
+                }
+              ]
+            }
+          }
+        }),
         /**
          * 课程管理模态框
          *
@@ -385,7 +457,13 @@
     methods: {
       visibleModal() {
         this.visible = true
+      },
+      initPersonnel(){
+
       }
+    },
+    mounted() {
+      this.initPersonnel()
     }
   }
 </script>

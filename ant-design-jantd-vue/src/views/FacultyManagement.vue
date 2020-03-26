@@ -1,6 +1,6 @@
 <template>
   <div id="facultyManagement" class="facultyManagement">
-    <a-card style="background-color: RGB(10,19,49)">
+    <a-card style="background-color: RGB(10,19,49);height: 957px;">
       <a-row style="padding: 30px 0 10px 0">
         <a-tabs @tabClick="tabsChang">
           <a-tab-pane tab="教员管理" key="1"/>
@@ -12,31 +12,54 @@
         style="margin-top: 20px;margin-bottom: 30px"
         justify="center"
         align="center"
-        v-if="tabsVisible1 ===true ">
+        v-if="tabsVisible1 ===true">
         <a-col :span="24">
-          <a-table :dataSource="facultyEstablishmentData" :pagination="false" :columns="facultyEstablishmentColumns">
-            <span slot="checkBox" slot-scope="text,record">
-              <a-checkbox @change="onChange"></a-checkbox>
+          <a-table :dataSource="staffList.records" :pagination="false" :columns="facultyEstablishmentColumns">
+            <span slot="visibleCheck" slot-scope="text,record">
+              <a-checkbox
+                @change="TcheckRow(record)"
+                :checked="text"
+              >
+              </a-checkbox>
             </span>
-            <a slot="operation" href="javascript:;">
+            <a slot="operation" href="javascript:;" slot-scope="text,record">
               <img src=".././assets/img/bianji.png" style="width: 14px;height: 16px;">
-              <img src=".././assets/img/shanchu.png" style="width: 12px;height: 16px;margin-left: 10px">
+              <a-popconfirm
+                title='确定删除吗？'
+                @confirm="TDeleteRow(record)"
+                okText="是"
+                cancelText="否"
+              >
+                <img
+                  src=".././assets/img/shanchu.png"
+                  style="width: 12px;height: 16px;margin-left: 10px">
+              </a-popconfirm>
+
             </a>
             <span slot="footer">
               <a-row type="flex">
                 <a-col :span="2" style="margin-left: 16px">
-                  <a-checkbox @change="onChange">全选</a-checkbox>
+                  <a-checkbox @change="TCkAll" :checked="TCkA" style="color: #ffffff;">全选</a-checkbox>
+                                <a-popconfirm
+                                  title='确定删除吗？'
+                                  @confirm="TDeleteAll"
+                                  okText="是"
+                                  cancelText="否"
+                                >
                   <a href="javascript:;">
                     <img
                       src=".././assets/img/shanchu.png"
                       style="width: 12px;height: 16px;margin-left: 10px;position:relative;bottom:2px">
                   </a>
+                 </a-popconfirm>
                 </a-col>
                 <a-col :span="20">
                   <a-pagination
+                    @change="setPage"
                     size="small"
                     style="text-align: center;"
-                    :total="50"
+                    :total="staffList.total"
+                    v-model="page"
                     :showSizeChanger="false"
                     showQuickJumper
                     :showTotal="total => `共 ${total} 条`"/>
@@ -55,8 +78,6 @@
           </a-table>
         </a-col>
       </a-row>
-
-
       <a-row
         type="flex"
         style="margin-top: 20px;margin-bottom: 30px"
@@ -64,63 +85,87 @@
         align="center"
         v-if="tabsVisible2 ===true ">
         <a-col :span="24">
-          <a-table :dataSource="facultyEstablishmentData2" :pagination="false" :columns="facultyEstablishmentColumns">
-            <span slot="checkBox" slot-scope="text,record">
-              <a-checkbox @change="onChange"></a-checkbox>
+          <a-table :dataSource="studentList.records" :pagination="false" :columns="facultyEstablishmentColumns">
+            <span slot="visibleCheck" slot-scope="text,record">
+              <a-checkbox
+                @change="ScheckRow(record)"
+                :checked="text"
+              >
+              </a-checkbox>
             </span>
-            <a slot="operation" href="javascript:;">
+            <a slot="operation" slot-scope="text,record" href="javascript:;">
               <img src=".././assets/img/bianji.png" style="width: 14px;height: 16px;">
-              <img src=".././assets/img/shanchu.png" style="width: 12px;height: 16px;margin-left: 10px">
+              <a-popconfirm
+                title='确定删除吗？'
+                @confirm="SDeleteRow(record)"
+                okText="是"
+                cancelText="否"
+              >
+                <img
+                  src=".././assets/img/shanchu.png"
+                  style="width: 12px;height: 16px;margin-left: 10px">
+              </a-popconfirm>
             </a>
             <span slot="footer">
               <a-row type="flex">
                 <a-col :span="2" style="margin-left: 16px">
-                  <a-checkbox @change="onChange">全选</a-checkbox>
+                  <a-checkbox @change="SCkAll" :checked="SCkA" style="color: #ffffff">全选</a-checkbox>
+                                <a-popconfirm
+                                  title='确定删除吗？'
+                                  @confirm="SDeleteAll"
+                                  okText="是"
+                                  cancelText="否"
+                                >
                   <a href="javascript:;">
                     <img
                       src=".././assets/img/shanchu.png"
                       style="width: 12px;height: 16px;margin-left: 10px;position:relative;bottom:2px">
                   </a>
+                                </a-popconfirm>
                 </a-col>
                 <a-col :span="20">
                   <a-pagination
+                    @change="setStudentPage"
                     size="small"
                     style="text-align: center;"
-                    :total="50"
+                    :total="studentList.total"
                     :showSizeChanger="false"
                     showQuickJumper
+                    v-model="studentPage"
                     :showTotal="total => `共 ${total} 条`"/>
                 </a-col>
                 <a-col :span="1">
-                  <router-link to="/testLibrary">
-                    <span>
-                      <a href="javascript:;">
-                        <img
-                          src=".././assets/img/tianjia.png"
-                          style="width: 16px;height: 16px;float: right;margin-right: 20px;position:relative;top: 4px">
-                      </a>
-                    </span>
-                  </router-link>
+                  <span @click="importData">
+                    <a href="javascript:;">
+                      <img
+                        src=".././assets/img/tianjia.png"
+                        style="width: 16px;height: 16px;float: right;margin-right: 20px;position:relative;top: 4px">
+                    </a>
+                  </span>
                 </a-col>
               </a-row>
             </span>
           </a-table>
         </a-col>
       </a-row>
+
     </a-card>
     <a-modal
       v-model="modelVisible"
       width="800px"
     >
       <span slot="title">
-        <img src="@/assets/img/tianjiaB.png" style="width: 26px;height: 26px;">
+        <img src="@/assets/img/tianjiaB.png" style="width: 24px;height: 24px;">
         <span style="font-size: 24px;position: relative;left: 12px;top:5px;">{{ "添加" }}</span>
       </span>
       <div>
         <a-row type="flex" justify="center" style="margin-top: 30px">
           <a-col :span="14">
             <a-input style="width: 280px"></a-input>
-            <a-upload action="http://192.168.43.160:8080/jantd-boot/teacher/staff/importExcel?staffType=1" directory>
+            <a-upload
+              action="http://192.168.43.160:8080/jantd-boot/teacher/staff/importExcel?staffType=1"
+              accept=".xlsx"
+              @change="handleImportExcel">
               <a-button style="margin-left: 20px">
                 <a-icon type="upload"/>
                 选择
@@ -207,8 +252,8 @@
   const facultyEstablishmentColumns = [
     {
       title: '',
-      dataIndex: 'checkBox',
-      scopedSlots: {customRender: 'checkBox'},
+      dataIndex: 'visibleCheck',
+      scopedSlots: {customRender: 'visibleCheck'},
       align: 'center'
     },
     {
@@ -217,16 +262,16 @@
       scopedSlots: {customRender: 'No'},
       align: 'center'
     },
-    {
-      title: '用户IP',
-      dataIndex: 'userIP',
-      scopedSlots: {customRender: 'userName'},
-      align: 'center'
-    },
+    // {
+    //   title: '用户IP',
+    //   dataIndex: 'userIP',
+    //   scopedSlots: {customRender: 'userName'},
+    //   align: 'center'
+    // },
     {
       title: '登入名称',
-      dataIndex: 'loginName',
-      scopedSlots: {customRender: 'loginName'},
+      dataIndex: 'name',
+      scopedSlots: {customRender: 'name'},
       align: 'center'
     },
     {
@@ -237,26 +282,26 @@
     },
     {
       title: '创建时间',
-      dataIndex: 'creationTime',
-      scopedSlots: {customRender: 'creationTime'},
+      dataIndex: 'createTime',
+      scopedSlots: {customRender: 'createTime'},
       align: 'center'
     },
     {
       title: "所属装备",
-      dataIndex: 'equid',
-      scopedSlots: {customRender: 'equid'},
+      dataIndex: 'equipStr',
+      scopedSlots: {customRender: 'equipStr'},
       align: 'center'
     },
     {
       title: '岗位',
-      dataIndex: 'station',
-      scopedSlots: {customRender: 'station'},
+      dataIndex: 'positionStr',
+      scopedSlots: {customRender: 'positionStr'},
       align: 'center'
     },
     {
       title: '人员分组',
-      dataIndex: 'personnelGrouping',
-      scopedSlots: {customRender: 'personnelGrouping'},
+      dataIndex: 'staffGroupStr',
+      scopedSlots: {customRender: 'staffGroupStr'},
       align: 'center'
     },
     {
@@ -270,9 +315,9 @@
   const facultyEstablishmentData = [
     {
       No: '1',
-      userIP: '24243512',
-      loginName: '清风',
-      userName: '张杰',
+      userIP: '2134145676',
+      loginName: '登入名',
+      userName: '张珊',
       creationTime: '2019-12-12 12:12:12',
       equid: '指挥指控车',
       station: '指挥军官',
@@ -280,8 +325,8 @@
     },
     {
       No: '2',
-      userIP: '45367924',
-      loginName: '飘雪',
+      userIP: '2134145676',
+      loginName: '登入名',
       userName: '张珊',
       creationTime: '2019-12-12 12:12:12',
       equid: '指挥指控车',
@@ -290,9 +335,9 @@
     },
     {
       No: '3',
-      userIP: '16675675',
-      loginName: '李玲玲',
-      userName: '李玲玲',
+      userIP: '2134145676',
+      loginName: '登入名',
+      userName: '张珊',
       creationTime: '2019-12-12 12:12:12',
       equid: '指挥指控车',
       station: '指挥军官',
@@ -300,9 +345,9 @@
     },
     {
       No: '4',
-      userIP: '13424567',
-      loginName: '大路啊',
-      userName: '王文文',
+      userIP: '2134145676',
+      loginName: '登入名',
+      userName: '张珊',
       creationTime: '2019-12-12 12:12:12',
       equid: '指挥指控车',
       station: '指挥军官',
@@ -310,9 +355,9 @@
     },
     {
       No: '5',
-      userIP: '22445234',
-      loginName: '星星',
-      userName: '李晶晶',
+      userIP: '2134145676',
+      loginName: '登入名',
+      userName: '张珊',
       creationTime: '2019-12-12 12:12:12',
       equid: '指挥指控车',
       station: '指挥军官',
@@ -320,9 +365,9 @@
     },
     {
       No: '6',
-      userIP: '23478975',
-      loginName: '爱啥啥',
-      userName: '吴瑞',
+      userIP: '2134145676',
+      loginName: '登入名',
+      userName: '张珊',
       creationTime: '2019-12-12 12:12:12',
       equid: '指挥指控车',
       station: '指挥军官',
@@ -330,9 +375,9 @@
     },
     {
       No: '7',
-      userIP: '45634589',
-      loginName: '凌凌漆',
-      userName: '王珊珊',
+      userIP: '2134145676',
+      loginName: '登入名',
+      userName: '张珊',
       creationTime: '2019-12-12 12:12:12',
       equid: '指挥指控车',
       station: '指挥军官',
@@ -340,9 +385,9 @@
     },
     {
       No: '8',
-      userIP: '76453423',
-      loginName: '飓风',
-      userName: '李瑞',
+      userIP: '2134145676',
+      loginName: '登入名',
+      userName: '张珊',
       creationTime: '2019-12-12 12:12:12',
       equid: '指挥指控车',
       station: '指挥军官',
@@ -350,9 +395,9 @@
     },
     {
       No: '9',
-      userIP: '45234675',
-      loginName: '叔叔',
-      userName: '谢琳',
+      userIP: '2134145676',
+      loginName: '登入名',
+      userName: '张珊',
       creationTime: '2019-12-12 12:12:12',
       equid: '指挥指控车',
       station: '指挥军官',
@@ -360,9 +405,9 @@
     },
     {
       No: '10',
-      userIP: '21341456',
-      loginName: 'ggg',
-      userName: '周杰',
+      userIP: '2134145676',
+      loginName: '登入名',
+      userName: '张珊',
       creationTime: '2019-12-12 12:12:12',
       equid: '指挥指控车',
       station: '指挥军官',
@@ -375,8 +420,8 @@
     {
       No: '1',
       userIP: '123',
-      loginName: '无极',
-      userName: '张文',
+      loginName: '登入名',
+      userName: '张珊',
       creationTime: '2019-12-12 12:12:12',
       equid: '指挥指控车',
       station: '指挥军官',
@@ -385,8 +430,8 @@
     {
       No: '2',
       userIP: '123',
-      loginName: '丫丫',
-      userName: '于文雅',
+      loginName: '登入名',
+      userName: '张珊',
       creationTime: '2019-12-12 12:12:12',
       equid: '指挥指控车',
       station: '指挥军官',
@@ -395,8 +440,8 @@
     {
       No: '3',
       userIP: '123',
-      loginName: 'sss',
-      userName: '王伟',
+      loginName: '登入名',
+      userName: '张珊',
       creationTime: '2019-12-12 12:12:12',
       equid: '指挥指控车',
       station: '指挥军官',
@@ -405,8 +450,8 @@
     {
       No: '4',
       userIP: '123',
-      loginName: '皮皮',
-      userName: '张洁洁',
+      loginName: '登入名',
+      userName: '张珊',
       creationTime: '2019-12-12 12:12:12',
       equid: '指挥指控车',
       station: '指挥军官',
@@ -415,8 +460,8 @@
     {
       No: '5',
       userIP: '123',
-      loginName: '李瑞',
-      userName: '李瑞',
+      loginName: '登入名',
+      userName: '张珊',
       creationTime: '2019-12-12 12:12:12',
       equid: '指挥指控车',
       station: '指挥军官',
@@ -425,8 +470,8 @@
     {
       No: '6',
       userIP: '123',
-      loginName: '姐姐',
-      userName: '张亚亚',
+      loginName: '登入名',
+      userName: '张珊',
       creationTime: '2019-12-12 12:12:12',
       equid: '指挥指控车',
       station: '指挥军官',
@@ -435,8 +480,8 @@
     {
       No: '7',
       userIP: '456',
-      loginName: '风暴',
-      userName: '王星星',
+      loginName: '登入名',
+      userName: '张珊',
       creationTime: '2019-12-12 12:12:12',
       equid: '指挥指控车',
       station: '指挥军官',
@@ -445,7 +490,7 @@
     {
       No: '8',
       userIP: '8888',
-      loginName: '雪花',
+      loginName: '登入名',
       userName: '张珊',
       creationTime: '2019-12-12 12:12:12',
       equid: '指挥指控车',
@@ -455,8 +500,8 @@
     {
       No: '9',
       userIP: '999999999',
-      loginName: '冬天的瓜',
-      userName: '李蕊蕊',
+      loginName: '登入名',
+      userName: '张珊',
       creationTime: '2019-12-12 12:12:12',
       equid: '指挥指控车',
       station: '指挥军官',
@@ -465,8 +510,8 @@
     {
       No: '10',
       userIP: '00000888',
-      loginName: '沙哈',
-      userName: '张伟',
+      loginName: '登入名',
+      userName: '张珊',
       creationTime: '2019-12-12 12:12:12',
       equid: '指挥指控车',
       station: '指挥军官',
@@ -474,6 +519,7 @@
     }
   ]
   import './FacultyManagement.less'
+  import {getStaffList, deleteRow, deleteAll, editRow} from '@/api/facultyManagement'
 
   export default {
     name: "FacultyManagement",
@@ -485,23 +531,238 @@
         tabsVisible1: true,
         tabsVisible2: false,
         modelVisible: false,
-        qType: ''
+        qType: '',
+        page: 1,
+        studentPage: 1,
+        staffList: {},
+        studentList: {},
+        checkList: [],
+        SCkA: false,
+        TCkA:false
       }
     },
     methods: {
       tabsChang(key) {
         if (key === '1') {
           this.tabsVisible1 = true
+          this.page = 1
           this.tabsVisible2 = false
+          this.TCkA = false
+          this.initStaffList()
         } else if (key === '2') {
+          this.studentPage = 1
           this.tabsVisible2 = true
           this.tabsVisible1 = false
+          this.SCkA = false
+          this.initStudentList()
         }
-
       },
       importData() {
         this.modelVisible = true
+      },
+      handleImportExcel(info) {
+        if (info.file.status !== 'uploading') {
+          console.log(info.file, info.fileList);
+        }
+        if (info.file.status === 'done') {
+          if (info.file.response.success) {
+            this.$message.success(`${info.file.name} 文件上传成功`);
+          } else {
+            this.$message.error(`${info.file.name} ${info.file.response.message}.`);
+          }
+        } else if (info.file.status === 'error') {
+          this.$message.error(`文件上传失败: ${info.file.msg} `);
+        }
+      },
+      initStaffList() {
+        let that = this
+        getStaffList({
+          staffType: 1,
+          pageNo: that.page
+        }).then(function (res) {
+          console.log(res)
+          that.staffList = res.result
+          that.staffList.isCheckAll = false
+          let i = 1
+          that.staffList.records.map(item => {
+            item.No = i
+            i++
+          })
+        }).catch(function (err) {
+          console.log(err)
+        })
+      },
+      initStudentList() {
+        let that = this
+        getStaffList({
+          staffType: 2,
+          pageNo: that.studentPage
+        }).then(function (res) {
+          console.log(res)
+          that.studentList = res.result
+          let i = 1
+          that.studentList.records.map(item => {
+            item.No = i
+            i++
+          })
+        }).catch(function (err) {
+          console.log(err)
+        })
+      },
+      setPage(page) {
+        this.page = page
+        this.initStaffList()
+      },
+      setStudentPage(page) {
+        this.studentPage = page
+        this.initStudentList()
+      },
+      TDeleteRow(row) {
+        let that = this
+        console.log(row)
+        deleteRow({
+          id: row.id,
+          staffType: 1
+        }).then(function (res) {
+          console.log(res)
+          that.$message.success("删除成功");
+          that.initStaffList()
+        }).catch(function (err) {
+          that.$message.error("删除失败")
+          console.log(err)
+        })
+      },
+      SDeleteRow(row) {
+        let that = this
+        console.log(row)
+        deleteRow({
+          id: row.id,
+          staffType: 2
+        }).then(function (res) {
+          console.log(res)
+          that.$message.success("删除成功");
+          that.initStudentList()
+        }).catch(function (err) {
+          that.$message.error("删除失败")
+          console.log(err)
+        })
+      },
+      TDeleteAll() {
+        let that = this
+        let ids = []
+        this.staffList.records.map(item => {
+          if (item.visibleCheck === true) {
+            ids.push(item.id)
+          }
+        })
+        if(ids.length === 0){
+          this.$message.error("请选择删除项")
+          return
+        }
+        deleteAll({
+          ids: ids.toString(),
+          staffType: 2
+        }).then(function (res) {
+          that.$message.success("删除成功");
+          that.TCkA = false
+          that.initStaffList()
+          console.log(res)
+        }).catch(function (err) {
+          that.$message.success("删除失败");
+          console.log(err)
+        })
+      },
+      SDeleteAll() {
+        let that = this
+        let ids = []
+        this.studentList.records.map(item => {
+          if (item.visibleCheck === true) {
+            ids.push(item.id)
+          }
+        })
+        if(ids.length === 0){
+          this.$message.error("请选择删除项")
+          return
+        }
+        deleteAll({
+          ids: ids.toString(),
+          staffType: 2
+        }).then(function (res) {
+          that.$message.success("删除成功");
+          that.SCkA = false
+          that.initStudentList()
+          console.log(res)
+        }).catch(function (err) {
+          that.$message.success("删除失败");
+          console.log(err)
+        })
+      },
+      editRow() {
+        editRow({}).then(function (res) {
+          console.log(res)
+        }).catch(function (err) {
+          console.log(err)
+        })
+      },
+      TcheckRow(row) {
+        if (row.visibleCheck === false) {
+          this.staffList.records.map(item => {
+            if (item.id === row.id) {
+              item.visibleCheck = true
+            }
+          })
+        } else if (row.visibleCheck === true) {
+          this.staffList.records.map(item => {
+            if (item.id === row.id) {
+              item.visibleCheck = false
+            }
+          })
+        }
+      },
+      ScheckRow(row) {
+        let that = this
+        if (row.visibleCheck === false) {
+          row.visibleCheck = true
+          console.log(that.studentList.records)
+        } else if (row.visibleCheck === true) {
+          row.visibleCheck = false
+          console.log(that.studentList.records)
+        }
+      },
+      SCkAll(){
+        let that = this
+        if(this.SCkA === false){
+          that.SCkA = true
+          that.studentList.records.map(function (item) {
+               item.visibleCheck = true
+          })
+        }else if(this.SCkA === true){
+          that.SCkA = false
+          that.studentList.records.map(function (item) {
+            item.visibleCheck = false
+          })
+        }
+      },
+      TCkAll(){
+        let that = this
+        if(this.TCkA === false){
+          that.TCkA = true
+          that.staffList.records.map(function (item) {
+            item.visibleCheck = true
+          })
+        }else if(this.TCkA === true){
+          that.TCkA = false
+          that.staffList.records.map(function (item) {
+            item.visibleCheck = false
+          })
+        }
       }
+    },
+    mounted() {
+      this.page = 1
+      this.studentPage = 1
+      this.initStaffList()
+      this.initStudentList()
     }
   }
 </script>

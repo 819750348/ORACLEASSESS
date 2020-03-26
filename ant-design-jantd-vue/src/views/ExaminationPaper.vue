@@ -17,10 +17,19 @@
           <!--<img src=".././assets/img/countDown.png" style="width: 18px;height: 18px;margin-top: -2px">-->
           <!--</a-table-column>-->
           <!--<a-table-column title="操作" dataIndex="operation" key="operation" />-->
-          <span slot="customTitle">标题</span>
+          <span slot="name" slot-scope="text,record">
+            <span style="cursor:pointer" @click="paperDetails">
+              {{text}}
+            </span>
+          </span>
+          <span slot="students" slot-scope="text,record">
+            <span style="cursor:pointer" @click="selectStudents">
+              {{text}}
+            </span>
+          </span>
           <span slot="sendStatusStr" slot-scope="text,record">
-            <span v-if="text === '已发送'" style="color: #18af1f">{{ text }}</span>
-            <span v-if="text === '发送失败'" style="color: red">{{ text }}</span>
+            <span v-if="text === '已完成'" style="color: #18af1f">{{ text }}</span>
+            <span v-if="text === '未完成'" style="color: red">{{ text }}</span>
           </span>
           <a slot="lookUp" href="javascript:;">
             <img src="@/assets/img/bianji.png" style="width: 20px;height: 20px;margin-top: -2px" @click="lowerHair">
@@ -28,6 +37,19 @@
           <a slot="operation" href="javascript:;">
             <img src="@/assets/img/shanchu.png" style="width: 16px;height: 20px;margin-top: -2px">
           </a>
+          <span slot="footer">
+        <a-row>
+          <a-col :span="24">
+            <a-pagination
+              style="text-align: center;"
+              size="small"
+              :total="5"
+              :showSizeChanger="false"
+              showQuickJumper
+              :showTotal="total => `共 ${total} 条`"/>
+          </a-col>
+        </a-row>
+      </span>
         </a-table>
       </template>
 
@@ -75,9 +97,10 @@
 <script>
   const columns = [
     {
+      title: '标题',
       dataIndex: 'name',
-      slots: {title: 'customTitle'},
-      scopedSlots: {customRender: 'title'},
+      // slots: {title: 'customTitle'},
+      scopedSlots: {customRender: 'name'},
       align: 'center'
     },
     // {
@@ -88,6 +111,7 @@
     {
       title: '指定学员',
       dataIndex: 'students',
+      scopedSlots: {customRender: 'students'},
       align: 'center'
     },
     {
@@ -202,18 +226,18 @@
   const lowerHairData = [
     {
       No: '1',
-      title: 'xxx试卷1',
+      title: '基础设置试卷',
       totalScore: '100',
-      userName: '张珊',
+      userName: '王玲玲',
       sendOut: '张三',
       state: '发送',
       operation: '操作'
     },
     {
       No: '2',
-      title: 'xxx试卷1',
+      title: '指挥试卷',
       totalScore: '100',
-      userName: '张珊',
+      userName: '余文雅',
       sendOut: '张三',
       state: '发送',
       operation: '操作'
@@ -322,6 +346,14 @@
         }).catch(function (err) {
           console.log(err)
         })
+      },
+      paperDetails(){
+        this.$route.push({
+          name: 'Paper'
+        })
+      },
+      selectStudents(){
+
       }
     },
     mounted() {

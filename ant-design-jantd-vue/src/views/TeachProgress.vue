@@ -64,32 +64,48 @@
         <!--</span>-->
         <!--</a-col>-->
         <!--</a-row>-->
-        <a-row type="flex" style="margin-top: 45px" v-for="item in studentInfos" :key="item">
+        <a-row type="flex" justify="space-around" align="middle" style="margin-top: 56px" v-for="item in studentInfos" :key="item">
           <a-col :span="3">
             <span style="color: white;font-size: 24px">
               {{ item.studentName + ":" }}
             </span>
           </a-col>
-          <a-col :span="21">
-            <a-steps :current="1">
-              <a-popover slot="progressDot" slot-scope="{index, status, prefixCls}">
-                <template slot="content">
-                  <!--<span>step {{ index }} status: {{ status }}</span>-->
-                  <span>{{ item.stepInfo[index] }}</span>
-                </template>
-                <span :class="`${prefixCls}-icon-dot`"></span>
-              </a-popover>
-              <a-steps :current="item.stepProgree">
-                <a-step/>
-                <a-step/>
-                <a-step/>
-                <a-step/>
-                <a-step/>
-                <a-step/>
-                <a-step/>
-                <a-step/>
-              </a-steps>
-            </a-steps>
+          <!--          <a-col :span="21">-->
+          <!--            <a-steps :current="1">-->
+          <!--              <a-popover slot="progressDot" slot-scope="{index, status, prefixCls}">-->
+          <!--                <template slot="content">-->
+          <!--                  &lt;!&ndash;<span>step {{ index }} status: {{ status }}</span>&ndash;&gt;-->
+          <!--                  <span>{{ item.stepInfo[index] }}</span>-->
+          <!--                </template>-->
+          <!--                <span :class="`${prefixCls}-icon-dot`"></span>-->
+          <!--              </a-popover>-->
+          <!--              <a-steps :current="item.stepProgree">-->
+          <!--                <a-step/>-->
+          <!--                <a-step/>-->
+          <!--                <a-step/>-->
+          <!--                <a-step/>-->
+          <!--                <a-step/>-->
+          <!--                <a-step/>-->
+          <!--                <a-step/>-->
+          <!--                <a-step/>-->
+          <!--              </a-steps>-->
+          <!--            </a-steps>-->
+          <!--          </a-col>-->
+          <a-col :span="18">
+            <a-tooltip :title="item.describe">
+              <a-progress :percent="item.temp" :showInfo="false" strokeWidth="15" strokeColor="#60C5F1"/>
+            </a-tooltip>
+          </a-col>
+          <a-col :span="2" style="margin-left: 15px;font-size: 18px;color: RGB(46,134,185);font-weight: bold">
+            <span>
+              {{item.successPercent}}
+            </span>
+            <span>
+              {{'/'}}
+            </span>
+            <span>
+              {{item.all}}
+            </span>
           </a-col>
         </a-row>
       </template>
@@ -111,7 +127,7 @@
         selectData: [],
         selectAllData: [],
         dictCode: 'equip',
-        itemValue:'1'
+        itemValue: '1'
 
       }
     },
@@ -120,7 +136,7 @@
     },
     mounted() {
       this.getSelectData()
-      this.getTeachProgress(this.dictCode,this.itemValue)
+      this.getTeachProgress(this.dictCode, this.itemValue)
     },
     methods: {
       /**
@@ -131,9 +147,7 @@
        */
       getSelectData() {
         let that = this
-        getSelectData({
-
-        }).then(function (res) {
+        getSelectData({}).then(function (res) {
           that.selectAllData = res
           that.radioChange()
           console.log(res)
@@ -148,17 +162,24 @@
         })
 
       },
-      selectChange(data){
+      selectChange(data) {
         let that = this
-        that.getTeachProgress(data.dictCode,data.itemValue)
+        that.getTeachProgress(data.dictCode, data.itemValue)
       },
-      getTeachProgress(dictCode,itemValue){
+      getTeachProgress(dictCode, itemValue) {
         let that = this
         getTeachProgress({
           dictCode: dictCode,
-          itemValue:itemValue
+          itemValue: itemValue
         }).then(function (res) {
           console.log(res)
+          if(res.result.length > 0){
+            res.result.map(item =>{
+              let t=(100 / item.all) * (item.successPercent)
+              item.temp = t
+              console.log(t)
+            })
+          }
           that.studentInfos = res.result
         }).catch(function (err) {
           console.log(err)

@@ -61,7 +61,7 @@
               <a-pagination
                 size="small"
                 style="text-align: center;"
-                :total="50"
+                :total="10"
                 :showSizeChanger="false"
                 showQuickJumper
                 :showTotal="total => `共 ${total} 条`"/>

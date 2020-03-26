@@ -94,4 +94,138 @@
 .ant-modal-close {
   color: #1890ff;
 }
+.ant-table-footer {
+  //padding: 10px 10px 10px 30px;
+  background: RGB(0, 31, 77);
+  border-radius: 0 0 4px 4px;
+  position: relative;
+  border: 1px solid RGB(19, 61, 110);
+}
+.ant-table-footer::before {
+  content: '';
+  height: 1px;
+  background: RGB(0, 31, 77);
+  position: absolute;
+  top: -1px;
+  width: 100%;
+  left: 0;
+}
+
+
+
+
+
+
+
+#teachingManagement .ant-table-thead > tr > th {
+  //padding: 10px 10px 10px 30px !important;
+  background-color: RGB(0, 31, 77);
+  color: RGB(78, 141, 231);
+  border-bottom: 1px solid RGB(19, 61, 110);
+}
+
+#teachingManagement .ant-table-tbody > tr > td {
+  padding: 19px 20px 19px 20px !important;
+  //background-color: RGB(4, 40, 94);
+  //color: white;
+  border-bottom: 1px solid RGB(19, 61, 110);
+}
+//新
+#teachingManagement .ant-table-tbody {
+  padding: 19px 20px 19px 20px !important;
+  border-bottom: 2px solid RGB(38, 55, 113);
+  transition: all 0.3s, height 0s;
+  background-color: RGB(4, 40, 94);
+  color: white;
+  height: 20px;
+  .ant-table-tbody :hover {
+    background-color: red;
+  }
+}
+.ant-table-tbody > tr.ant-table-row-selected td {
+  background: #33a6ff;
+}
+#teachingManagement .ant-table-thead > tr.ant-table-row-hover:not(.ant-table-expanded-row) > td, .ant-table-tbody > tr.ant-table-row-hover:not(.ant-table-expanded-row) > td, .ant-table-thead > tr:hover:not(.ant-table-expanded-row) > td, .ant-table-tbody > tr:hover:not(.ant-table-expanded-row) > td {
+  background: #0ca5ec;
+}
+
+#teachingManagement .ant-table-footer {
+  //padding: 10px 10px 10px 30px;
+  background: RGB(0, 31, 77);
+  border-radius: 0 0 4px 4px;
+  position: relative;
+  border-top: 1px solid RGB(19, 61, 110);
+}
+
+#teachingManagement .ant-table-footer::before {
+  content: '';
+  height: 1px;
+  background: RGB(0, 31, 77);
+  position: absolute;
+  top: -1px;
+  width: 100%;
+  left: 0;
+}
+
+.ant-pagination-item a {
+  color: RGB(63, 155, 203);
+}
+
+.ant-pagination-prev a, .ant-pagination-next a {
+  font-size: 18px;
+  color: #ffffff;
+}
+
+#teachingManagement .ant-pagination {
+  font-size: 18px;
+  color: RGB(78, 141, 231);
+}
+
+#teachingManagement .ant-select-selection {
+  border: 1px solid #096dd9;
+}
+
+#teachingManagement .ant-select-selection-selected-value {
+  color: #fafafa;
+}
+
+
+.ant-select {
+  color: #ffffff;
+}
+
+.ant-input {
+  color: #ffffff;
+  background-color: RGB(5, 42, 92);
+  border: 1px solid RGB(45, 102, 178);
+}
+
+.ant-input::placeholder {
+  color: white;
+  opacity: 1;
+}
+
+.ant-btn {
+  border: 1px solid #1f1e1e00;
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.015);
+  color: white;
+  background-color: RGB(21, 83, 177);
+}
+
+.ant-btn:hover, .ant-btn:focus, .ant-btn:active, .ant-btn.active {
+  background: RGB(21, 83, 177);
+}
+
+
+
+.ant-pagination.mini .ant-pagination-total-text, .ant-pagination.mini .ant-pagination-simple-pager {
+  color: RGB(46, 134, 185);
+}
+
+.ant-pagination.mini .ant-pagination-options-quick-jumper {
+  color: RGB(46, 134, 185);
+}
+.ant-select-selection__placeholder, .ant-select-search__field__placeholder {
+  color: #ffffff;
+}
 

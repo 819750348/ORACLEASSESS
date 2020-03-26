@@ -30,7 +30,7 @@
               <span>
                 {{ "账户类型:" }}
               </span>
-              <sapn style="font-weight: bold;font-size: 26px">
+              <sapn style="font-weight: bold;font-size: 24px">
                 {{ userInfo.staffTypeStr }}
               </sapn>
             </a-col>
@@ -38,7 +38,7 @@
               <span>
                 {{ "培训分组:" }}
               </span>
-              <span style="font-weight: bold;font-size: 26px">
+              <span style="font-weight: bold;font-size: 24px">
                 {{ userInfo.staffGroupStr }}
               </span>
             </a-col>
