@@ -117,19 +117,21 @@
               {{ ":" }}
             </span>
           </a-col>
-          <a-col :span="19">
-            <a-table :columns="columns" bordered :dataSource="tableData" :pagination="false">
-              <template slot="title">
-                <a style="color: white;margin-left: 58px" @click="optional">
-                  {{ "自选考题" }}
-                </a>
-                <a style="color: white;position: relative;margin-left:150px;">
-                  {{ "随机考题" }}
-                </a>
-                <div
-                  style="position: relative;margin-left:160px;width: 88px;border-bottom:1px solid RGB(19,61,110);-moz-transform: rotate(90deg);-webkit-transform: rotate(90deg);">
-                </div>
-              </template>
+            <a-col :span="6" offset="0">
+              <a-button style="color: white;margin-left: 58px" @click="custom">
+                {{ "自选考题" }}
+              </a-button>
+              <a-button style="color: white;position: relative;margin-left:150px;" @click="random">
+                {{ "随机考题" }}
+              </a-button>
+<!--              <div-->
+<!--                style="position: relative;margin-left:160px;width: 88px;border-bottom:1px solid RGB(19,61,110);-moz-transform: rotate(90deg);-webkit-transform: rotate(90deg);">-->
+<!--              </div>-->
+            </a-col>
+        </a-row>
+        <a-row>
+          <a-col :span="19" offset="3">
+            <a-table :columns="columns" bordered :dataSource="tableData" :pagination="false" v-show="CV">
               <span slot="single" slot-scope="text,record">
                 <a-select
                   style="width: 120px"
@@ -337,6 +339,7 @@
 
 <script>
   import './ExaminationPaperSettings.less'
+
   const rowSelection = {
     onChange: (selectedRowKeys, selectedRows) => {
       console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
@@ -617,7 +620,8 @@
             visible: false
           }
         ],
-        tabsStation: []
+        tabsStation: [],
+        CV: false
       }
     },
     methods: {
@@ -654,7 +658,11 @@
           this.tabsVisible1 = false
         }
       },
-      optional() {
+      random(){
+        this.CV = true
+      },
+      custom(){
+        this.CV = false
         this.optionalModal = true
       }
     }
