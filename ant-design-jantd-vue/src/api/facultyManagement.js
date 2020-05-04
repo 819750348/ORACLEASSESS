@@ -2,8 +2,7 @@ import {axios} from '@/utils/request'
 
 export function getStaffList(parameter) {
   return axios({
-    // url: 'http://192.168.43.160:8080/jantd-boot/teacher/staff/staffList',
-    url: 'http://192.168.5.253:8080/jantd-boot/teacher/staff/staffList',
+    url: 'http://localhost:8080/jantd-boot/sys/administrators/staffList',
     method: 'get',
     params: parameter
   })

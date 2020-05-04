@@ -6,6 +6,7 @@ function resolve(dir) {
 
 // vue.config.js
 module.exports = {
+  // baseUrl: '/jantd-boot/',
   /*
     Vue-cli3:
     Crashed when using Webpack `import()` #2463
