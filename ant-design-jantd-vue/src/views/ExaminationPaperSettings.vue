@@ -127,13 +127,11 @@
           <a-col :span="24">
             <a-table :dataSource="learningManagementData" :pagination="false" :columns="learningManagementColumns">
               <template slot="operation">
-                              <span style="font-size: 18px;color: #0ca5ec;cursor: pointer"
-                                    @click="learningManagementSetUp">
-                                {{"设置"}}
-                              </span>
+                <span style="font-size: 18px;color: #0ca5ec;cursor: pointer" @click="learningManagementSetUp">{{"设置"}}
+                </span>
                 <span style="font-size: 18px;color: #ff0000;cursor: pointer;margin-left: 20px">
-                                {{"删除"}}
-                              </span>
+                  {{"删除"}}
+                </span>
               </template>
               <span slot="footer">
                 <a-row type="flex">
@@ -147,13 +145,10 @@
                       :showTotal="total => `共 ${total} 条`"/>
                   </a-col>
                   <a-col :span="2">
-                  <a-upload
-                    action="http://192.168.5.253:8080/jantd-boot/teacher/problem/importExcel"
-                    accept=".xlsx"
-                    @change="">
-                    <img src="@/assets/img/tianjia.png" style="width: 26px;height: 26px;position: relative;bottom: 3px"
-                         @click=""/>
-                  </a-upload>
+                    <span>
+                      <img src="@/assets/img/tianjia.png" style="width: 26px;height: 26px;position: relative;bottom: 3px;cursor: pointer"
+                           @click="addLearningManagement"/>
+                    </span>
                   </a-col>
                 </a-row>
               </span>
@@ -185,22 +180,20 @@
             </a-row>
             <a-row type="flex" style="margin-top: 30px" justify="center">
               <a-col :span="3">
-            <span style="color: #ffffff;font-size: 18px">
-              {{"岗位:"}}
-            </span>
+                <span style="color: #ffffff;font-size: 18px">
+                  {{"岗位:"}}
+                </span>
               </a-col>
               <a-col :span="4">
-                          <span>
-                <a-select style="width: 220px" placeholder="全部" @change="">
+                <span>
+                    <a-select style="width: 220px" placeholder="全部" @change="">
                       <a-select-option v-for="item in equipments" :key="item" :value="item">
                           {{ item }}
                       </a-select-option>
-                </a-select>
-            </span>
+                     </a-select>
+                </span>
               </a-col>
             </a-row>
-
-
             <a-row type="flex" style="margin-top: 30px" justify="center">
               <a-col :span="3">
             <span style="color: #ffffff;font-size: 18px">
@@ -244,6 +237,108 @@
                 </a-row>
               </span>
           </a-modal>
+
+
+
+          <a-modal
+            v-model="LMM"
+            width="800px"
+          >
+              <span slot="title">
+                <img src="@/assets/img/tianjiaB.png" style="width: 24px;height: 24px;">
+                <span style="font-size: 24px;position: relative;left: 12px;top:5px;">{{ "添加学习项目" }}</span>
+              </span>
+
+            <a-row type="flex" style="margin-top: 30px" justify="center">
+              <a-col :span="4">
+                <span style="color: #ffffff;font-size: 18px">
+                  {{"学习项目名称:"}}
+                </span>
+              </a-col>
+              <a-col :span="4">
+                 <span>
+                   <a-input style="width: 220px">
+                   </a-input>
+                 </span>
+              </a-col>
+            </a-row>
+
+            <a-row type="flex" style="margin-top: 30px" justify="center">
+              <a-col :span="4">
+                  <span style="font-size: 18px;color: #ffffff">
+                    {{"所属系统:"}}
+                  </span>
+              </a-col>
+              <a-col :span="4">
+               <span>
+                <a-select style="width: 220px" placeholder="全部" @change="">
+                      <a-select-option v-for="item in equipments" :key="item" :value="item">
+                          {{ item }}
+                      </a-select-option>
+                </a-select>
+              </span>
+              </a-col>
+            </a-row>
+            <a-row type="flex" style="margin-top: 30px" justify="center">
+              <a-col :span="4">
+                <span style="color: #ffffff;font-size: 18px">
+                  {{"岗位:"}}
+                </span>
+              </a-col>
+              <a-col :span="4">
+                <span>
+                    <a-select style="width: 220px" placeholder="全部" @change="">
+                      <a-select-option v-for="item in equipments" :key="item" :value="item">
+                          {{ item }}
+                      </a-select-option>
+                     </a-select>
+                </span>
+              </a-col>
+            </a-row>
+            <a-row type="flex" style="margin-top: 30px" justify="center">
+              <a-col :span="4">
+            <span style="color: #ffffff;font-size: 18px">
+              {{"学习类型:"}}
+            </span>
+              </a-col>
+              <a-col :span="4">
+                          <span>
+                <a-select style="width: 220px" placeholder="全部" @change="">
+                      <a-select-option v-for="item in equipments" :key="item" :value="item">
+                          {{ item }}
+                      </a-select-option>
+                </a-select>
+            </span>
+              </a-col>
+            </a-row>
+            <a-row type="flex" style="margin-top: 30px" justify="center">
+              <a-col :span="4">
+            <span style="color: #ffffff;font-size: 18px">
+              {{"学时:"}}
+            </span>
+              </a-col>
+              <a-col :span="4">
+                 <span>
+                   <a-input style="width: 220px">
+
+                   </a-input>
+                 </span>
+              </a-col>
+            </a-row>
+
+
+            <span slot="footer">
+                <a-row type="flex" justify="center">
+                  <a-col :span="4">
+                    <a-button>
+                      <a-icon type="upload"/>
+                      确定
+                    </a-button>
+                  </a-col>
+                </a-row>
+              </span>
+          </a-modal>
+
         </a-row>
 
       </div>
@@ -859,6 +954,8 @@
         testManagementColumns,
         testManagementData,
 
+        LMM: false,
+
 
         personnelModal: false,
         learningManagementModal: false,
@@ -980,6 +1077,9 @@
        */
       learningManagementSetUp() {
         this.learningManagementModal = true
+      },
+      addLearningManagement(){
+        this.LMM = true
       }
     }
   }
