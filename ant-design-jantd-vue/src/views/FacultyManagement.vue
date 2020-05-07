@@ -1,6 +1,6 @@
 <template>
   <div id="FacultyManagement">
-    <a-card style="background-color: RGB(10,19,49);height: 957px;">
+    <a-card style="background-color: RGB(10,19,49);height: 960px;">
       <a-row type="flex" style="padding: 30px 0 10px 0">
         <a-col :span="24">
           <a-select
@@ -49,7 +49,8 @@
 
             <template slot="edit" href="javascript:;">
               <span style="cursor: pointer;color: #ffffff" @click="editRole">{{"编辑"}}</span>
-              <img src="@/assets/img/shanchu.png" style="width: 12px;height: 16px;margin-left: 20px;margin-bottom: 5px">
+              <img src="@/assets/img/shanchu.png"
+                   style="cursor: pointer; width: 12px;height: 16px;margin-left: 20px;margin-bottom: 5px">
             </template>
             <span slot="footer">
               <a-row type="flex">
@@ -63,8 +64,13 @@
                     :showTotal="total => `共 ${total} 条`"/>
                 </a-col>
                 <a-col :span="1">
-                  <img src="@/assets/img/tianjia.png" style="width: 26px;height: 26px;position: relative;bottom: 3px"
-                       @click="visibleModal"/>
+                  <a-upload
+                    action="http://192.168.5.253:8080/jantd-boot/teacher/problem/importExcel"
+                    accept=".xlsx"
+                    @change="handleImportExcel">
+                    <img src="@/assets/img/tianjia.png" style="width: 26px;height: 26px;position: relative;bottom: 3px"
+                         @click="visibleModal"/>
+                  </a-upload>
                 </a-col>
               </a-row>
             </span>
@@ -72,70 +78,39 @@
         </a-col>
       </a-row>
     </a-card>
-    <a-modal
-      v-model="visible"
-      width="1200px"
-    >
-      <span slot="title">
-        <img src="@/assets/img/shezhi.png" style="width: 26px;height: 26px;position: relative;bottom: 3px">
-        <span style="font-size: 22px;margin-left: 12px;">{{ "课程设置" }}</span>
-      </span>
-      <div>
-        <a-row type="flex">
-          <a-col :span="24">
-            <a-radio-group @change="radioChange" v-model="dictCode" :defaultValue="1">
-              <a-row tyle="flex">
-                <a-radio value="equip">
-                  <span style="font-size: 18px;position: relative;bottom:2px">
-                    {{ "所属装备" }}
-                  </span>
-                </a-radio>
-                <a-radio value="staff_group">
-                  <span style="font-size: 18px;position: relative;bottom:2px">
-                    {{ "人员分组" }}
-                  </span>
-                </a-radio>
-                <a-radio value="position">
-                  <span style="font-size: 18px;position: relative;bottom:2px">
-                    {{ "岗位" }}
-                  </span>
-                </a-radio>
-              </a-row>
-            </a-radio-group>
-            <a-select
-              style="width: 220px;margin-left: 10px;position: relative;bottom:4px"
-              placeholder="全部"
-              class="fontSize"
-            >
-              <a-select-option v-for="item in selectData" :key="item.itemText" class="fontSize">{{ item.itemText }}
-              </a-select-option>
-            </a-select>
-            <span style="margin-left: 20px;position: relative;bottom:4px">
-              <a-input class="fontSize" placeholder="" style="width: 210px;margin-left: 10px"/>
-              <a-button style="margin-left: 10px;position: relative;bottom:4px">
-                <a-icon type="search"/>
-              </a-button>
-            </span>
-          </a-col>
-        </a-row>
-      </div>
-      <div>
-        <a-checkbox-group :options="plainOptions" v-model="checkedList" @change="onChange"/>
-      </div>
-      <span slot="footer">
-        <a-row>
-          <a-col :span="24">
-            <a-pagination
-              style="text-align: center;"
-              size="small"
-              :total="10"
-              :showSizeChanger="false"
-              showQuickJumper
-              :showTotal="total => `共 ${total} 条`"/>
-          </a-col>
-        </a-row>
-      </span>
-    </a-modal>
+    <!--    <a-modal-->
+    <!--      v-model="visible"-->
+    <!--      width="800px"-->
+    <!--    >-->
+    <!--      <span slot="title">-->
+    <!--        <img src="@/assets/img/tianjiaB.png" style="width: 24px;height: 24px;">-->
+    <!--        <span style="font-size: 24px;position: relative;left: 12px;top:5px;">{{ "添加" }}</span>-->
+    <!--      </span>-->
+    <!--        <a-row type="flex" justify="center" style="margin-top: 30px">-->
+    <!--          <a-col :span="14">-->
+    <!--            <a-input style="width: 280px"></a-input>-->
+    <!--            <a-upload-->
+    <!--              action="http://192.168.5.253:8080/jantd-boot/teacher/problem/importExcel"-->
+    <!--              accept=".xlsx"-->
+    <!--              @change="handleImportExcel">-->
+    <!--              <a-button style="margin-left: 20px">-->
+    <!--                <a-icon type="upload"/>-->
+    <!--                选择-->
+    <!--              </a-button>-->
+    <!--            </a-upload>-->
+    <!--          </a-col>-->
+    <!--        </a-row>-->
+    <!--        <span slot="footer">-->
+    <!--        <a-row type="flex" justify="center">-->
+    <!--          <a-col :span="4">-->
+    <!--            <a-button>-->
+    <!--              <a-icon type="upload"/>-->
+    <!--              确定导入-->
+    <!--            </a-button>-->
+    <!--          </a-col>-->
+    <!--        </a-row>-->
+    <!--      </span>-->
+    <!--    </a-modal>-->
   </div>
 </template>
 
@@ -155,30 +130,34 @@
     {
       title: '序号',
       dataIndex: 'No',
+      width: 20,
       scopedSlots: {customRender: 'No'},
       align: 'center'
     },
     {
       title: '姓名',
       dataIndex: 'relName',
+      width: 120,
       scopedSlots: {customRender: 'relName'},
       align: 'center'
     },
     {
       title: '人员角色',
       dataIndex: 'role',
+      width: 180,
       scopedSlots: {customRender: 'role'},
       align: 'center'
     },
     {
-      title: '初始化密码',
-      dataIndex: 'initPassword',
-      scopedSlots: {customRender: 'initPassword'},
+      title: '密码',
+      width: 180,
+      dataIndex: 'password',
       align: 'center'
     },
     {
       title: '操作',
       dataIndex: 'edit',
+      width: 120,
       scopedSlots: {customRender: 'edit'},
       align: 'center'
     }
@@ -190,25 +169,25 @@
       No: '1',
       relName: '张三',
       role: '2',
-      initPassword: '00000000'
+      password: '00000000'
     },
     {
       No: '2',
       relName: '张三',
       role: '1',
-      initPassword: '00000000'
+      password: '00000000'
     },
     {
       No: '3',
       relName: '张三',
       role: '1',
-      initPassword: '00000000'
+      password: '00000000'
     },
     {
       No: '4',
       relName: '张三',
       role: '2',
-      initPassword: '00000000'
+      password: '00000000'
     },
     {
       No: '5',
@@ -220,31 +199,31 @@
       No: '6',
       relName: '张三',
       role: '2',
-      initPassword: '00000000'
+      password: '00000000'
     },
     {
       No: '7',
       relName: '张三',
       role: '1',
-      initPassword: '00000000'
+      password: '00000000'
     },
     {
       No: '8',
       relName: '张三',
       role: '2',
-      initPassword: '00000000'
+      password: '00000000'
     },
     {
       No: '9',
       relName: '张三',
       role: '1',
-      initPassword: '00000000'
+      password: '00000000'
     },
     {
       No: '10',
       relName: '张三',
       role: '2',
-      initPassword: '00000000'
+      password: '00000000'
     }
   ]
 
@@ -340,10 +319,9 @@
         this.visible = true
       },
       editRole() {
-        if(this.roleData === false){
+        if (this.roleData === false) {
           this.roleData = true
-        }
-        else if(this.roleData === true){
+        } else if (this.roleData === true) {
           this.roleData = false
         }
 
