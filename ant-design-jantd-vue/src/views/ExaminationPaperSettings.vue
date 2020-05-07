@@ -1,264 +1,54 @@
 <template>
   <div id="examinationPaperSettings">
-    <a-card style="background-color: RGB(10,19,49);height:958px">
+    <a-card style="background-color: RGB(10,19,49);height:1058px">
       <a-row style="padding: 30px 0 10px 0">
         <a-tabs @tabClick="tabsChang">
-          <a-tab-pane tab="考试设置" key="1"/>
-          <a-tab-pane tab="下发试卷" key="2"/>
+          <a-tab-pane tab="人员配置管理" key="1"/>
+          <a-tab-pane tab="学习和训练项目管理" key="2"/>
+          <a-tab-pane tab="试题管理" key="3"/>
         </a-tabs>
       </a-row>
       <div v-if="tabsVisible1 ===true " class="examination">
-        <a-row type="flex" style="margin-top: 20px;margin-bottom: 30px" justify="center" align="center">
-          <a-col :span="24">
-            <span style="color: RGB(2,144,215);font-size: 24px">
-              {{ "指定所属装备" }}
+        <a-row type="flex">
+          <a-col :span="5">
+            <span style="color: #ffffff;font-size: 20px">
+              {{"所属装备:"}}
             </span>
-            <span style="color: RGB(2,144,215);margin: 0 10px 0 10px;font-size: 24px">
-              {{ ":" }}
-            </span>
-            <span style="margin-left: 10px">
-              <a-select
-                mode="multiple"
-                style="width: 210px"
-                placeholder="全部"
-                maxTagCount="0"
-                notFoundContent="空"
-                maxTagPlaceholder="全部"
-              >
-                <a-select-option
-                  v-for="(item, i) in equipment"
-                  :key="item + i"
-                >
-                  <a-checkbox @change="changeSelect(i)" :checked="item.visible">
-                    {{ item.name }}
-                  </a-checkbox>
-                </a-select-option>
-              </a-select>
-            </span>
-            <span style="margin-left: 10px">
-              <span v-for="(item , i) in tabsEquipment" :key="item + 1">
-                <a-tag closable v-model="item.visible" @close="closeTags(i)">
-                  {{ item.name }}
-                </a-tag>
-              </span>
-            </span>
-          </a-col>
-        </a-row>
-        <a-row type="flex" style="margin-top: 20px;margin-bottom: 30px" justify="center" align="center">
-          <a-col :span="24">
-            <span style="color: RGB(2,144,215);font-size: 24px;margin-left: 48px">
-              {{ "指定岗位" }}
-            </span>
-            <span style="color: RGB(2,144,215);margin: 0 10px 0 10px;font-size: 24px">
-              {{ ":" }}
-            </span>
-            <span style="margin-left: 10px">
-              <a-select
-                mode="multiple"
-                style="width: 210px"
-                placeholder="全部"
-                maxTagCount="0"
-                notFoundContent="空"
-                maxTagPlaceholder="全部"
-              >
-                <a-select-option
-                  v-for="(item, i) in stations"
-                  :key="item + i"
-                >
-                  <a-checkbox @change="changeStation(i)" :checked="item.visible">
-                    {{ item.name }}
-                  </a-checkbox>
-                </a-select-option>
-              </a-select>
-            </span>
-            <span style="margin-left: 10px">
-              <span v-for="(item , i) in tabsStation" :key="item + i">
-                <a-tag closable v-model="item.visible" @close="closeTagsStation(i)">
-                  {{ item.name }}
-                </a-tag>
-              </span>
-            </span>
-          </a-col>
-        </a-row>
-        <!--<a-row type="flex" style="margin-top: 20px;margin-bottom: 30px" justify="center" align="center">-->
-        <!--<a-col :span="24">-->
-        <!--<span style="color: RGB(2,144,215);font-size: 24px;margin-left: 48px">-->
-        <!--{{ "考试时间" }}-->
-        <!--</span>-->
-        <!--<span style="color: RGB(2,144,215);margin: 0 10px 0 10px;font-size: 24px">-->
-        <!--{{ ":" }}-->
-        <!--</span>-->
-        <!--<span style="margin-left: 10px" class="write">-->
-        <!--<a-input style="width: 210px" placeholder=""/>-->
-        <!--<span style="font-size: 14px;color: white">-->
-        <!--{{ "分钟" }}-->
-        <!--</span>-->
-        <!--</span>-->
-        <!--<span style="color: RGB(2,144,215);font-size: 24px;margin-left: 48px">-->
-        <!--{{ "本卷总分" }}-->
-        <!--</span>-->
-        <!--<span style="color: RGB(2,144,215);margin: 0 10px 0 10px;font-size: 24px">-->
-        <!--{{ ":" }}-->
-        <!--</span>-->
-        <!--<span style="margin-left: 10px">-->
-        <!--<a-input style="width: 210px" class="read" disabled placeholder="100"/>-->
-        <!--<span style="font-size: 14px;color: white">-->
-        <!--{{ "分" }}-->
-        <!--</span>-->
-        <!--</span>-->
-        <!--</a-col>-->
-        <!--</a-row>-->
-        <a-row type="flex" style="margin-top: 20px;margin-bottom: 30px">
-          <a-col :span="3">
-            <span style="color: RGB(2,144,215);font-size: 24px;margin-left: 48px">
-              {{ "题型占比" }}
-            </span>
-            <span style="color: RGB(2,144,215);margin: 0 10px 0 10px;font-size: 24px">
-              {{ ":" }}
-            </span>
-          </a-col>
-            <a-col :span="6" offset="0">
-              <a-button style="color: white;margin-left: 58px" @click="custom">
-                {{ "自选考题" }}
-              </a-button>
-              <a-button style="color: white;position: relative;margin-left:150px;" @click="random">
-                {{ "随机考题" }}
-              </a-button>
-<!--              <div-->
-<!--                style="position: relative;margin-left:160px;width: 88px;border-bottom:1px solid RGB(19,61,110);-moz-transform: rotate(90deg);-webkit-transform: rotate(90deg);">-->
-<!--              </div>-->
-            </a-col>
-        </a-row>
-        <a-row>
-          <a-col :span="19" offset="3">
-            <a-table :columns="columns" bordered :dataSource="tableData" :pagination="false" v-show="CV">
-              <span slot="single" slot-scope="text,record">
-                <a-select
-                  style="width: 120px"
-                  defaultValue="10"
-                >
-                  <a-select-option value="10">10%</a-select-option>
-                  <a-select-option value="20">20%</a-select-option>
-                  <a-select-option value="30">30%</a-select-option>
-                  <a-select-option value="40">40%</a-select-option>
-                  <a-select-option value="50">50%</a-select-option>
-                  <a-select-option value="60">60%</a-select-option>
-                  <a-select-option value="70">70%</a-select-option>
-                  <a-select-option value="80">80%</a-select-option>
-                  <a-select-option value="90">90%</a-select-option>
-                  <a-select-option value="100">100%</a-select-option>
+            <span>
+                <a-select style="width: 220px" placeholder="全部" @change="">
+                      <a-select-option v-for="item in equipments" :key="item" :value="item">
+                          {{ item }}
+                      </a-select-option>
                 </a-select>
-              </span>
-              <span slot="multiple" slot-scope="text,record">
-                <a-select
-                  style="width: 120px"
-                  defaultValue="10"
-                >
-                  <a-select-option value="10">10%</a-select-option>
-                  <a-select-option value="20">20%</a-select-option>
-                  <a-select-option value="30">30%</a-select-option>
-                  <a-select-option value="40">40%</a-select-option>
-                  <a-select-option value="50">50%</a-select-option>
-                  <a-select-option value="60">60%</a-select-option>
-                  <a-select-option value="70">70%</a-select-option>
-                  <a-select-option value="80">80%</a-select-option>
-                  <a-select-option value="90">90%</a-select-option>
-                  <a-select-option value="100">100%</a-select-option>
+            </span>
+          </a-col>
+          <a-col :span="1"></a-col>
+          <a-col :span="5">
+            <span style="color: #ffffff;font-size: 20px">
+              {{"岗位:"}}
+            </span>
+            <span>
+                <a-select style="width: 220px" placeholder="全部" @change="">
+                      <a-select-option v-for="item in equipments" :key="item" :value="item">
+                          {{ item }}
+                      </a-select-option>
                 </a-select>
-              </span>
-              <span slot="judge" slot-scope="text,record">
-                <a-select
-                  style="width: 120px"
-                  defaultValue="10"
-                >
-                  <a-select-option value="10">10%</a-select-option>
-                  <a-select-option value="20">20%</a-select-option>
-                  <a-select-option value="30">30%</a-select-option>
-                  <a-select-option value="40">40%</a-select-option>
-                  <a-select-option value="50">50%</a-select-option>
-                  <a-select-option value="60">60%</a-select-option>
-                  <a-select-option value="70">70%</a-select-option>
-                  <a-select-option value="80">80%</a-select-option>
-                  <a-select-option value="90">90%</a-select-option>
-                  <a-select-option value="100">100%</a-select-option>
-                </a-select>
-              </span>
-              <span slot="operation" slot-scope="text,record">
-                <a-select
-                  style="width: 120px"
-                  defaultValue="10"
-                >
-                  <a-select-option value="10">10%</a-select-option>
-                  <a-select-option value="20">20%</a-select-option>
-                  <a-select-option value="30">30%</a-select-option>
-                  <a-select-option value="40">40%</a-select-option>
-                  <a-select-option value="50">50%</a-select-option>
-                  <a-select-option value="60">60%</a-select-option>
-                  <a-select-option value="70">70%</a-select-option>
-                  <a-select-option value="80">80%</a-select-option>
-                  <a-select-option value="90">90%</a-select-option>
-                  <a-select-option value="100">100%</a-select-option>
-                </a-select>
-              </span>
-            </a-table>
+            </span>
           </a-col>
         </a-row>
-        <a-row type="flex" justify="center" style="margin-top: 100px;margin-bottom: 50px">
-          <a-col>
-            <img
-              src="@/assets/img/shengchengshijuan.png"
-              style="width: 140px;height: 50px;margin-top: -2px"
-            >
-          </a-col>
-        </a-row>
-      </div>
-      <div v-if="tabsVisible2 ===true " class="lowerHair">
         <a-row
           type="flex"
           style="margin-top: 20px;margin-bottom: 30px"
           justify="center"
           align="center">
           <a-col :span="24">
-            <a-table :dataSource="examinationData" :pagination="false" :columns="examinationColumns">
-              <span slot="checkBox" slot-scope="text,record">
-                <a-checkbox @change="onChange"></a-checkbox>
-              </span>
-              <span slot="userName" slot-scope="text,record">
-                <!--<span style="color: white">{{text}}</span>-->
-                <span v-if="text.userName===''">
-                  <img src=".././assets/img/zhidingxueyuan.png" style="width: 16px;height: 16px;margin-bottom: 5px">
-                </span>
-                <span v-if="text.userName !==''">
-                  <span style="margin-left: 5px">{{ text.userName }}</span>
-                </span>
-              </span>
-              <span slot="sendOut" slot-scope="text,record">
-                <img src=".././assets/img/fasong.png" style="width: 16px;height: 16px;margin-bottom: 5px">
-              </span>
-              <span slot="state" slot-scope="text,record">
-                <span v-if="text.state=='已完成'">
-                  <img src=".././assets/img/yiwancheng.png" style="width: 16px;height: 16px;margin-bottom: 5px">
-                  <span style="margin-left: 5px">{{ "已完成" }}</span>
-                </span>
-                <span v-if="text.state=='未完成'">
-                  <img src=".././assets/img/weiwancheng.png" style="width: 16px;height: 16px;margin-bottom: 5px">
-                  <span style="margin-left: 5px">{{ "未完成" }}</span>
-                </span>
-              </span>
-              <a slot="operation" href="javascript:;">
-                <img src=".././assets/img/bianji.png" style="width: 14px;height: 16px;">
-                <img src=".././assets/img/shanchu.png" style="width: 12px;height: 16px;margin-left: 10px">
-              </a>
+            <a-table :dataSource="staffingManagementData" :pagination="false" :columns="staffingManagementColumns">
+              <template slot="operation">
+                <span style="font-size: 18px;color: #0ca5ec;cursor: pointer" @click="personnelSettings">{{"设置"}}</span>
+              </template>
               <span slot="footer">
                 <a-row type="flex">
-                  <a-col :span="2" style="margin-left: 25px">
-                    <a-checkbox @change="onChange">全选</a-checkbox>
-                    <a href="javascript:;">
-                      <img
-                        src=".././assets/img/shanchu.png"
-                        style="width: 12px;height: 16px;margin-left: 10px;position:relative;bottom:2px">
-                    </a>
-                  </a-col>
+                  <a-col :span="2" style="margin-left: 25px"></a-col>
                   <a-col :span="20">
                     <a-pagination
                       size="small"
@@ -268,21 +58,321 @@
                       showQuickJumper
                       :showTotal="total => `共 ${total} 条`"/>
                   </a-col>
-                  <a-col :span="1">
-                    <span @click="importData">
-                      <a href="javascript:;">
-                        <img
-                          src=".././assets/img/tianjia.png"
-                          style="width: 16px;height: 16px;float: right;margin-right: 20px;position:relative;top: 4px">
-                      </a>
-                    </span>
-                  </a-col>
+                  <a-col :span="1"></a-col>
                 </a-row>
               </span>
             </a-table>
           </a-col>
         </a-row>
+        <a-modal
+          v-model="personnelModal"
+          width="800px"
+        >
+              <span slot="title">
+                <img src="@/assets/img/tianjiaB.png" style="width: 24px;height: 24px;">
+                <span style="font-size: 24px;position: relative;left: 12px;top:5px;">{{ "设置" }}</span>
+              </span>
+          <a-row type="flex" style="margin-top: 30px" justify="center">
+            <a-col :span="3">
+                  <span style="font-size: 18px;color: #ffffff">
+                    {{"所属系统:"}}
+                  </span>
+            </a-col>
+            <a-col :span="4">
+               <span>
+                <a-select style="width: 220px" placeholder="全部" @change="">
+                      <a-select-option v-for="item in equipments" :key="item" :value="item">
+                          {{ item }}
+                      </a-select-option>
+                </a-select>
+              </span>
+            </a-col>
+          </a-row>
+          <a-row type="flex" style="margin-top: 30px" justify="center">
+            <a-col :span="3">
+            <span style="color: #ffffff;font-size: 18px">
+              {{"岗位:"}}
+            </span>
+            </a-col>
+            <a-col :span="4">
+                          <span>
+                <a-select style="width: 220px" placeholder="全部" @change="">
+                      <a-select-option v-for="item in equipments" :key="item" :value="item">
+                          {{ item }}
+                      </a-select-option>
+                </a-select>
+            </span>
+            </a-col>
+
+
+          </a-row>
+          <span slot="footer">
+                <a-row type="flex" justify="center">
+                  <a-col :span="4">
+                    <a-button>
+                      <a-icon type="upload"/>
+                      确定
+                    </a-button>
+                  </a-col>
+                </a-row>
+              </span>
+        </a-modal>
       </div>
+      <div v-if="tabsVisible2 ===true " class="lowerHair">
+        <a-row
+          type="flex"
+          style="margin-top: 20px;margin-bottom: 30px"
+          justify="center"
+          align="center">
+          <a-col :span="24">
+            <a-table :dataSource="learningManagementData" :pagination="false" :columns="learningManagementColumns">
+              <template slot="operation">
+                              <span style="font-size: 18px;color: #0ca5ec;cursor: pointer"
+                                    @click="learningManagementSetUp">
+                                {{"设置"}}
+                              </span>
+                <span style="font-size: 18px;color: #ff0000;cursor: pointer;margin-left: 20px">
+                                {{"删除"}}
+                              </span>
+              </template>
+              <span slot="footer">
+                <a-row type="flex">
+                  <a-col :span="20">
+                    <a-pagination
+                      size="small"
+                      style="text-align: center;"
+                      :total="10"
+                      :showSizeChanger="false"
+                      showQuickJumper
+                      :showTotal="total => `共 ${total} 条`"/>
+                  </a-col>
+                  <a-col :span="2">
+                  <a-upload
+                    action="http://192.168.5.253:8080/jantd-boot/teacher/problem/importExcel"
+                    accept=".xlsx"
+                    @change="">
+                    <img src="@/assets/img/tianjia.png" style="width: 26px;height: 26px;position: relative;bottom: 3px"
+                         @click=""/>
+                  </a-upload>
+                  </a-col>
+                </a-row>
+              </span>
+            </a-table>
+          </a-col>
+          <a-modal
+            v-model="learningManagementModal"
+            width="800px"
+          >
+              <span slot="title">
+                <img src="@/assets/img/tianjiaB.png" style="width: 24px;height: 24px;">
+                <span style="font-size: 24px;position: relative;left: 12px;top:5px;">{{ "设置" }}</span>
+              </span>
+            <a-row type="flex" style="margin-top: 30px" justify="center">
+              <a-col :span="3">
+                  <span style="font-size: 18px;color: #ffffff">
+                    {{"所属系统:"}}
+                  </span>
+              </a-col>
+              <a-col :span="4">
+               <span>
+                <a-select style="width: 220px" placeholder="全部" @change="">
+                      <a-select-option v-for="item in equipments" :key="item" :value="item">
+                          {{ item }}
+                      </a-select-option>
+                </a-select>
+              </span>
+              </a-col>
+            </a-row>
+            <a-row type="flex" style="margin-top: 30px" justify="center">
+              <a-col :span="3">
+            <span style="color: #ffffff;font-size: 18px">
+              {{"岗位:"}}
+            </span>
+              </a-col>
+              <a-col :span="4">
+                          <span>
+                <a-select style="width: 220px" placeholder="全部" @change="">
+                      <a-select-option v-for="item in equipments" :key="item" :value="item">
+                          {{ item }}
+                      </a-select-option>
+                </a-select>
+            </span>
+              </a-col>
+            </a-row>
+
+
+            <a-row type="flex" style="margin-top: 30px" justify="center">
+              <a-col :span="3">
+            <span style="color: #ffffff;font-size: 18px">
+              {{"学习类型:"}}
+            </span>
+              </a-col>
+              <a-col :span="4">
+                          <span>
+                <a-select style="width: 220px" placeholder="全部" @change="">
+                      <a-select-option v-for="item in equipments" :key="item" :value="item">
+                          {{ item }}
+                      </a-select-option>
+                </a-select>
+            </span>
+              </a-col>
+            </a-row>
+            <a-row type="flex" style="margin-top: 30px" justify="center">
+              <a-col :span="3">
+            <span style="color: #ffffff;font-size: 18px">
+              {{"学时:"}}
+            </span>
+              </a-col>
+              <a-col :span="4">
+                 <span>
+                   <a-input style="width: 220px">
+
+                   </a-input>
+                 </span>
+              </a-col>
+            </a-row>
+
+
+            <span slot="footer">
+                <a-row type="flex" justify="center">
+                  <a-col :span="4">
+                    <a-button>
+                      <a-icon type="upload"/>
+                      确定
+                    </a-button>
+                  </a-col>
+                </a-row>
+              </span>
+          </a-modal>
+        </a-row>
+
+      </div>
+      <div v-if="tabsVisible3 ===true " class="examination">
+        <a-row type="flex">
+          <a-col :span="5">
+            <span style="color: #ffffff;font-size: 20px">
+              {{"所属装备:"}}
+            </span>
+            <span>
+                <a-select style="width: 220px" placeholder="全部" @change="">
+                      <a-select-option v-for="item in equipments" :key="item" :value="item">
+                          {{ item }}
+                      </a-select-option>
+                </a-select>
+            </span>
+          </a-col>
+          <a-col :span="1"></a-col>
+          <a-col :span="5">
+            <span style="color: #ffffff;font-size: 20px">
+              {{"岗位:"}}
+            </span>
+            <span>
+                <a-select style="width: 220px" placeholder="全部" @change="">
+                      <a-select-option v-for="item in equipments" :key="item" :value="item">
+                          {{ item }}
+                      </a-select-option>
+                </a-select>
+            </span>
+          </a-col>
+          <a-col :span="5">
+            <span>
+                          <a-upload
+                            action="http://192.168.5.253:8080/jantd-boot/teacher/problem/importExcel"
+                            accept=".xlsx"
+                            @change="handleImportExcel">
+              <a-button @click="batchImport">
+                {{'批量导入'}}
+              </a-button>
+                          </a-upload>
+
+
+            </span>
+          </a-col>
+        </a-row>
+        <a-row
+          type="flex"
+          style="margin-top: 20px;margin-bottom: 30px"
+          justify="center"
+          align="center">
+          <a-col :span="24">
+            <a-table :dataSource="testManagementData" :pagination="false" :columns="testManagementColumns">
+              <template slot="operation">
+                <span style="font-size: 18px;color: #0ca5ec;cursor: pointer" @click="personnelSettings">{{"设置"}}</span>
+              </template>
+              <span slot="footer">
+                <a-row type="flex">
+                  <a-col :span="2" style="margin-left: 25px"></a-col>
+                  <a-col :span="20">
+                    <a-pagination
+                      size="small"
+                      style="text-align: center;"
+                      :total="10"
+                      :showSizeChanger="false"
+                      showQuickJumper
+                      :showTotal="total => `共 ${total} 条`"/>
+                  </a-col>
+                  <a-col :span="1"></a-col>
+                </a-row>
+              </span>
+            </a-table>
+          </a-col>
+        </a-row>
+        <a-modal
+          v-model="personnelModal"
+          width="800px"
+        >
+              <span slot="title">
+                <img src="@/assets/img/tianjiaB.png" style="width: 24px;height: 24px;">
+                <span style="font-size: 24px;position: relative;left: 12px;top:5px;">{{ "设置" }}</span>
+              </span>
+          <a-row type="flex" style="margin-top: 30px" justify="center">
+            <a-col :span="3">
+                  <span style="font-size: 18px;color: #ffffff">
+                    {{"所属系统:"}}
+                  </span>
+            </a-col>
+            <a-col :span="4">
+               <span>
+                <a-select style="width: 220px" placeholder="全部" @change="">
+                      <a-select-option v-for="item in equipments" :key="item" :value="item">
+                          {{ item }}
+                      </a-select-option>
+                </a-select>
+              </span>
+            </a-col>
+          </a-row>
+          <a-row type="flex" style="margin-top: 30px" justify="center">
+            <a-col :span="3">
+            <span style="color: #ffffff;font-size: 18px">
+              {{"岗位:"}}
+            </span>
+            </a-col>
+            <a-col :span="4">
+                          <span>
+                <a-select style="width: 220px" placeholder="全部" @change="">
+                      <a-select-option v-for="item in equipments" :key="item" :value="item">
+                          {{ item }}
+                      </a-select-option>
+                </a-select>
+            </span>
+            </a-col>
+
+
+          </a-row>
+          <span slot="footer">
+                <a-row type="flex" justify="center">
+                  <a-col :span="4">
+                    <a-button>
+                      <a-icon type="upload"/>
+                      确定
+                    </a-button>
+                  </a-col>
+                </a-row>
+              </span>
+        </a-modal>
+      </div>
+
+
       <!--自选考题-->
       <a-modal
         v-model="optionalModal"
@@ -399,30 +489,172 @@
       tixing: '选择题',
     }
   ]
-
-  const columns = [
+  const testManagementColumns = [
     {
-      title: '',
-      dataIndex: 'none',
+      title: "序号",
+      dataIndex: 'NO',
       align: 'center'
     },
     {
-      title: '单选',
-      scopedSlots: {customRender: 'single'},
+      title: "试题描述",
+      dataIndex: 'description',
+      align: 'center'
+    },
+    {
+      title: '试题类型',
+      dataIndex: 'type',
+      align: 'center'
+    },
+    {
+      title: '试题系统',
+      dataIndex: 'system',
+      align: 'center'
+    },
+    {
+      title: '适用岗位',
+      dataIndex: 'station',
+      align: 'center'
+    },
+    {
+      title: '题型',
+      dataIndex: 'questionType',
+      align: 'center'
+    },
+    {
+      title: '答案',
+      dataIndex: 'answer',
+      align: 'center'
+    },
+    {
+      title: '操作',
+      scopedSlots: {customRender: 'operation'},
+      align: 'center'
+    }
+  ];
+  const testManagementData = [
+    {
+      NO: 1,
+      description: 'xxx',
+      type: '理论试题',
+      system: 'xxx系统',
+      station: '总体',
+      questionType: '单选',
+      answer: 'A'
+    },
+    {
+      NO: 2,
+      description: 'xxx',
+      type: '理论试题',
+      system: 'xxx系统',
+      station: '总体',
+      questionType: '单选',
+      answer: 'A'
+    },
+    {
+      NO: 3,
+      description: 'xxx',
+      type: '理论试题',
+      system: 'xxx系统',
+      station: '总体',
+      questionType: '单选',
+      answer: 'A'
+    },
+    {
+      NO: 4,
+      description: 'xxx',
+      type: '理论试题',
+      system: 'xxx系统',
+      station: '总体',
+      questionType: '单选',
+      answer: 'A'
+    },
+    {
+      NO: 5,
+      description: 'xxx',
+      type: '理论试题',
+      system: 'xxx系统',
+      station: '总体',
+      questionType: '单选',
+      answer: 'A'
+    },
+    {
+      NO: 6,
+      description: 'xxx',
+      type: '理论试题',
+      system: 'xxx系统',
+      station: '总体',
+      questionType: '单选',
+      answer: 'A'
+    },
+    {
+      NO: 7,
+      description: 'xxx',
+      type: '理论试题',
+      system: 'xxx系统',
+      station: '总体',
+      questionType: '单选',
+      answer: 'A'
+    },
+    {
+      NO: 8,
+      description: 'xxx',
+      type: '理论试题',
+      system: 'xxx系统',
+      station: '总体',
+      questionType: '单选',
+      answer: 'A'
+    },
+    {
+      NO: 9,
+      description: 'xxx',
+      type: '理论试题',
+      system: 'xxx系统',
+      station: '总体',
+      questionType: '单选',
+      answer: 'A'
+    },
+    {
+      NO: 10,
+      description: 'xxx',
+      type: '理论试题',
+      system: 'xxx系统',
+      station: '总体',
+      questionType: '单选',
+      answer: 'A'
+    }
+  ]
+  const learningManagementColumns = [
+    {
+      title: "序号",
+      dataIndex: 'NO',
+      align: 'center'
+    },
+    {
+      title: '学习与培训项目',
+      dataIndex: 'learningAndTrainingPrograms',
+      align: 'center'
+    },
+    {
+      title: '所属系统',
+      dataIndex: 'system',
       align: 'center'
 
     },
     {
-      title: '多选',
-      scopedSlots: {customRender: 'multiple'},
+      title: '学习类型',
+      dataIndex: 'typesOfLearning',
       align: 'center'
 
     },
     {
-      title: '判断',
-      scopedSlots: {customRender: 'judge'},
+      title: '适用岗位',
+      dataIndex: 'station',
       align: 'center'
-
+    },
+    {
+      title: '学时',
+      dataIndex: 'classHour',
+      align: 'center'
     },
     {
       title: '操作',
@@ -431,142 +663,173 @@
     }
   ];
 
-  const tableData = [
+  const learningManagementData = [
     {
-      none: '比例设置'
+      NO: '1',
+      learningAndTrainingPrograms: 'xxx理论学习',
+      system: 'xxx系统',
+      typesOfLearning: '理论学习',
+      station: ' xxx岗位',
+      classHour: '2'
+    },
+    {
+      NO: '2',
+      learningAndTrainingPrograms: 'xxx理论学习',
+      system: 'xxx系统',
+      typesOfLearning: '理论学习',
+      station: ' xxx岗位',
+      classHour: '2'
+    },
+    {
+      NO: '3',
+      learningAndTrainingPrograms: 'xxx理论学习',
+      system: 'xxx系统',
+      typesOfLearning: '理论学习',
+      station: ' xxx岗位',
+      classHour: '2'
+    },
+    {
+      NO: '4',
+      learningAndTrainingPrograms: 'xxx理论学习',
+      system: 'xxx系统',
+      typesOfLearning: '理论学习',
+      station: ' xxx岗位',
+      classHour: '2'
+    },
+    {
+      NO: '5',
+      learningAndTrainingPrograms: 'xxx理论学习',
+      system: 'xxx系统',
+      typesOfLearning: '理论学习',
+      station: ' xxx岗位',
+      classHour: '2'
+    },
+    {
+      NO: '6',
+      learningAndTrainingPrograms: 'xxx理论学习',
+      system: 'xxx系统',
+      typesOfLearning: '理论学习',
+      station: ' xxx岗位',
+      classHour: '2'
+    },
+    {
+      NO: '7',
+      learningAndTrainingPrograms: 'xxx理论学习',
+      system: 'xxx系统',
+      typesOfLearning: '理论学习',
+      station: ' xxx岗位',
+      classHour: '2'
+    },
+    {
+      NO: '8',
+      learningAndTrainingPrograms: 'xxx理论学习',
+      system: 'xxx系统',
+      typesOfLearning: '理论学习',
+      station: ' xxx岗位',
+      classHour: '2'
+    },
+    {
+      NO: '9',
+      learningAndTrainingPrograms: 'xxx理论学习',
+      system: 'xxx系统',
+      typesOfLearning: '理论学习',
+      station: ' xxx岗位',
+      classHour: '2'
+    },
+    {
+      NO: '10',
+      learningAndTrainingPrograms: 'xxx理论学习',
+      system: 'xxx系统',
+      typesOfLearning: '理论学习',
+      station: ' xxx岗位',
+      classHour: '2'
     }
   ];
 
-  //下发试卷
-  const examinationData = [
+  //人员配置管理
+  const staffingManagementData = [
     {
       No: '1',
-      title: '武器系统和导弹概述试卷',
-      totalScore: '100',
-      userName: '梅文文，张杰，吴风',
-      sendOut: '',
-      updateTime: '2019-11-12 11:10:12',
-      state: '已完成'
+      name: '张三',
+      system: 'xxxx系统',
+      station: '总体'
     },
     {
       No: '2',
-      title: '武器系统工作状态试卷',
-      totalScore: '100',
-      userName: '',
-      sendOut: '',
-      updateTime: '2019-11-12 14:14:12',
-      state: '已完成'
+      name: '张三',
+      system: 'xxxx系统',
+      station: '总体'
     }, {
       No: '3',
-      title: '指挥车作战使命试卷',
-      totalScore: '100',
-      userName: '张军，王岚',
-      sendOut: '',
-      updateTime: '2019-11-12 15:15:12',
-      state: '已完成'
+      name: '张三',
+      system: 'xxxx系统',
+      station: '总体'
     }
     , {
       No: '4',
-      title: '武器系统基本组成试卷',
-      totalScore: '100',
-      userName: '',
-      sendOut: '',
-      updateTime: '2019-11-12 08:12:12',
-      state: '已完成'
+      name: '张三',
+      system: 'xxxx系统',
+      station: '总体'
     }, {
       No: '5',
-      title: '武器系统作战试卷',
-      totalScore: '100',
-      userName: '',
-      sendOut: '',
-      updateTime: '2019-11-12 09:13:12',
-      state: '未完成'
+      name: '张三',
+      system: 'xxxx系统',
+      station: '总体'
     }, {
       No: '6',
-      title: '空勤处理操作试卷',
-      totalScore: '100',
-      userName: '',
-      sendOut: '',
-      updateTime: '2019-11-12 12:12:12',
-      state: '已完成'
+      name: '张三',
+      system: 'xxxx系统',
+      station: '总体'
     }, {
       No: '7',
-      title: '电子雷达专业试卷',
-      totalScore: '100',
-      userName: '',
-      sendOut: '',
-      updateTime: '2019-11-12 12:12:12',
-      state: '已完成'
+      name: '张三',
+      system: 'xxxx系统',
+      station: '总体'
     }, {
       No: '8',
-      title: '机电专业试卷',
-      totalScore: '100',
-      userName: '徐军，李璐',
-      sendOut: '张三',
-      updateTime: '2019-11-12 11:13:12',
-      state: '已完成'
+      name: '张三',
+      system: 'xxxx系统',
+      station: '总体'
     }, {
       No: '9',
-      title: '指挥车控制操作试卷',
-      totalScore: '100',
-      userName: '赵玲，李瑞',
-      sendOut: '',
-      updateTime: '2019-11-12 10:12:10',
-      state: '已完成',
-      operation: '操作'
+      name: '张三',
+      system: 'xxxx系统',
+      station: '总体'
     }, {
       No: '10',
-      title: '武器系统工作原理试卷',
-      totalScore: '100',
-      userName: '王杰，李冰冰',
-      sendOut: '张三',
-      updateTime: '2019-11-12 12:12:12',
-      state: '已完成'
+      name: '张三',
+      system: 'xxxx系统',
+      station: '总体'
     }
   ]
 
-  const examinationColumns = [
-    {
-      title: '',
-      dataIndex: 'checkBox',
-      scopedSlots: {customRender: 'checkBox'},
-      align: 'center'
-    },
-    {
-      dataIndex: 'No',
-      title: '序号',
-      // slots: {title: 'customTitle'},
-      // scopedSlots: {customRender: 'name'},
-      align: 'center'
-    },
-    {
-      title: '标题',
-      dataIndex: 'title',
-      align: 'center'
-    },
+  const staffingManagementColumns = [
     // {
-    //   title: '总分',
-    //   dataIndex: 'totalScore',
+    //   title: '',
+    //   dataIndex: 'checkBox',
+    //   scopedSlots: {customRender: 'checkBox'},
+    //   align: 'center'
+    // },
+    // {
+    //   dataIndex: 'No',
+    //   title: '序号',
+    //   // slots: {title: 'customTitle'},
+    //   // scopedSlots: {customRender: 'name'},
     //   align: 'center'
     // },
     {
-      title: '上传时间',
-      dataIndex: 'updateTime',
+      title: '姓名',
+      dataIndex: 'name',
       align: 'center'
     },
     {
-      title: '指定学员',
-      scopedSlots: {customRender: 'userName'},
+      title: '所属系统',
+      dataIndex: 'system',
       align: 'center'
     },
     {
-      title: '发送',
-      scopedSlots: {customRender: 'sendOut'},
-      align: 'center'
-    },
-    {
-      title: '状态',
-      scopedSlots: {customRender: 'state'},
+      title: '岗位',
+      dataIndex: 'station',
       align: 'center'
     },
     {
@@ -581,15 +844,33 @@
     name: "ExaminationPaperSettings",
     data() {
       return {
-        tableData,
-        columns,
-        examinationData,
-        examinationColumns,
+        /**
+         * @Author:     风中的那朵云
+         * @Description:  ${description}
+         * @Date:    2020/5/6
+         * @Version:    1.0
+         */
+        learningManagementData,
+        learningManagementColumns,
+
+        staffingManagementData,
+        staffingManagementColumns,
+
+        testManagementColumns,
+        testManagementData,
+
+
+        personnelModal: false,
+        learningManagementModal: false,
+        tabsVisible3: false,
+        tabsVisible1: true,
+        tabsVisible2: false,
+
+        batchImportModal: false,
+
         examinationC,
         examinationD,
         rowSelection,
-        tabsVisible1: true,
-        tabsVisible2: false,
         tabsEquipment: [],
         optionalModal: false,
         equipment: [
@@ -621,7 +902,8 @@
           }
         ],
         tabsStation: [],
-        CV: false
+        CV: false,
+        equipments: ['xxx系统', 'xxx车', 'xxxx车']
       }
     },
     methods: {
@@ -649,21 +931,55 @@
         }
         this.tabsStation = this.stations
       },
+      /**
+       * @Author:     风中的那朵云
+       * @Description:  ${description}
+       * @Date:    2020/5/6
+       * @Version:    1.0
+       */
       tabsChang(key) {
         if (key === '1') {
           this.tabsVisible1 = true
           this.tabsVisible2 = false
+          this.tabsVisible3 = false
         } else if (key === '2') {
           this.tabsVisible2 = true
           this.tabsVisible1 = false
+          this.tabsVisible3 = false
+        } else if (key === '3') {
+          this.tabsVisible2 = false
+          this.tabsVisible1 = false
+          this.tabsVisible3 = true
         }
       },
-      random(){
+      /**
+       * @Author:     风中的那朵云
+       * @Description:  ${description}
+       * @Date:    2020/5/6
+       * @Version:    1.0
+       */
+      batchImport() {
+        this.batchImportModal = true
+      },
+      random() {
         this.CV = true
       },
-      custom(){
+      custom() {
         this.CV = false
         this.optionalModal = true
+      },
+      //人员配置管理设置
+      personnelSettings() {
+        this.personnelModal = true
+      },
+      /**
+       * @Author:     风中的那朵云
+       * @Description:  ${description}
+       * @Date:    2020/5/6
+       * @Version:    1.0
+       */
+      learningManagementSetUp() {
+        this.learningManagementModal = true
       }
     }
   }
