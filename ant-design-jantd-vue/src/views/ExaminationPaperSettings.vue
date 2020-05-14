@@ -629,90 +629,90 @@
   const testManagementData = [
     {
       NO: 1,
-      description: 'xxx',
+      description: '准确率测试',
       type: '理论试题',
-      system: 'xxx系统',
+      system: '武器系统',
       station: '总体',
       questionType: '单选',
       answer: 'A'
     },
     {
       NO: 2,
-      description: 'xxx',
+      description: '准确率测试',
       type: '理论试题',
-      system: 'xxx系统',
+      system: '指挥系统',
       station: '总体',
       questionType: '单选',
       answer: 'A'
     },
     {
       NO: 3,
-      description: 'xxx',
+      description: '准确率测试',
       type: '理论试题',
-      system: 'xxx系统',
+      system: '指挥系统',
       station: '总体',
       questionType: '单选',
       answer: 'A'
     },
     {
       NO: 4,
-      description: 'xxx',
+      description: '准确率测试',
       type: '理论试题',
-      system: 'xxx系统',
+      system: '指挥系统',
       station: '总体',
       questionType: '单选',
       answer: 'A'
     },
     {
       NO: 5,
-      description: 'xxx',
+      description: '准确率测试',
       type: '理论试题',
-      system: 'xxx系统',
+      system: '武器系统',
       station: '总体',
       questionType: '单选',
       answer: 'A'
     },
     {
       NO: 6,
-      description: 'xxx',
+      description: '准确率测试',
       type: '理论试题',
-      system: 'xxx系统',
+      system: '武器系统',
       station: '总体',
       questionType: '单选',
       answer: 'A'
     },
     {
       NO: 7,
-      description: 'xxx',
+      description: '准确率测试',
       type: '理论试题',
-      system: 'xxx系统',
+      system: '指挥系统',
       station: '总体',
       questionType: '单选',
       answer: 'A'
     },
     {
       NO: 8,
-      description: 'xxx',
+      description: '准确率测试',
       type: '理论试题',
-      system: 'xxx系统',
+      system: '武器系统',
       station: '总体',
       questionType: '单选',
       answer: 'A'
     },
     {
       NO: 9,
-      description: 'xxx',
+      description: '准确率测试',
       type: '理论试题',
-      system: 'xxx系统',
+      system: '武器系统',
       station: '总体',
       questionType: '单选',
       answer: 'A'
     },
     {
       NO: 10,
-      description: 'xxx',
+      description: '准确率测试',
       type: '理论试题',
-      system: 'xxx系统',
+      system: '指挥系统',
       station: '总体',
       questionType: '单选',
       answer: 'A'
@@ -761,82 +761,82 @@
   const learningManagementData = [
     {
       NO: '1',
-      learningAndTrainingPrograms: 'xxx理论学习',
-      system: 'xxx系统',
+      learningAndTrainingPrograms: '武器系统和导弹概述',
+      system: '指挥系统',
       typesOfLearning: '理论学习',
-      station: ' xxx岗位',
+      station: ' 指挥官',
       classHour: '2'
     },
     {
       NO: '2',
-      learningAndTrainingPrograms: 'xxx理论学习',
-      system: 'xxx系统',
+      learningAndTrainingPrograms: '武器系统作战使命',
+      system: '武器系统',
       typesOfLearning: '理论学习',
-      station: ' xxx岗位',
+      station: '指挥官',
       classHour: '2'
     },
     {
       NO: '3',
-      learningAndTrainingPrograms: 'xxx理论学习',
-      system: 'xxx系统',
+      learningAndTrainingPrograms: '作战拦截操作手',
+      system: '指挥系统',
       typesOfLearning: '理论学习',
-      station: ' xxx岗位',
+      station: '指挥官',
       classHour: '2'
     },
     {
       NO: '4',
-      learningAndTrainingPrograms: 'xxx理论学习',
-      system: 'xxx系统',
+      learningAndTrainingPrograms: '指挥车工作过程和工作原理',
+      system: '武器系统',
       typesOfLearning: '理论学习',
-      station: ' xxx岗位',
+      station: '指挥官',
       classHour: '2'
     },
     {
       NO: '5',
-      learningAndTrainingPrograms: 'xxx理论学习',
-      system: 'xxx系统',
+      learningAndTrainingPrograms: '机电专业',
+      system: '指挥系统',
       typesOfLearning: '理论学习',
-      station: ' xxx岗位',
+      station: ' 指挥官',
       classHour: '2'
     },
     {
       NO: '6',
-      learningAndTrainingPrograms: 'xxx理论学习',
-      system: 'xxx系统',
+      learningAndTrainingPrograms: '空勤处理操作手',
+      system: '指挥系统',
       typesOfLearning: '理论学习',
-      station: ' xxx岗位',
+      station: ' 指挥官',
       classHour: '2'
     },
     {
       NO: '7',
-      learningAndTrainingPrograms: 'xxx理论学习',
-      system: 'xxx系统',
+      learningAndTrainingPrograms: '指挥车工作过程和工作原理',
+      system: '指挥系统',
       typesOfLearning: '理论学习',
-      station: ' xxx岗位',
+      station: ' 指挥官',
       classHour: '2'
     },
     {
       NO: '8',
-      learningAndTrainingPrograms: 'xxx理论学习',
-      system: 'xxx系统',
+      learningAndTrainingPrograms: '指挥车战机指标',
+      system: '指挥系统',
       typesOfLearning: '理论学习',
-      station: ' xxx岗位',
+      station: ' 指挥官',
       classHour: '2'
     },
     {
       NO: '9',
-      learningAndTrainingPrograms: 'xxx理论学习',
-      system: 'xxx系统',
+      learningAndTrainingPrograms: '武器系统工作原理、作战方式',
+      system: '武器系统',
       typesOfLearning: '理论学习',
-      station: ' xxx岗位',
+      station: ' 指挥官',
       classHour: '2'
     },
     {
       NO: '10',
-      learningAndTrainingPrograms: 'xxx理论学习',
-      system: 'xxx系统',
+      learningAndTrainingPrograms: '作战拦截操作手',
+      system: '武器系统',
       typesOfLearning: '理论学习',
-      station: ' xxx岗位',
+      station: '指挥官',
       classHour: '2'
     }
   ];
@@ -845,55 +845,55 @@
   const staffingManagementData = [
     {
       No: '1',
-      name: '张三',
-      system: 'xxxx系统',
+      name: '王杰',
+      system: '指挥系统',
       station: '总体'
     },
     {
       No: '2',
-      name: '张三',
-      system: 'xxxx系统',
+      name: '李兰',
+      system: '指挥系统',
       station: '总体'
     }, {
       No: '3',
-      name: '张三',
-      system: 'xxxx系统',
+      name: '谢风',
+      system: '指挥系统',
       station: '总体'
     }
     , {
       No: '4',
-      name: '张三',
-      system: 'xxxx系统',
+      name: '王瑞',
+      system: '指挥系统',
       station: '总体'
     }, {
       No: '5',
-      name: '张三',
-      system: 'xxxx系统',
+      name: '刘解',
+      system: '指挥系统',
       station: '总体'
     }, {
       No: '6',
-      name: '张三',
-      system: 'xxxx系统',
+      name: '赵玲',
+      system: '指挥系统',
       station: '总体'
     }, {
       No: '7',
-      name: '张三',
-      system: 'xxxx系统',
+      name: '张站',
+      system: '指挥系统',
       station: '总体'
     }, {
       No: '8',
-      name: '张三',
-      system: 'xxxx系统',
+      name: '谢玲玲',
+      system: '指挥系统',
       station: '总体'
     }, {
       No: '9',
-      name: '张三',
-      system: 'xxxx系统',
+      name: '李杰',
+      system: '指挥系统',
       station: '总体'
     }, {
       No: '10',
-      name: '张三',
-      system: 'xxxx系统',
+      name: '李禅茶',
+      system: '指挥系统',
       station: '总体'
     }
   ]

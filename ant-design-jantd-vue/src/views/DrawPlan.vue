@@ -270,20 +270,20 @@
   ];
   const courseConfigurationData = [
     {
-      SystemOrEquipment: 'xxx系统',
-      LAOTP: 'xxx理论学习',
+      SystemOrEquipment: '指挥系统',
+      LAOTP: '武器装备理论学习',
       classHour: '2',
       student: '总体，操作，维护',
     },
     {
-      SystemOrEquipment: 'xxx系统',
-      LAOTP: 'xxx理论学习',
+      SystemOrEquipment: '指挥系统',
+      LAOTP: '测试理论学习',
       classHour: '2',
       student: '总体，操作，维护',
     },
     {
-      SystemOrEquipment: 'xxx系统',
-      LAOTP: 'xxx理论学习',
+      SystemOrEquipment: '指挥',
+      LAOTP: '作战理论学习',
       classHour: '2',
       student: '总体，操作，维护',
     },
