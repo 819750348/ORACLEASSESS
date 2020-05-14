@@ -1,5 +1,5 @@
 <template>
-  <div id="examinationPaperSettings">
+  <div id="ExaminationPapers">
     <a-card style="background-color: RGB(10,19,49);height:1058px">
       <a-row style="padding: 30px 0 10px 0">
         <a-tabs @tabClick="tabsChang">
@@ -76,7 +76,7 @@
 
         <a-modal
           v-model="newTestPaperModal"
-          width="1000px"
+          width="1200px"
         >
               <span slot="title">
                 <img src="@/assets/img/tianjiaB.png" style="width: 24px;height: 24px;">
@@ -108,7 +108,6 @@
           <div>
             <a-checkbox-group :options="plainOptions" v-model="checkedList" @change=""/>
           </div>
-
           <a-row type="flex" style="margin-top: 30px">
             <a-col :span="6">
               <span style="color: #ffffff;font-size: 18px">
@@ -121,29 +120,45 @@
               <span style="color: #ffffff;font-size: 18px">
                 {{"单选:"}}
               </span>
-              <a-input style="width: 180px">
-              </a-input>
+              <span style="color: #ffffff;font-size: 18px">
+                {{"40"}}
+              </span>
+              <span style="color: #ffffff;font-size: 18px">
+                {{"分"}}
+              </span>
             </a-col>
             <a-col :span="6">
               <span style="color: #ffffff;font-size: 18px">
                 {{"多选:"}}
               </span>
-              <a-input style="width: 180px">
-              </a-input>
+              <span style="color: #ffffff;font-size: 18px">
+                {{"20"}}
+              </span>
+              <span style="color: #ffffff;font-size: 18px">
+                {{"分"}}
+              </span>
             </a-col>
             <a-col :span="6">
               <span style="color: #ffffff;font-size: 18px">
                 {{"判断:"}}
               </span>
-              <a-input style="width: 180px">
-              </a-input>
+              <span style="color: #ffffff;font-size: 18px">
+                {{"20"}}
+              </span>
+              <span style="color: #ffffff;font-size: 18px">
+                {{"分"}}
+              </span>
             </a-col>
             <a-col :span="6">
               <span style="color: #ffffff;font-size: 18px">
                 {{"操作:"}}
               </span>
-              <a-input style="width: 180px">
-              </a-input>
+              <span style="color: #ffffff;font-size: 18px">
+                {{"20"}}
+              </span>
+              <span style="color: #ffffff;font-size: 18px">
+                {{"分"}}
+              </span>
             </a-col>
           </a-row>
           <span slot="footer">
@@ -190,14 +205,10 @@
 </template>
 
 <script>
-  import './ExaminationPaperSettings.less'
+  import './ExaminationPapers.less'
 
   const plainOptions = [
-    '武器系统和导弹概述', '武器系统工作状态', '指挥车作战使命',
-    '武器系统基本组成', '武器系统工作原理、作战方式', '指挥车战机指标',
-    '武器系统作战使命', '指挥车系统概述', '指挥车工作过程和工作原理',
-    '指挥车控制操作手', '作战拦截操作手', '空勤处理操作手',
-    '通信专业', '电子雷达专业', '机电专业'
+    '武器系统', '指控车', '雷达车','发射车'
   ]
 
   const developTestPapersColumns = [
