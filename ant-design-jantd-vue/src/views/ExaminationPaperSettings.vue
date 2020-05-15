@@ -16,9 +16,21 @@
             </span>
             <span>
                 <a-select style="width: 220px" placeholder="全部" @change="">
-                      <a-select-option v-for="item in equipments" :key="item" :value="item">
-                          {{ item }}
-                      </a-select-option>
+                    <a-select-option value="...">
+                      ...
+                    </a-select-option>
+                    <a-select-option value="武器系统">
+                      武器系统
+                    </a-select-option>
+                    <a-select-option value="指控车">
+                      指控车
+                    </a-select-option>
+                    <a-select-option value="发射车">
+                      发射车
+                    </a-select-option>
+                    <a-select-option value="雷达车">
+                      雷达车
+                    </a-select-option>
                 </a-select>
             </span>
           </a-col>
@@ -29,9 +41,21 @@
             </span>
             <span>
                 <a-select style="width: 220px" placeholder="全部" @change="">
-                      <a-select-option v-for="item in equipments" :key="item" :value="item">
-                          {{ item }}
+                    <a-select-option value="全部">
+                      全部
+                    </a-select-option>
+                    <a-select-option value="总体">
+                        总体
+                    </a-select-option>
+                    <a-select-option value="指挥">
+                        指挥
                       </a-select-option>
+                    <a-select-option value="操作">
+                      操作
+                    </a-select-option>
+                    <a-select-option value="维修">
+                        维修
+                    </a-select-option>
                 </a-select>
             </span>
           </a-col>
@@ -43,8 +67,41 @@
           align="center">
           <a-col :span="24">
             <a-table :dataSource="staffingManagementData" :pagination="false" :columns="staffingManagementColumns">
+              <template slot="system" slot-scope="text,record">
+                <span>
+                  <span v-if="personnelSet">
+                      <a-select style="width: 220px" v-model="text" @change="">
+                        <a-select-option value="武器系统">
+                          武器系统
+                        </a-select-option>
+                        <a-select-option value="指控车">
+                          指控车
+                        </a-select-option>
+                        <a-select-option value="发射车">
+                          发射车
+                        </a-select-option>
+                        <a-select-option value="雷达车">
+                          雷达车
+                        </a-select-option>
+                      </a-select>
+                  </span>
+                  <sapn v-else>
+                      {{text}}
+                  </sapn>
+                </span>
+              </template>
               <template slot="operation">
-                <span style="font-size: 18px;color: #0ca5ec;cursor: pointer" @click="personnelSettings">{{"设置"}}</span>
+                <span v-if="personnelSet">
+                  <span style="font-size: 18px;color: #0ca5ec;cursor: pointer" >
+                      {{"确定"}}
+                    </span>
+                  <span style="font-size: 18px;color: #ff0000;cursor: pointer;margin-left: 20px"  @click="personnelSettings">
+                      {{"取消"}}
+                    </span>
+                </span>
+                <span v-else>
+                  <span style="font-size: 18px;color: #0ca5ec;cursor: pointer" @click="personnelSettings">{{"设置"}}</span>
+                </span>
               </template>
               <span slot="footer">
                 <a-row type="flex">
@@ -64,60 +121,10 @@
             </a-table>
           </a-col>
         </a-row>
-        <a-modal
-          v-model="personnelModal"
-          width="800px"
-        >
-              <span slot="title">
-                <img src="@/assets/img/tianjiaB.png" style="width: 24px;height: 24px;">
-                <span style="font-size: 24px;position: relative;left: 12px;top:5px;">{{ "设置" }}</span>
-              </span>
-          <a-row type="flex" style="margin-top: 30px" justify="center">
-            <a-col :span="3">
-                  <span style="font-size: 18px;color: #ffffff">
-                    {{"所属系统:"}}
-                  </span>
-            </a-col>
-            <a-col :span="4">
-               <span>
-                <a-select style="width: 220px" placeholder="全部" @change="">
-                      <a-select-option v-for="item in equipments" :key="item" :value="item">
-                          {{ item }}
-                      </a-select-option>
-                </a-select>
-              </span>
-            </a-col>
-          </a-row>
-          <a-row type="flex" style="margin-top: 30px" justify="center">
-            <a-col :span="3">
-            <span style="color: #ffffff;font-size: 18px">
-              {{"岗位:"}}
-            </span>
-            </a-col>
-            <a-col :span="4">
-                          <span>
-                <a-select style="width: 220px" placeholder="全部" @change="">
-                      <a-select-option v-for="item in equipments" :key="item" :value="item">
-                          {{ item }}
-                      </a-select-option>
-                </a-select>
-            </span>
-            </a-col>
-
-
-          </a-row>
-          <span slot="footer">
-                <a-row type="flex" justify="center">
-                  <a-col :span="4">
-                    <a-button>
-                      <a-icon type="upload"/>
-                      确定
-                    </a-button>
-                  </a-col>
-                </a-row>
-              </span>
-        </a-modal>
       </div>
+
+
+      <!--      指挥训练学习-->
       <div v-if="tabsVisible2 ===true " class="lowerHair">
         <a-row
           type="flex"
@@ -126,16 +133,59 @@
           align="center">
           <a-col :span="24">
             <a-table :dataSource="learningManagementData" :pagination="false" :columns="learningManagementColumns">
-              <template slot="operation">
-                <span style="font-size: 18px;color: #0ca5ec;cursor: pointer" @click="learningManagementSetUp">{{"设置"}}
+              <template slot="station" slot-scope="text,record">
+                <span>
+                  <span v-if="learningManagementSet">
+                    <a-select style="width: 220px" @change="" v-model="text">
+                      <a-select-option value="总体">
+                          <a-checkbox @change="" slot="suffixIcon">
+                          总体
+                          </a-checkbox>
+                      </a-select-option>
+                      <a-select-option value="指挥">
+                        <a-checkbox @change="" slot="suffixIcon">
+                          指挥
+                        </a-checkbox>
+                        </a-select-option>
+                      <a-select-option value="操作">
+                        <a-checkbox @change="">
+                          操作
+                        </a-checkbox>
+                      </a-select-option>
+                      <a-select-option value="维修">
+                        <a-checkbox @change="">
+                          维修
+                        </a-checkbox>
+                      </a-select-option>
+                  </a-select>
+                  </span>
+                  <span v-else>
+                    {{text}}
+                  </span>
                 </span>
-                <span style="font-size: 18px;color: #ff0000;cursor: pointer;margin-left: 20px">
-                  {{"删除"}}
+              </template>
+              <template slot="operation" slot-scope="text,record">
+                <sapn v-if="learningManagementSet">
+                  <span style="font-size: 18px;color: #0ca5ec;cursor: pointer" >
+                      {{"确定"}}
+                    </span>
+                  <span style="font-size: 18px;color: #ff0000;cursor: pointer;margin-left: 20px"  @click="learningManagementSetUp">
+                      {{"取消"}}
+                    </span>
+                </sapn>
+                <span v-else>
+                  <span style="font-size: 18px;color: #0ca5ec;cursor: pointer" @click="learningManagementSetUp">
+                      {{"设置"}}
+                    </span>
+                      <span style="font-size: 18px;color: #ff0000;cursor: pointer;margin-left: 20px">
+                      {{"删除"}}
+                    </span>
                 </span>
+
               </template>
               <span slot="footer">
                 <a-row type="flex">
-                  <a-col :span="20">
+                  <a-col :span="20" offset="2">
                     <a-pagination
                       size="small"
                       style="text-align: center;"
@@ -144,218 +194,42 @@
                       showQuickJumper
                       :showTotal="total => `共 ${total} 条`"/>
                   </a-col>
-                  <a-col :span="2">
-                    <span>
-                      <img src="@/assets/img/tianjia.png" style="width: 26px;height: 26px;position: relative;bottom: 3px;cursor: pointer"
-                           @click="addLearningManagement"/>
-                    </span>
-                  </a-col>
                 </a-row>
               </span>
             </a-table>
           </a-col>
-          <a-modal
-            v-model="learningManagementModal"
-            width="800px"
-          >
-              <span slot="title">
-                <img src="@/assets/img/tianjiaB.png" style="width: 24px;height: 24px;">
-                <span style="font-size: 24px;position: relative;left: 12px;top:5px;">{{ "设置" }}</span>
-              </span>
-            <a-row type="flex" style="margin-top: 30px" justify="center">
-              <a-col :span="3">
-                  <span style="font-size: 18px;color: #ffffff">
-                    {{"所属系统:"}}
-                  </span>
-              </a-col>
-              <a-col :span="4">
-               <span>
-                <a-select style="width: 220px" placeholder="全部" @change="">
-                      <a-select-option v-for="item in equipments" :key="item" :value="item">
-                          {{ item }}
-                      </a-select-option>
-                </a-select>
-              </span>
-              </a-col>
-            </a-row>
-            <a-row type="flex" style="margin-top: 30px" justify="center">
-              <a-col :span="3">
-                <span style="color: #ffffff;font-size: 18px">
-                  {{"岗位:"}}
-                </span>
-              </a-col>
-              <a-col :span="4">
-                <span>
-                    <a-select style="width: 220px" placeholder="全部" @change="">
-                      <a-select-option v-for="item in equipments" :key="item" :value="item">
-                          {{ item }}
-                      </a-select-option>
-                     </a-select>
-                </span>
-              </a-col>
-            </a-row>
-            <a-row type="flex" style="margin-top: 30px" justify="center">
-              <a-col :span="3">
-            <span style="color: #ffffff;font-size: 18px">
-              {{"学习类型:"}}
-            </span>
-              </a-col>
-              <a-col :span="4">
-                          <span>
-                <a-select style="width: 220px" placeholder="全部" @change="">
-                      <a-select-option v-for="item in equipments" :key="item" :value="item">
-                          {{ item }}
-                      </a-select-option>
-                </a-select>
-            </span>
-              </a-col>
-            </a-row>
-            <a-row type="flex" style="margin-top: 30px" justify="center">
-              <a-col :span="3">
-            <span style="color: #ffffff;font-size: 18px">
-              {{"学时:"}}
-            </span>
-              </a-col>
-              <a-col :span="4">
-                 <span>
-                   <a-input style="width: 220px">
-
-                   </a-input>
-                 </span>
-              </a-col>
-            </a-row>
-
-
-            <span slot="footer">
-                <a-row type="flex" justify="center">
-                  <a-col :span="4">
-                    <a-button>
-                      <a-icon type="upload"/>
-                      确定
-                    </a-button>
-                  </a-col>
-                </a-row>
-              </span>
-          </a-modal>
-
-
-
-          <a-modal
-            v-model="LMM"
-            width="800px"
-          >
-              <span slot="title">
-                <img src="@/assets/img/tianjiaB.png" style="width: 24px;height: 24px;">
-                <span style="font-size: 24px;position: relative;left: 12px;top:5px;">{{ "添加学习项目" }}</span>
-              </span>
-
-            <a-row type="flex" style="margin-top: 30px" justify="center">
-              <a-col :span="4">
-                <span style="color: #ffffff;font-size: 18px">
-                  {{"学习项目名称:"}}
-                </span>
-              </a-col>
-              <a-col :span="4">
-                 <span>
-                   <a-input style="width: 220px">
-                   </a-input>
-                 </span>
-              </a-col>
-            </a-row>
-
-            <a-row type="flex" style="margin-top: 30px" justify="center">
-              <a-col :span="4">
-                  <span style="font-size: 18px;color: #ffffff">
-                    {{"所属系统:"}}
-                  </span>
-              </a-col>
-              <a-col :span="4">
-               <span>
-                <a-select style="width: 220px" placeholder="全部" @change="">
-                      <a-select-option v-for="item in equipments" :key="item" :value="item">
-                          {{ item }}
-                      </a-select-option>
-                </a-select>
-              </span>
-              </a-col>
-            </a-row>
-            <a-row type="flex" style="margin-top: 30px" justify="center">
-              <a-col :span="4">
-                <span style="color: #ffffff;font-size: 18px">
-                  {{"岗位:"}}
-                </span>
-              </a-col>
-              <a-col :span="4">
-                <span>
-                    <a-select style="width: 220px" placeholder="全部" @change="">
-                      <a-select-option v-for="item in equipments" :key="item" :value="item">
-                          {{ item }}
-                      </a-select-option>
-                     </a-select>
-                </span>
-              </a-col>
-            </a-row>
-            <a-row type="flex" style="margin-top: 30px" justify="center">
-              <a-col :span="4">
-            <span style="color: #ffffff;font-size: 18px">
-              {{"学习类型:"}}
-            </span>
-              </a-col>
-              <a-col :span="4">
-                          <span>
-                <a-select style="width: 220px" placeholder="全部" @change="">
-                      <a-select-option v-for="item in equipments" :key="item" :value="item">
-                          {{ item }}
-                      </a-select-option>
-                </a-select>
-            </span>
-              </a-col>
-            </a-row>
-            <a-row type="flex" style="margin-top: 30px" justify="center">
-              <a-col :span="4">
-            <span style="color: #ffffff;font-size: 18px">
-              {{"学时:"}}
-            </span>
-              </a-col>
-              <a-col :span="4">
-                 <span>
-                   <a-input style="width: 220px">
-
-                   </a-input>
-                 </span>
-              </a-col>
-            </a-row>
-
-
-            <span slot="footer">
-                <a-row type="flex" justify="center">
-                  <a-col :span="4">
-                    <a-button>
-                      <a-icon type="upload"/>
-                      确定
-                    </a-button>
-                  </a-col>
-                </a-row>
-              </span>
-          </a-modal>
-
         </a-row>
-
       </div>
+
+
+
       <div v-if="tabsVisible3 ===true " class="examination">
         <a-row type="flex">
-          <a-col :span="5">
+            <a-col :span="5">
             <span style="color: #ffffff;font-size: 20px">
               {{"所属装备:"}}
             </span>
-            <span>
+              <span>
                 <a-select style="width: 220px" placeholder="全部" @change="">
-                      <a-select-option v-for="item in equipments" :key="item" :value="item">
-                          {{ item }}
-                      </a-select-option>
+                    <a-select-option value="...">
+                      ...
+                    </a-select-option>
+                    <a-select-option value="武器系统">
+                      武器系统
+                    </a-select-option>
+                    <a-select-option value="指控车">
+                      指控车
+                    </a-select-option>
+                    <a-select-option value="发射车">
+                      发射车
+                    </a-select-option>
+                    <a-select-option value="雷达车">
+                      雷达车
+                    </a-select-option>
                 </a-select>
             </span>
-          </a-col>
+            </a-col>
+
           <a-col :span="1"></a-col>
           <a-col :span="5">
             <span style="color: #ffffff;font-size: 20px">
@@ -363,24 +237,44 @@
             </span>
             <span>
                 <a-select style="width: 220px" placeholder="全部" @change="">
-                      <a-select-option v-for="item in equipments" :key="item" :value="item">
-                          {{ item }}
+                    <a-select-option value="全部">
+                      全部
+                    </a-select-option>
+                    <a-select-option value="总体">
+                        总体
+                    </a-select-option>
+                    <a-select-option value="指挥">
+                        指挥
                       </a-select-option>
+                    <a-select-option value="操作">
+                      操作
+                    </a-select-option>
+                    <a-select-option value="维修">
+                        维修
+                    </a-select-option>
                 </a-select>
             </span>
           </a-col>
-          <a-col :span="5">
+
+
+
+          <a-col :span="3">
             <span>
                           <a-upload
                             action="http://192.168.5.253:8080/jantd-boot/teacher/problem/importExcel"
                             accept=".xlsx"
                             @change="handleImportExcel">
-              <a-button @click="batchImport">
-                {{'批量导入'}}
-              </a-button>
+                                <a-button @click="batchImport">
+                                  {{'批量导入'}}
+                                </a-button>
                           </a-upload>
-
-
+            </span>
+          </a-col>
+          <a-col :span="2">
+            <span>
+                <a-button>
+                  {{"删除"}}
+                </a-button>
             </span>
           </a-col>
         </a-row>
@@ -390,9 +284,49 @@
           justify="center"
           align="center">
           <a-col :span="24">
-            <a-table :dataSource="testManagementData" :pagination="false" :columns="testManagementColumns">
+            <a-table :dataSource="testManagementData" :pagination="false" :columns="testManagementColumns"
+                     :rowSelection="rowSelection">
+              <template slot="station" slot-scope="text,record">
+                <span>
+                  <span v-if="testManagementSet">
+                      <a-select style="width: 220px" v-model="text" @change="">
+                          <a-select-option value="总体">
+                              总体
+                          </a-select-option>
+                          <a-select-option value="指挥">
+                              指挥
+                          </a-select-option>
+                          <a-select-option value="操作">
+                              操作
+                          </a-select-option>
+                          <a-select-option value="维修">
+                              维修
+                          </a-select-option>
+                      </a-select>
+                  </span>
+                  <span v-else>
+                    {{text}}
+                  </span>
+                </span>
+              </template>
               <template slot="operation">
-                <span style="font-size: 18px;color: #0ca5ec;cursor: pointer" @click="personnelSettings">{{"设置"}}</span>
+
+                <sapn v-if="testManagementSet">
+                  <span style="font-size: 18px;color: #0ca5ec;cursor: pointer" >
+                      {{"确定"}}
+                    </span>
+                  <span style="font-size: 18px;color: #ff0000;cursor: pointer;margin-left: 20px"  @click="testManagementSettings">
+                      {{"取消"}}
+                    </span>
+                </sapn>
+                <span v-else>
+                  <span style="font-size: 18px;color: #0ca5ec;cursor: pointer" @click="testManagementSettings">
+                      {{"设置"}}
+                    </span>
+                      <span style="font-size: 18px;color: #ff0000;cursor: pointer;margin-left: 20px">
+                      {{"删除"}}
+                    </span>
+                </span>
               </template>
               <span slot="footer">
                 <a-row type="flex">
@@ -412,111 +346,7 @@
             </a-table>
           </a-col>
         </a-row>
-        <a-modal
-          v-model="personnelModal"
-          width="800px"
-        >
-              <span slot="title">
-                <img src="@/assets/img/tianjiaB.png" style="width: 24px;height: 24px;">
-                <span style="font-size: 24px;position: relative;left: 12px;top:5px;">{{ "设置" }}</span>
-              </span>
-          <a-row type="flex" style="margin-top: 30px" justify="center">
-            <a-col :span="3">
-                  <span style="font-size: 18px;color: #ffffff">
-                    {{"所属系统:"}}
-                  </span>
-            </a-col>
-            <a-col :span="4">
-               <span>
-                <a-select style="width: 220px" placeholder="全部" @change="">
-                      <a-select-option v-for="item in equipments" :key="item" :value="item">
-                          {{ item }}
-                      </a-select-option>
-                </a-select>
-              </span>
-            </a-col>
-          </a-row>
-          <a-row type="flex" style="margin-top: 30px" justify="center">
-            <a-col :span="3">
-            <span style="color: #ffffff;font-size: 18px">
-              {{"岗位:"}}
-            </span>
-            </a-col>
-            <a-col :span="4">
-                          <span>
-                <a-select style="width: 220px" placeholder="全部" @change="">
-                      <a-select-option v-for="item in equipments" :key="item" :value="item">
-                          {{ item }}
-                      </a-select-option>
-                </a-select>
-            </span>
-            </a-col>
-
-
-          </a-row>
-          <span slot="footer">
-                <a-row type="flex" justify="center">
-                  <a-col :span="4">
-                    <a-button>
-                      <a-icon type="upload"/>
-                      确定
-                    </a-button>
-                  </a-col>
-                </a-row>
-              </span>
-        </a-modal>
       </div>
-
-
-      <!--自选考题-->
-      <a-modal
-        v-model="optionalModal"
-        width="1200px"
-      >
-        <span slot="title">
-          <a-select defaultValue="全部" style="width: 220px" @change="handleChange">
-            <a-select-option value="指挥控制车">指挥控制车</a-select-option>
-            <a-select-option value="指挥官">指挥官</a-select-option>
-            <a-select-option value="全部">全部</a-select-option>
-          </a-select>
-          <a-input placeholder="" style="width:220px;margin-left: 20px;position: relative;top: 3px"></a-input>
-          <a-button style="margin-left: 20px">{{ "搜索" }}</a-button>
-          <!--<a-button style="margin-left: 20px">{{ "选择" }}</a-button>-->
-        </span>
-        <div>
-          <a-table
-            :dataSource="examinationD"
-            :pagination="false"
-            :columns="examinationC"
-            :rowSelection="rowSelection">
-            <a slot="chakan" href="javascript:;">
-              <img src="@/assets/img/bianji.png" style="width: 16px;height: 16px;">
-            </a>
-            <span slot="footer">
-              <a-pagination
-                size="small"
-                style="text-align: center;"
-                :total="5"
-                :showSizeChanger="false"
-                showQuickJumper
-                :showTotal="total => `共 ${total} 条`"/>
-            </span>
-          </a-table>
-        </div>
-        <div>
-          <a-checkbox-group :options="plainOptions" v-model="checkedList" @change="onChange"/>
-        </div>
-        <span slot="footer">
-          <a-row type="flex" justify="center">
-            <a-col :span="4">
-              <a-button>
-                <a-icon type="upload"/>
-                确定
-              </a-button>
-            </a-col>
-          </a-row>
-        </span>
-      </a-modal>
     </a-card>
 
   </div>
@@ -601,13 +431,14 @@
       align: 'center'
     },
     {
-      title: '试题系统',
+      title: '所属系统',
       dataIndex: 'system',
       align: 'center'
     },
     {
       title: '适用岗位',
       dataIndex: 'station',
+      scopedSlots: {customRender: 'station'},
       align: 'center'
     },
     {
@@ -626,96 +457,110 @@
       align: 'center'
     }
   ];
+
+  // const rowSelection = {
+  //   onChange: (selectedRowKeys, selectedRows) => {
+  //     console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+  //   },
+  //   onSelect: (record, selected, selectedRows) => {
+  //     console.log(record, selected, selectedRows);
+  //   },
+  //   onSelectAll: (selected, selectedRows, changeRows) => {
+  //     console.log(selected, selectedRows, changeRows);
+  //   },
+  // };
+
+
   const testManagementData = [
     {
       NO: 1,
-      description: '准确率测试',
-      type: '理论试题',
+      description: 'xxx',
+      type: '武器系统学习 ',
       system: '武器系统',
-      station: '总体',
+      station: '指挥',
       questionType: '单选',
-      answer: 'A'
+      answer: 'B'
     },
     {
       NO: 2,
-      description: '准确率测试',
-      type: '理论试题',
-      system: '指挥系统',
+      description: 'xxx',
+      type: '指挥车维修训练学习',
+      system: '指挥车',
       station: '总体',
       questionType: '单选',
       answer: 'A'
     },
     {
       NO: 3,
-      description: '准确率测试',
-      type: '理论试题',
-      system: '指挥系统',
-      station: '总体',
+      description: 'xxx',
+      type: '雷达车维修训练学习',
+      system: '雷达车',
+      station: '发射车',
       questionType: '单选',
-      answer: 'A'
+      answer: 'C'
     },
     {
       NO: 4,
-      description: '准确率测试',
-      type: '理论试题',
-      system: '指挥系统',
+      description: 'xxx',
+      type: '发射车维修训练学习',
+      system: '发射车',
       station: '总体',
       questionType: '单选',
       answer: 'A'
     },
     {
       NO: 5,
-      description: '准确率测试',
-      type: '理论试题',
-      system: '武器系统',
-      station: '总体',
+      description: 'xxx',
+      type: '指挥车理论试题',
+      system: '指挥车',
+      station: '操作',
       questionType: '单选',
-      answer: 'A'
+      answer: 'D'
     },
     {
       NO: 6,
-      description: '准确率测试',
-      type: '理论试题',
-      system: '武器系统',
+      description: 'xxx',
+      type: '雷达车理论试题',
+      system: '雷达车',
       station: '总体',
       questionType: '单选',
       answer: 'A'
     },
     {
       NO: 7,
-      description: '准确率测试',
-      type: '理论试题',
-      system: '指挥系统',
-      station: '总体',
-      questionType: '单选',
-      answer: 'A'
+      description: 'xxx',
+      type: '发射车理论试题',
+      system: '发射车',
+      station: '维修',
+      questionType: '多选',
+      answer: 'B、D'
     },
     {
       NO: 8,
-      description: '准确率测试',
-      type: '理论试题',
-      system: '武器系统',
-      station: '总体',
+      description: 'xxx',
+      type: '雷达车维修训练学习',
+      system: '雷达车',
+      station: '操作',
       questionType: '单选',
-      answer: 'A'
+      answer: 'D'
     },
     {
       NO: 9,
-      description: '准确率测试',
-      type: '理论试题',
-      system: '武器系统',
-      station: '总体',
+      description: 'xxx',
+      type: '指挥车理论学习',
+      system: '指挥车',
+      station: '指挥',
       questionType: '单选',
       answer: 'A'
     },
     {
       NO: 10,
-      description: '准确率测试',
-      type: '理论试题',
-      system: '指挥系统',
-      station: '总体',
-      questionType: '单选',
-      answer: 'A'
+      description: 'xxx',
+      type: ' 发射车操作训练学习',
+      system: '发射车',
+      station: '指挥',
+      questionType: '多选',
+      answer: 'A、B'
     }
   ]
   const learningManagementColumns = [
@@ -730,7 +575,7 @@
       align: 'center'
     },
     {
-      title: '所属系统',
+      title: '所属装备',
       dataIndex: 'system',
       align: 'center'
 
@@ -744,6 +589,7 @@
     {
       title: '适用岗位',
       dataIndex: 'station',
+      scopedSlots: {customRender: 'station'},
       align: 'center'
     },
     {
@@ -762,81 +608,81 @@
     {
       NO: '1',
       learningAndTrainingPrograms: '武器系统和导弹概述',
-      system: '指挥系统',
-      typesOfLearning: '理论学习',
-      station: ' 指挥官',
+      system: '指挥车',
+      typesOfLearning: '指挥车操作训练学习',
+      station: ' 指挥、操作',
       classHour: '2'
     },
     {
       NO: '2',
-      learningAndTrainingPrograms: '武器系统作战使命',
+      learningAndTrainingPrograms: '武器系统和导弹概述',
       system: '武器系统',
-      typesOfLearning: '理论学习',
-      station: '指挥官',
+      typesOfLearning: '发射车维修训练学习',
+      station: ' 操作、维修',
       classHour: '2'
     },
     {
       NO: '3',
       learningAndTrainingPrograms: '作战拦截操作手',
-      system: '指挥系统',
-      typesOfLearning: '理论学习',
-      station: '指挥官',
+      system: '雷达车',
+      typesOfLearning: '指挥车操作训练学习',
+      station: ' 操作',
       classHour: '2'
     },
     {
       NO: '4',
       learningAndTrainingPrograms: '指挥车工作过程和工作原理',
       system: '武器系统',
-      typesOfLearning: '理论学习',
-      station: '指挥官',
+      typesOfLearning: '雷达车理论学习',
+      station: ' 维修',
       classHour: '2'
     },
     {
       NO: '5',
       learningAndTrainingPrograms: '机电专业',
-      system: '指挥系统',
-      typesOfLearning: '理论学习',
-      station: ' 指挥官',
+      system: '雷达车',
+      typesOfLearning: '指挥车操作训练学习',
+      station: ' 指挥、维修',
       classHour: '2'
     },
     {
       NO: '6',
       learningAndTrainingPrograms: '空勤处理操作手',
-      system: '指挥系统',
-      typesOfLearning: '理论学习',
-      station: ' 指挥官',
+      system: '发射车',
+      typesOfLearning: '雷达车理论学习',
+      station: ' 操作',
       classHour: '2'
     },
     {
       NO: '7',
       learningAndTrainingPrograms: '指挥车工作过程和工作原理',
-      system: '指挥系统',
+      system: '武器系统',
       typesOfLearning: '理论学习',
-      station: ' 指挥官',
+      station: ' 维修',
       classHour: '2'
     },
     {
       NO: '8',
       learningAndTrainingPrograms: '指挥车战机指标',
-      system: '指挥系统',
-      typesOfLearning: '理论学习',
-      station: ' 指挥官',
+      system: '指挥车',
+      typesOfLearning: '指挥车操作训练学习',
+      station: ' 指挥',
       classHour: '2'
     },
     {
       NO: '9',
       learningAndTrainingPrograms: '武器系统工作原理、作战方式',
       system: '武器系统',
-      typesOfLearning: '理论学习',
-      station: ' 指挥官',
+      typesOfLearning: '武器系统学习',
+      station: ' 操作、维修',
       classHour: '2'
     },
     {
       NO: '10',
       learningAndTrainingPrograms: '作战拦截操作手',
       system: '武器系统',
-      typesOfLearning: '理论学习',
-      station: '指挥官',
+      typesOfLearning: '指挥车操作训练学习',
+      station: ' 维修',
       classHour: '2'
     }
   ];
@@ -846,80 +692,68 @@
     {
       No: '1',
       name: '王杰',
-      system: '指挥系统',
+      system: ' 雷达车',
       station: '总体'
     },
     {
       No: '2',
       name: '李兰',
-      system: '指挥系统',
-      station: '总体'
+      system: ' 雷达车',
+      station: '维修'
     }, {
       No: '3',
       name: '谢风',
-      system: '指挥系统',
-      station: '总体'
+      system: '指挥车',
+      station: '维修'
     }
     , {
       No: '4',
       name: '王瑞',
-      system: '指挥系统',
-      station: '总体'
+      system: '武器系统',
+      station: '指挥'
     }, {
       No: '5',
       name: '刘解',
-      system: '指挥系统',
-      station: '总体'
+      system: '指挥车',
+      station: '操作'
     }, {
       No: '6',
       name: '赵玲',
-      system: '指挥系统',
-      station: '总体'
+      system: '武器系统',
+      station: '操作'
     }, {
       No: '7',
       name: '张站',
-      system: '指挥系统',
+      system: '雷达车',
       station: '总体'
     }, {
       No: '8',
       name: '谢玲玲',
-      system: '指挥系统',
-      station: '总体'
+      system: '武器系统',
+      station: '维修'
     }, {
       No: '9',
       name: '李杰',
-      system: '指挥系统',
+      system: '发射车',
       station: '总体'
     }, {
       No: '10',
       name: '李禅茶',
-      system: '指挥系统',
+      system: '武器系统',
       station: '总体'
     }
   ]
 
   const staffingManagementColumns = [
-    // {
-    //   title: '',
-    //   dataIndex: 'checkBox',
-    //   scopedSlots: {customRender: 'checkBox'},
-    //   align: 'center'
-    // },
-    // {
-    //   dataIndex: 'No',
-    //   title: '序号',
-    //   // slots: {title: 'customTitle'},
-    //   // scopedSlots: {customRender: 'name'},
-    //   align: 'center'
-    // },
     {
       title: '姓名',
       dataIndex: 'name',
       align: 'center'
     },
     {
-      title: '所属系统',
+      title: '所属装备',
       dataIndex: 'system',
+      scopedSlots: {customRender: 'system'},
       align: 'center'
     },
     {
@@ -957,8 +791,10 @@
         LMM: false,
 
 
+        testManagementSet: false,
+
         personnelModal: false,
-        learningManagementModal: false,
+        learningManagementSet: false,
         tabsVisible3: false,
         tabsVisible1: true,
         tabsVisible2: false,
@@ -968,6 +804,8 @@
         examinationC,
         examinationD,
         rowSelection,
+
+
         tabsEquipment: [],
         optionalModal: false,
         equipment: [
@@ -1000,7 +838,14 @@
         ],
         tabsStation: [],
         CV: false,
-        equipments: ['xxx系统', 'xxx车', 'xxxx车']
+        equipments: ['xxx系统', 'xxx车', 'xxxx车'],
+        /**
+         * @Author:     风中的那朵云
+         * @Description:  人员设置
+         * @Date:    2020/5/6
+         * @Version:    1.0
+         */
+        personnelSet: false
       }
     },
     methods: {
@@ -1067,7 +912,19 @@
       },
       //人员配置管理设置
       personnelSettings() {
-        this.personnelModal = true
+        if (this.personnelSet === false) {
+          this.personnelSet = true
+        } else {
+          this.personnelSet = false
+        }
+      },
+      //试题管理
+      testManagementSettings() {
+        if (this.testManagementSet === false) {
+          this.testManagementSet = true
+        } else {
+          this.testManagementSet = false
+        }
       },
       /**
        * @Author:     风中的那朵云
@@ -1076,9 +933,14 @@
        * @Version:    1.0
        */
       learningManagementSetUp() {
-        this.learningManagementModal = true
+        if (this.learningManagementSet === false) {
+          this.learningManagementSet = true
+        } else {
+          this.learningManagementSet = false
+        }
+
       },
-      addLearningManagement(){
+      addLearningManagement() {
         this.LMM = true
       }
     }
