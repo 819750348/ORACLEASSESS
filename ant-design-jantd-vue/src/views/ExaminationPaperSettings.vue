@@ -607,7 +607,7 @@
   const learningManagementData = [
     {
       NO: '1',
-      learningAndTrainingPrograms: '武器系统和导弹概述',
+      learningAndTrainingPrograms: 'xxx',
       system: '指挥车',
       typesOfLearning: '指挥车操作训练学习',
       station: ' 指挥、操作',
@@ -615,7 +615,7 @@
     },
     {
       NO: '2',
-      learningAndTrainingPrograms: '武器系统和导弹概述',
+      learningAndTrainingPrograms: 'xxx',
       system: '武器系统',
       typesOfLearning: '发射车维修训练学习',
       station: ' 操作、维修',
@@ -623,7 +623,7 @@
     },
     {
       NO: '3',
-      learningAndTrainingPrograms: '作战拦截操作手',
+      learningAndTrainingPrograms: 'xxx',
       system: '雷达车',
       typesOfLearning: '指挥车操作训练学习',
       station: ' 操作',
@@ -631,7 +631,7 @@
     },
     {
       NO: '4',
-      learningAndTrainingPrograms: '指挥车工作过程和工作原理',
+      learningAndTrainingPrograms: 'xxx',
       system: '武器系统',
       typesOfLearning: '雷达车理论学习',
       station: ' 维修',
@@ -639,7 +639,7 @@
     },
     {
       NO: '5',
-      learningAndTrainingPrograms: '机电专业',
+      learningAndTrainingPrograms: 'xxx',
       system: '雷达车',
       typesOfLearning: '指挥车操作训练学习',
       station: ' 指挥、维修',
@@ -647,7 +647,7 @@
     },
     {
       NO: '6',
-      learningAndTrainingPrograms: '空勤处理操作手',
+      learningAndTrainingPrograms: 'xxx',
       system: '发射车',
       typesOfLearning: '雷达车理论学习',
       station: ' 操作',
@@ -655,7 +655,7 @@
     },
     {
       NO: '7',
-      learningAndTrainingPrograms: '指挥车工作过程和工作原理',
+      learningAndTrainingPrograms: 'xxx',
       system: '武器系统',
       typesOfLearning: '理论学习',
       station: ' 维修',
@@ -663,7 +663,7 @@
     },
     {
       NO: '8',
-      learningAndTrainingPrograms: '指挥车战机指标',
+      learningAndTrainingPrograms: 'xxx',
       system: '指挥车',
       typesOfLearning: '指挥车操作训练学习',
       station: ' 指挥',
@@ -671,7 +671,7 @@
     },
     {
       NO: '9',
-      learningAndTrainingPrograms: '武器系统工作原理、作战方式',
+      learningAndTrainingPrograms: 'xxx',
       system: '武器系统',
       typesOfLearning: '武器系统学习',
       station: ' 操作、维修',
@@ -679,7 +679,7 @@
     },
     {
       NO: '10',
-      learningAndTrainingPrograms: '作战拦截操作手',
+      learningAndTrainingPrograms: 'xxx',
       system: '武器系统',
       typesOfLearning: '指挥车操作训练学习',
       station: ' 维修',

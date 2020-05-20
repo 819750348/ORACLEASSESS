@@ -15,11 +15,6 @@
           align="center">
           <a-col :span="24">
             <a-table :dataSource="courseConfigurationData" :pagination="false" :columns="courseConfigurationColumns" :rowSelection="rowSelection">
-              <template slot="operation">
-                <span style="font-size: 18px;color: #0ca5ec;cursor: pointer"
-                      @click="updateTimetableModal">{{"修改"}}</span>
-                <span style="font-size: 18px;color: #ff0000;cursor: pointer;margin-left: 30px" @click="">{{"删除"}}</span>
-              </template>
               <span slot="footer">
                 <a-row type="flex">
                   <a-col :span="2" style="margin-left: 25px">
@@ -27,7 +22,12 @@
                       {{"课时推送"}}
                     </a-button>
                   </a-col>
-                  <a-col :span="20">
+                  <a-col :span="2" style="margin-left: 25px">
+                    <a-button>
+                      {{"批量删除"}}
+                    </a-button>
+                  </a-col>
+                  <a-col :span="16">
                     <a-pagination
                       size="small"
                       style="text-align: center;"
@@ -47,72 +47,8 @@
           </a-col>
         </a-row>
 
-        <a-modal
-          v-model="timetableModal"
-          width="800px"
-        >
-              <span slot="title">
-                <img src="@/assets/img/tianjiaB.png" style="width: 24px;height: 24px;">
-                <span style="font-size: 24px;position: relative;left: 12px;top:5px;">{{ "设置" }}</span>
-              </span>
-          <a-row type="flex" style="margin-top: 30px" justify="center">
-            <a-col :span="3">
-                  <span style="font-size: 18px;color: #ffffff">
-                    {{"系统或装备:"}}
-                  </span>
-            </a-col>
-            <a-col :span="4" style="margin-left: 30px">
-               <span>
-                <a-select style="width: 220px" placeholder="全部" @change="">
-                      <a-select-option v-for="item in equipments" :key="item" :value="item">
-                          {{ item }}
-                      </a-select-option>
-                </a-select>
-              </span>
-            </a-col>
-          </a-row>
-          <a-row type="flex" style="margin-top: 30px" justify="center">
-            <a-col :span="3">
-            <span style="color: #ffffff;font-size: 18px">
-              {{"学习和操作训练项目:"}}
-            </span>
-            </a-col>
-            <a-col :span="4" style="margin-left: 30px">
-                          <span>
-                <a-select style="width: 220px" placeholder="全部" @change="">
-                      <a-select-option v-for="item in equipments" :key="item" :value="item">
-                          {{ item }}
-                      </a-select-option>
-                </a-select>
-            </span>
-            </a-col>
-          </a-row>
 
-          <a-row type="flex" style="margin-top: 30px" justify="center">
-            <a-col :span="3">
-            <span style="color: #ffffff;font-size: 18px">
-              {{"课时:"}}
-            </span>
-            </a-col>
-            <a-col :span="4" style="margin-left: 30px">
-                <span>
-                  <a-input style="width: 220px"></a-input>
-                </span>
-            </a-col>
-          </a-row>
-          <span slot="footer">
-                <a-row type="flex" justify="center">
-                  <a-col :span="4">
-                    <a-button>
-                      <a-icon type="upload"/>
-                      确定
-                    </a-button>
-                  </a-col>
-                </a-row>
-              </span>
-        </a-modal>
-
-
+<!--        添加课表-->
         <a-modal
           v-model="addTimetableModal"
           width="800px"
@@ -124,7 +60,7 @@
           <a-row type="flex" style="margin-top: 30px" justify="center">
             <a-col :span="3">
                   <span style="font-size: 18px;color: #ffffff">
-                    {{"系统或装备:"}}
+                    {{"所属系统:"}}
                   </span>
             </a-col>
             <a-col :span="4" style="margin-left: 30px">
@@ -144,13 +80,11 @@
             </span>
             </a-col>
             <a-col :span="4" style="margin-left: 30px">
-                          <span>
-                <a-select style="width: 220px" placeholder="全部" @change="">
-                      <a-select-option v-for="item in equipments" :key="item" :value="item">
-                          {{ item }}
-                      </a-select-option>
-                </a-select>
-            </span>
+              <span>
+                <a-input style="width: 220px">
+
+                </a-input>
+              </span>
             </a-col>
           </a-row>
 
@@ -170,7 +104,7 @@
           <a-row type="flex" style="margin-top: 30px" justify="center">
             <a-col :span="3">
             <span style="color: #ffffff;font-size: 18px">
-              {{"学员:"}}
+              {{"岗位:"}}
             </span>
             </a-col>
             <a-col :span="4" style="margin-left: 30px">
@@ -190,6 +124,7 @@
                 </a-row>
               </span>
         </a-modal>
+
 
       </div>
       <div v-if="tabsVisible2 ===true " class="examination">
@@ -243,7 +178,7 @@
 
   const courseConfigurationColumns = [
     {
-      title: '系统或装备',
+      title: '所属系统',
       dataIndex: 'SystemOrEquipment',
       align: 'center'
     },
@@ -258,81 +193,76 @@
       align: 'center'
     },
     {
-      title: '学员',
+      title: '适用岗位',
       dataIndex: 'student',
-      align: 'center'
-    },
-    {
-      title: '操作',
-      scopedSlots: {customRender: 'operation'},
       align: 'center'
     }
   ];
   const courseConfigurationData = [
     {
-      SystemOrEquipment: '指挥系统',
-      LAOTP: '武器装备理论学习',
+      SystemOrEquipment: '指挥车',
+      LAOTP: '指挥车操作训练学习',
+      classHour: '2',
+      student: '总体，操作',
+    },
+    {
+      SystemOrEquipment: '指挥车',
+      LAOTP: '指挥车操作训练学习',
+      classHour: '2',
+      student: '总体，维护',
+    },
+    {
+      SystemOrEquipment: '雷达车',
+      LAOTP: '雷达车操作训练学习',
       classHour: '2',
       student: '总体，操作，维护',
     },
     {
-      SystemOrEquipment: '指挥系统',
-      LAOTP: '测试理论学习',
+      SystemOrEquipment: '雷达车',
+      LAOTP: '雷达车操作训练学习',
+      classHour: '2',
+      student: '总体，维护',
+    },
+    {
+      SystemOrEquipment: '指挥车',
+      LAOTP: '指挥车维修训练学习',
+      classHour: '2',
+      student: '总体，操作',
+    },
+    {
+      SystemOrEquipment: '雷达车',
+      LAOTP: '雷达车维修训练学习',
       classHour: '2',
       student: '总体，操作，维护',
     },
     {
-      SystemOrEquipment: '指挥',
-      LAOTP: '作战理论学习',
+      SystemOrEquipment: '发射车',
+      LAOTP: '发射车维修训练学习',
+      classHour: '2',
+      student: '总体，维护',
+    },
+    {
+      SystemOrEquipment: '雷达车',
+      LAOTP: '雷达车理论学习',
       classHour: '2',
       student: '总体，操作，维护',
     },
     {
-      SystemOrEquipment: 'xxx系统',
-      LAOTP: 'xxx理论学习',
+      SystemOrEquipment: '发射车',
+      LAOTP: '发射车维修训练学习',
       classHour: '2',
-      student: '总体，操作，维护',
+      student: '总体，维护',
     },
     {
-      SystemOrEquipment: 'xxx系统',
-      LAOTP: 'xxx理论学习',
+      SystemOrEquipment: '指挥车',
+      LAOTP: '指挥车维修训练学习',
       classHour: '2',
-      student: '总体，操作，维护',
-    },
-    {
-      SystemOrEquipment: 'xxx系统',
-      LAOTP: 'xxx理论学习',
-      classHour: '2',
-      student: '总体，操作，维护',
-    },
-    {
-      SystemOrEquipment: 'xxx系统',
-      LAOTP: 'xxx理论学习',
-      classHour: '2',
-      student: '总体，操作，维护',
-    },
-    {
-      SystemOrEquipment: 'xxx系统',
-      LAOTP: 'xxx理论学习',
-      classHour: '2',
-      student: '总体，操作，维护',
-    },
-    {
-      SystemOrEquipment: 'xxx系统',
-      LAOTP: 'xxx理论学习',
-      classHour: '2',
-      student: '总体，操作，维护',
-    },
-    {
-      SystemOrEquipment: 'xxx系统',
-      LAOTP: 'xxx理论学习',
-      classHour: '2',
-      student: '总体，操作，维护',
+      student: '总体，维护',
     }
   ]
   const LATPColumns = [
     {
-      title: '系统或装备',
+      title: '所属装备',
       dataIndex: 'systemOrEquipment',
       align: 'center'
     },
@@ -349,53 +279,53 @@
   ];
   const LATPData = [
     {
-      systemOrEquipment: 'xxx系统',
-      LATP: 'xxx理论学习',
+      systemOrEquipment: '武器系统',
+      LATP: '武器系统学习',
       completionRate: '100%'
     },
     {
-      systemOrEquipment: 'xxx系统',
-      LATP: 'xxx理论学习',
+      systemOrEquipment: '指挥车',
+      LATP: '指挥车操作训练学习',
       completionRate: '100%'
     },
     {
-      systemOrEquipment: 'xxx系统',
-      LATP: 'xxx理论学习',
+      systemOrEquipment: '雷达车',
+      LATP: '雷达车操作训练学习',
       completionRate: '100%'
     },
     {
-      systemOrEquipment: 'xxx系统',
-      LATP: 'xxx理论学习',
+      systemOrEquipment: '指挥车',
+      LATP: '指挥车维修训练学习',
       completionRate: '100%'
     },
     {
-      systemOrEquipment: 'xxx系统',
-      LATP: 'xxx理论学习',
+      systemOrEquipment: '发射车',
+      LATP: '发射车理论学习',
       completionRate: '100%'
     },
     {
-      systemOrEquipment: 'xxx系统',
-      LATP: 'xxx理论学习',
+      systemOrEquipment: '武器系统',
+      LATP: '武器系统学习',
       completionRate: '100%'
     },
     {
-      systemOrEquipment: 'xxx系统',
-      LATP: 'xxx理论学习',
+      systemOrEquipment: '发射车',
+      LATP: '发射车维修训练学习',
       completionRate: '100%'
     },
     {
-      systemOrEquipment: 'xxx系统',
-      LATP: 'xxx理论学习',
+      systemOrEquipment: '雷达车',
+      LATP: '雷达车理论学习',
       completionRate: '100%'
     },
     {
-      systemOrEquipment: 'xxx系统',
-      LATP: 'xxx理论学习',
+      systemOrEquipment: '武器系统',
+      LATP: '武器系统学习',
       completionRate: '100%'
     },
     {
-      systemOrEquipment: 'xxx系统',
-      LATP: 'xxx理论学习',
+      systemOrEquipment: '指挥车',
+      LATP: '指挥车操作训练学习',
       completionRate: '100%'
     }
   ];
@@ -413,7 +343,7 @@
 
         rowSelection,
 
-        equipments: ['xxx系统', 'xxx车', 'xxxx车'],
+        equipments: ['武器系统', '指挥车','发射车', '雷达车'],
 
         /**
          * @Author:     风中的那朵云
