@@ -15,11 +15,23 @@
     </resultMap>
 
     <select id="queryPageList" parameterType="int"  resultMap="personnelSettings">
-	   select * from t_sys_staff ORDER BY id desc LIMIT #{pageNo}, 10;
+	   select * from t_sys_staff where
+        <if test="staffGroup !=null and staffGroup != '' and staffGroup !='全部'">
+            staff_group = #{staffGroup} and
+        </if>
+	    name like #{name} ORDER BY id desc LIMIT #{pageNo}, 10;
 	</select>
 
     <select id="queryPageTotal" resultType="int">
-	   SELECT COUNT(*) FROM t_sys_staff
+	   SELECT COUNT(*) FROM t_sys_staff where
+        <if test="staffGroup !=null and staffGroup != '' and staffGroup !='全部'">
+           staff_group = #{staffGroup} and
+        </if>
+        name like #{name};
+	</select>
+
+    <select id="querySearchPageTotal" resultType="int">
+	   SELECT COUNT(*) FROM t_sys_staff  where name like #{name} and staff_group = #{staffGroup}
 	</select>
 
     <insert id="addPersonnel">
@@ -34,4 +46,31 @@
         #{password}
         )
     </insert>
+
+    <select id="searchPersonnel" resultMap="personnelSettings">
+	   select * from t_sys_staff where name like #{name} and staff_group = #{staffGroup} ORDER BY id desc LIMIT 0, 10;
+	</select>
+
+    <select id="searchPersonnelName" resultMap="personnelSettings">
+	   select * from t_sys_staff where name like #{name}  ORDER BY id desc LIMIT 0, 10;
+	</select>
+
+    <select id="querySearchPageTotalName" resultType="int">
+	   SELECT COUNT(*) FROM t_sys_staff  where name like #{name}
+	</select>
+
+    <delete id="deletePersonnel">
+        DELETE FROM t_sys_staff WHERE id in
+        <foreach collection ="objs" item="obj" open="(" separator="," close=")">
+            #{obj}
+        </foreach >
+    </delete>
+
+    <update id="editPersonnel">
+        UPDATE t_sys_staff SET staff_group = #{staffGroup} ,
+        password = #{password}
+        where id = #{id}
+    </update>
+
+
 </mapper>

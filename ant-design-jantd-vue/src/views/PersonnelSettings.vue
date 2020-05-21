@@ -11,13 +11,14 @@
             placeholder="全部"
             @change="findRole"
             class="fontSize"
+            defaultValue="全部"
             :defaultActiveFirstOption="false"
           >
             <a-select-option value="全部">
               全部
             </a-select-option>
-            <a-select-option value="教员管理员">
-              教员管理员
+            <a-select-option value="教员">
+              教员
             </a-select-option>
             <a-select-option value="学员">
               学员
@@ -29,7 +30,7 @@
               <a-icon type="search"/>
             </a-button>
           </span>
-          <a-button style="margin-left: 10px;position: relative;bottom:7px">
+          <a-button style="margin-left: 10px;position: relative;bottom:7px" @click="removeData">
             {{"删除"}}
           </a-button>
           <span style="margin-left: 10px;position: relative;bottom:7px">
@@ -41,16 +42,18 @@
       </a-row>
       <a-row type="flex" style="margin-top: 20px;margin-bottom: 30px" :justify="center" :align="center">
         <a-col :span="24">
-          <a-table :dataSource="initPersonnelData" :pagination="false" :columns="columns" :rowSelection="rowSelection">
+          <a-table :dataSource="initPersonnelData" :pagination="false" :columns="columns"
+                   :rowSelection="{ onChange: onSelectChange }">
             <template slot="role" slot-scope="text,record">
               <span>
-                <span v-if="editRow">
+                <span v-if="record.id == rowId & rowShow ==true">
                   <a-select style="width: 200px;margin-left: 10px;position: relative;bottom:4px"
                             class="fontSize"
-                            v-model="text"
+                            v-model="personnelRole"
+                            @select="editPersonnel"
                             :defaultActiveFirstOption="false">
-                      <a-select-option value="教员管理员">
-                        教员管理员
+                      <a-select-option value="教员">
+                        教员
                       </a-select-option>
                       <a-select-option value="学员">
                         学员
@@ -64,22 +67,22 @@
             </template>
             <template slot="password" slot-scope="text,record">
               <span>
-                <sapn v-if="editRow">
-                   <a-input v-model="text" style="width: 200px;font-size: 18px"/>
+                <sapn v-if="record.id == rowId & rowShow == true">
+                   <a-input v-model="personnelPassword" style="width: 200px;font-size: 18px"/>
                 </sapn>
                 <span v-else>
                     {{text}}
                 </span>
               </span>
             </template>
-            <template slot="edit">
+            <template slot="edit" slot-scope="text,record">
               <span>
-                <span v-if="editRow">
-                  <span style="cursor: pointer;color: #5d25ff" @click="editRole">{{"确定"}}</span>
-                  <span style="cursor: pointer;color: #9ad9ff;margin-left: 20px" @click="editRole">{{"取消"}}</span>
+                <span v-if="record.id == rowId & rowShow ==true">
+                  <span style="cursor: pointer;color: #5d25ff" @click="OKRole(record,'1')">{{"确定"}}</span>
+                  <span style="cursor: pointer;color: #9ad9ff;margin-left: 20px" @click="editRole(record,'2')">{{"取消"}}</span>
                 </span>
                 <span v-else>
-                  <span style="cursor: pointer;color: #0ca5ec" @click="editRole">{{"设置"}}</span>
+                  <span style="cursor: pointer;color: #0ca5ec" @click="editRole(record,'3')">{{"设置"}}</span>
                 </span>
               </span>
             </template>
@@ -128,13 +131,13 @@
              </span>
         </a-col>
         <a-col :span="4">
-          <a-select :defaultActiveFirstOption="false" default-value="人员" v-model="addForm.staffGroup"
+          <a-select :defaultActiveFirstOption="false" default-value="教员" v-model="addForm.staffGroup"
                     style="width: 220px" @change="">
-            <a-select-option value="教学管理人员">
-              {{"教学管理人员"}}
+            <a-select-option value="教员">
+              {{"教员"}}
             </a-select-option>
-            <a-select-option value="人员">
-              {{"人员"}}
+            <a-select-option value="学员">
+              {{"学员"}}
             </a-select-option>
           </a-select>
         </a-col>
@@ -270,7 +273,7 @@
     }
   ];
   const rowSelection = {
-    onChange: (selectedRowKeys, selectedRows) => {
+    onChange: function (selectedRowKeys, selectedRows) {
       console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
     },
     onSelect: (record, selected, selectedRows) => {
@@ -283,7 +286,7 @@
   import './FacultyManagement.less'
   import './antTable.less'
   import './selectDropdown.less'
-  import {addPersonnel, getInitData} from '@/api/personnelSettings.js'
+  import {addPersonnel, getInitData, searchPersonnel, deletePersonnel,editPersonnel} from '@/api/personnelSettings.js'
 
   export default {
     data() {
@@ -301,16 +304,25 @@
           staffGroup: '',
           password: ''
         },
-        userName: ''
+        userName: '',
+        userRole: '全部',
+        personnelId: '',
+        rowId: "0",
+        rowShow: false,
+        personnelRole: '',
+        personnelPassword: ''
       }
     },
     methods: {
-      editRole() {
-        if (this.editRow === false) {
-          this.editRow = true
-        } else {
-          this.editRow = false
-        }
+      editRole(record,v) {
+         this.rowId = record.id
+         this.personnelRole = record.staffGroup
+         this.personnelPassword = record.password
+         if(v=="3") {
+           this.rowShow = true
+         }else {
+           this.rowShow = false
+         }
       },
       /**
        * @Author:     风中的那朵云
@@ -334,7 +346,9 @@
       initData() {
         let that = this
         getInitData({
-          pageNo: that.page
+          pageNo: that.page,
+          staffGroup: that.userRole,
+          name: that.userName
         }).then(function (res) {
           console.log(res)
           that.initPersonnelData = res.personnelList
@@ -411,12 +425,88 @@
        */
       findRole(value, p) {
         console.log(value, p)
-        this.filterValues(value)
-      },
-      findName() {
+        this.userRole = value
+        this.page = 1
         this.filterValues()
       },
-      filterValues(value) {
+      findName() {
+        this.page = 1
+        this.filterValues()
+      },
+      filterValues() {
+        let that = this
+        searchPersonnel({
+          staffGroup: that.userRole,
+          name: that.userName
+        }).then(function (res) {
+          console.log(res)
+          that.initPersonnelData = res.personnelList
+          that.total = res.total
+          let i = 1
+          that.initPersonnelData.map(item => {
+            item.No = i
+            i++
+          })
+
+        }).catch(function (err) {
+          console.log(err)
+        })
+
+
+      },
+      onSelectChange(selectedRowKeys, selectedRows) {
+        console.log(selectedRowKeys, selectedRows);
+
+        if (selectedRows.length > 0) {
+          let x;
+          let keys = [];
+          for (let i = 0; i < selectedRows.length; i++) {
+            keys.push(selectedRows[i].id);
+          }
+          this.personnelId = keys.toString();
+        }
+      },
+      removeData() {
+        let that = this
+        deletePersonnel({
+          personnelId: that.personnelId
+        }).then(function (res) {
+          console.log(res)
+          if (res === 1) {
+            that.initData();
+            that.$message.success("添加成功");
+          } else {
+            that.$message.warning("添加失败");
+          }
+
+        }).catch(function (err) {
+          console.log(err)
+        })
+      },
+      editPersonnel(v,o){
+        console.log(v, o)
+        this.personnelRole = v
+      },
+      OKRole(record,v){
+          let that = this
+          editPersonnel({
+            personnelId : record.id,
+            personnelRole: that.personnelRole,
+            personnelPassword: that.personnelPassword
+          }).then(function (res) {
+            console.log(res)
+            that.initData();
+            if (res === 1) {
+              that.initData();
+              that.$message.success("修改成功");
+            } else {
+              that.$message.warning("修改失败");
+            }
+
+          }).catch(function (err) {
+            console.log(err)
+          })
+          this.rowShow = false
 
       }
 

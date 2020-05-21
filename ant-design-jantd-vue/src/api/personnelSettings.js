@@ -15,3 +15,27 @@ export function addPersonnel(parameter) {
     params: parameter
   })
 }
+
+export function searchPersonnel(parameter) {
+  return axios({
+    url: '/api/personnelSettings/searchPersonnel',
+    method: 'get',
+    params: parameter
+  })
+}
+
+export function deletePersonnel(parameter) {
+  return axios({
+    url: '/api/personnelSettings/deletePersonnel',
+    method: 'get',
+    params: parameter
+  })
+}
+
+export function editPersonnel(parameter) {
+  return axios({
+    url: '/api/personnelSettings/editPersonnel',
+    method: 'get',
+    params: parameter
+  })
+}

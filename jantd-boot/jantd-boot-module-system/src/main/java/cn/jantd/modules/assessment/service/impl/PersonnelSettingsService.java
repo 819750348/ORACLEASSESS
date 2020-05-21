@@ -6,6 +6,7 @@ import cn.jantd.modules.assessment.model.PersonnelResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,11 +28,10 @@ public class PersonnelSettingsService {
      */
     @Autowired
     PersonnelSettingsMapper personnelSettingsMapper;
-    public PersonnelResult queryPageList(int pageNo){
+    public PersonnelResult queryPageList(int pageNo,String staffGroup,String  name){
         int pageSize = (pageNo-1) * 10;
-        List<PersonnelSettings> personnelSettingsList= personnelSettingsMapper.queryPageList(pageSize);
-        int total= personnelSettingsMapper.queryPageTotal();
-
+        List<PersonnelSettings> personnelSettingsList= personnelSettingsMapper.queryPageList(pageSize,staffGroup,"%"+ name + "%");
+        int total= personnelSettingsMapper.queryPageTotal(staffGroup,"%"+ name + "%");
         PersonnelResult personnelResult = new PersonnelResult();
         personnelResult.setPersonnelList(personnelSettingsList);
         personnelResult.setTotal(total);
@@ -45,5 +45,58 @@ public class PersonnelSettingsService {
      */
     public void addPersonnel(PersonnelSettings personnelSettings){
         personnelSettingsMapper.addPersonnel(personnelSettings.getName(),personnelSettings.getStaffGroup(),personnelSettings.getPassword());
+    }
+
+
+    /**
+     * @Author:     风中的那朵云
+     * @Description: 查询
+     * @Date:    2020/5/6
+     * @Version:    1.0
+     */
+    public PersonnelResult searchPersonnel(PersonnelSettings personnelSettings){
+
+        List personnelSettingsList;
+        int total;
+        if ( personnelSettings.getStaffGroup()==null || personnelSettings.getStaffGroup().equals("全部") ){
+            personnelSettingsList = personnelSettingsMapper.searchPersonnelName("%" + personnelSettings.getName().toString() + "%");
+            total= personnelSettingsMapper.querySearchPageTotalName("%" + personnelSettings.getName().toString() + "%");
+        }else {
+            personnelSettingsList = personnelSettingsMapper.searchPersonnel("%" + personnelSettings.getName().toString() + "%",personnelSettings.getStaffGroup());
+            total= personnelSettingsMapper.querySearchPageTotal("%" + personnelSettings.getName().toString() + "%",personnelSettings.getStaffGroup());
+        }
+        PersonnelResult personnelResult = new PersonnelResult();
+        personnelResult.setPersonnelList(personnelSettingsList);
+        personnelResult.setTotal(total);
+        return personnelResult;
+    }
+
+    public String stringArray2Strin(String[] str) {
+
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < str.length; i++) {
+            sb.append("'").append(str[i]).append("'").append(",");
+        }
+        return sb.toString().substring(0, sb.length() - 1);
+    }
+
+    public void deletePersonnel(String personnelId){
+        String[]  listIds = personnelId.split(",");
+        List listId = new ArrayList();
+        for(int i = 0;i<listIds.length;i++){
+            listId.add(Integer.parseInt(listIds[i]));
+        }
+        personnelSettingsMapper.deletePersonnel(listId);
+    }
+
+    /**
+     * @Author:     风中的那朵云
+     * @Description:  编辑
+     * @Date:    2020/5/6
+     * @Version:    1.0
+     */
+
+    public void editPersonnel(String personnelId,String personnelRole,String personnelPassword){
+        personnelSettingsMapper.editPersonnel(personnelId,personnelRole,personnelPassword);
     }
 }
