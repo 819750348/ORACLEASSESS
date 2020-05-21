@@ -1,16 +1,17 @@
 <template>
   <div id="FacultyManagement">
     <a-card style="background-color: RGB(10,19,49);height: 960px;">
+      <span style="font-size: 30px;color: #40a9ff ">
+            {{"用户设置"}}
+      </span>
       <a-row type="flex" style="padding: 30px 0 10px 0">
         <a-col :span="30">
-          <span style="font-size: 24px;color: #40a9ff ">
-            {{"用户设置"}}
-          </span>
-
           <a-select
             style="width: 220px;margin-left: 10px;position: relative;bottom:4px"
             placeholder="全部"
+            @change="findRole"
             class="fontSize"
+            :defaultActiveFirstOption="false"
           >
             <a-select-option value="全部">
               全部
@@ -23,8 +24,8 @@
             </a-select-option>
           </a-select>
           <span style="margin-left: 20px;position: relative;bottom:4px">
-            <a-input class="fontSize" placeholder="请输入关键字" style="width: 210px;margin-left: 10px"/>
-            <a-button style="margin-left: 10px;position: relative;bottom:3px">
+            <a-input class="fontSize" placeholder="请输入姓名" v-model="userName" style="width: 210px;margin-left: 10px"/>
+            <a-button style="margin-left: 10px;position: relative;bottom:3px" @click="findName">
               <a-icon type="search"/>
             </a-button>
           </span>
@@ -38,9 +39,9 @@
           </span>
         </a-col>
       </a-row>
-      <a-row type="flex" style="margin-top: 20px;margin-bottom: 30px" justify="center" align="center">
+      <a-row type="flex" style="margin-top: 20px;margin-bottom: 30px" :justify="center" :align="center">
         <a-col :span="24">
-          <a-table :dataSource="userData"  :pagination="false" :columns="columns" :rowSelection="rowSelection">
+          <a-table :dataSource="initPersonnelData" :pagination="false" :columns="columns" :rowSelection="rowSelection">
             <template slot="role" slot-scope="text,record">
               <span>
                 <span v-if="editRow">
@@ -87,8 +88,10 @@
                 <a-col :span="20" offset="2">
                   <a-pagination
                     size="small"
+                    @change="setPage"
+                    v-model="page"
                     style="text-align: center;"
-                    :total="10"
+                    :total="total"
                     :showSizeChanger="false"
                     showQuickJumper
                     :showTotal="total => `共 ${total} 条`"/>
@@ -113,13 +116,11 @@
           <span style="font-size: 18px;color: #ffffff">
            {{"姓名:"}}
           </span>
-          </a-col>
-          <a-col :span="4">
-            <a-input  style="width: 220px"></a-input>
-          </a-col>
-        </a-row>
-
-
+        </a-col>
+        <a-col :span="4">
+          <a-input style="width: 220px" v-model="addForm.name"></a-input>
+        </a-col>
+      </a-row>
       <a-row type="flex" justify="center" style="margin-top: 30px">
         <a-col :span="4">
              <span style="font-size: 18px;color: #ffffff">
@@ -127,7 +128,8 @@
              </span>
         </a-col>
         <a-col :span="4">
-          <a-select default-value="人员" style="width: 220px" @change="">
+          <a-select :defaultActiveFirstOption="false" default-value="人员" v-model="addForm.staffGroup"
+                    style="width: 220px" @change="">
             <a-select-option value="教学管理人员">
               {{"教学管理人员"}}
             </a-select-option>
@@ -145,14 +147,14 @@
         </a-col>
         <a-col :span="4">
                   <span>
-                    <a-input style="width: 220px"></a-input>
+                    <a-input style="width: 220px" v-model="addForm.password"></a-input>
                   </span>
         </a-col>
       </a-row>
       <span slot="footer">
                     <a-row type="flex" justify="center">
                       <a-col :span="6">
-                        <a-button>
+                        <a-button @click="addPersonnel">
                           {{"确定"}}
                         </a-button>
                         <a-button style="margin-left: 30px" @click="addData">
@@ -176,7 +178,7 @@
     },
     {
       title: '姓名',
-      dataIndex: 'relName',
+      dataIndex: 'name',
       width: 180,
       scopedSlots: {customRender: 'relName'},
       align: 'center'
@@ -184,7 +186,7 @@
     {
       title: '人员角色',
       width: 200,
-      dataIndex: 'role',
+      dataIndex: 'staffGroup',
       scopedSlots: {customRender: 'role'},
       align: 'center'
     },
@@ -281,6 +283,7 @@
   import './FacultyManagement.less'
   import './antTable.less'
   import './selectDropdown.less'
+  import {addPersonnel, getInitData} from '@/api/personnelSettings.js'
 
   export default {
     data() {
@@ -289,9 +292,16 @@
         columns,
         rowSelection,
         editRow: false,
-
-        roleModal: false
-
+        roleModal: false,
+        page: 1,
+        total: 0,
+        initPersonnelData: [],
+        addForm: {
+          name: '',
+          staffGroup: '',
+          password: ''
+        },
+        userName: ''
       }
     },
     methods: {
@@ -314,9 +324,105 @@
         } else {
           this.roleModal = false
         }
+      },
+      /**
+       * @Author:     风中的那朵云
+       * @Description:  ${description}
+       * @Date:    2020/5/6
+       * @Version:    1.0
+       */
+      initData() {
+        let that = this
+        getInitData({
+          pageNo: that.page
+        }).then(function (res) {
+          console.log(res)
+          that.initPersonnelData = res.personnelList
+          that.total = res.total
+          let i = 1
+          that.initPersonnelData.map(item => {
+            item.No = i
+            i++
+          })
+        }).catch(function (err) {
+          console.log(err)
+        })
+      },
+      setPage(page) {
+        console.log(page)
+        this.page = page
+        this.initData()
+      },
+      /**
+       * @Author:     风中的那朵云
+       * @Description:  添加用户
+       * @Date:    2020/5/6
+       * @Version:    1.0
+       */
+      addPersonnel() {
+        console.log(this.addForm)
+        let that = this
+        let name = that.addForm.name
+        let staffGroup = that.addForm.staffGroup
+        let password = that.addForm.password
+
+        if (name === null || name === "") {
+          that.$message.warning("名称不能为空");
+          return;
+        } else if (name.length > 6) {
+          that.$message.warning("名称太长了");
+          return;
+        }
+        if (staffGroup === null || staffGroup === "") {
+          that.$message.warning("角色不能为空");
+          return;
+        }
+        if (password === null || password === "") {
+          that.$message.warning("密码不能为空");
+          return;
+        } else if (password.length > 10) {
+          that.$message.warning("密码太长了");
+          return;
+        }
+        that.roleModal = false;
+        addPersonnel({
+          name: name,
+          staffGroup: staffGroup,
+          password: password
+        }).then(function (res) {
+          console.log(res)
+          if (res === 1) {
+            that.initData();
+            that.$message.success("添加成功");
+          } else {
+            that.$message.warning("添加失败");
+          }
+
+        }).catch(function (err) {
+          console.log(err)
+        })
+
+      },
+      /**
+       * @Author:     风中的那朵云
+       * @Description:  角色筛选
+       * @Date:    2020/5/6
+       * @Version:    1.0
+       */
+      findRole(value, p) {
+        console.log(value, p)
+        this.filterValues(value)
+      },
+      findName() {
+        this.filterValues()
+      },
+      filterValues(value) {
+
       }
+
     },
     mounted() {
+      this.initData();
     }
   }
 </script>
