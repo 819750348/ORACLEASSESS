@@ -107,6 +107,17 @@ public class PersonnelSettings implements Serializable {
         this.password = password;
     }
 
+    public String getEquipPosition() {
+        return equipPosition;
+    }
+
+    public void setEquipPosition(String equipPosition) {
+        this.equipPosition = equipPosition;
+    }
+
+
+
+
     /**
      * 主键id
      */
@@ -154,4 +165,8 @@ public class PersonnelSettings implements Serializable {
      * 密码
      */
     private String password;
+
+
+
+    public String equipPosition;
 }

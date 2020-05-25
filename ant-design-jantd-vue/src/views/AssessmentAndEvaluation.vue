@@ -406,13 +406,8 @@
       align: 'center'
     },
     {
-      title: '所属系统',
-      dataIndex: 'system',
-      align: 'center'
-    },
-    {
       title: '适用岗位',
-      dataIndex: 'station',
+      dataIndex: 'equipPosition',
       align: 'center'
     },
     {
@@ -435,80 +430,14 @@
     {
       NO: 1,
       description: 'xxx',
-      system: '武器系统',
-      station: '总体',
+      equipPosition: '武器系统_总体',
       totalTime: '120',
       passStandard: '60'
     },
     {
       NO: 2,
       description: 'xxx',
-      system: '指控车',
-      station: '总体',
-      totalTime: '120',
-      passStandard: '60'
-    },
-    {
-      NO: 3,
-      description: 'xxx',
-      system: '武器系统',
-      station: '维修',
-      totalTime: '120',
-      passStandard: '60'
-    },
-    {
-      NO: 4,
-      description: 'xxx',
-      system: '雷达车',
-      station: '维修',
-      totalTime: '120',
-      passStandard: '60'
-    },
-    {
-      NO: 5,
-      description: 'xxx',
-      system: '发射车',
-      station: '总体',
-      totalTime: '120',
-      passStandard: '60'
-    },
-    {
-      NO: 6,
-      description: 'xxx',
-      system: '发射车',
-      station: '指挥',
-      totalTime: '120',
-      passStandard: '60'
-    },
-    {
-      NO: 7,
-      description: 'xxx',
-      system: '发射车',
-      station: '操作',
-      totalTime: '120',
-      passStandard: '60'
-    },
-    {
-      NO: 8,
-      description: 'xxx',
-      system: '指控车',
-      station: '操作',
-      totalTime: '120',
-      passStandard: '60'
-    },
-    {
-      NO: 9,
-      description: 'xxx',
-      system: '武器系统',
-      station: '总体',
-      totalTime: '120',
-      passStandard: '60'
-    },
-    {
-      NO: 10,
-      description: 'xxx',
-      system: '指控车',
-      station: '指挥',
+      equipPosition: '武器系统_总体',
       totalTime: '120',
       passStandard: '60'
     }
@@ -525,14 +454,8 @@
       align: 'center'
     },
     {
-      title: '所属系统',
-      dataIndex: 'system',
-      align: 'center'
-
-    },
-    {
-      title: '岗位',
-      dataIndex: 'station',
+      title: '所属岗位',
+      dataIndex: 'equipPosition',
       align: 'center'
     },
     {
@@ -546,71 +469,19 @@
     {
       NO: '1',
       name: '李杰',
-      system: '武器系统',
-      station: ' 指挥',
+      equipPosition:'武器系统_指挥',
       achievement: '通过(60)'
     },
     {
       NO: '2',
       name: '张啦啦',
-      system: '指控车',
-      station: ' 操作',
+      equipPosition:'武器系统_指挥',
       achievement: '通过(60)'
     },
     {
       NO: '3',
       name: '王玲玲',
-      system: '发射车',
-      station: ' 维修',
-      achievement: '通过(60)'
-    },
-    {
-      NO: '4',
-      name: '谢玲',
-      system: '武器系统',
-      station: ' 指挥车',
-      achievement: '通过(60)'
-    },
-    {
-      NO: '5',
-      name: '张聪聪',
-      system: '雷达车',
-      station: ' 操作',
-      achievement: '通过(60)'
-    },
-    {
-      NO: '6',
-      name: '赵斌',
-      system: '发射车',
-      station: ' 指挥',
-      achievement: '通过(60)'
-    },
-    {
-      NO: '7',
-      name: '唐磊',
-      system: '雷达车',
-      station: ' 指挥',
-      achievement: '通过(60)'
-    },
-    {
-      NO: '8',
-      name: '宋子儿',
-      system: '武器系统',
-      station: ' 总体',
-      achievement: '通过(60)'
-    },
-    {
-      NO: '9',
-      name: '吴杰',
-      system: '发射车',
-      station: ' 维修',
-      achievement: '通过(60)'
-    },
-    {
-      NO: '10',
-      name: '李彬彬',
-      system: '雷达车',
-      station: ' 操作',
+      equipPosition:'武器系统_指挥',
       achievement: '通过(60)'
     }
   ];

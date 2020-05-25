@@ -32,5 +32,6 @@ public class PersonnelResult {
     }
 
     public int total;
- public List personnelList;
+
+    public List personnelList;
 }
