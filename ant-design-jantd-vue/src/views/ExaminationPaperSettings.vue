@@ -71,8 +71,8 @@
             <a-table :dataSource="initStaffingManagementData" :pagination="false" :columns="staffingManagementColumns">
               <template slot="equipPosition" slot-scope="text,record">
                 <span>
-                  <span v-if="personnelSet">
-                    <a-select style="width: 200px" @change="" mode="multiple">
+                  <span v-if="record.id == personnelRowId & personnelRowShow ==true ">
+                    <a-select style="width: 200px" @change="positionSetting" mode="multiple">
                         <a-select-opt-group>
                           <span slot="label"><a-icon type="rocket"/>武器系统</span>
                           <a-select-option value="1">
@@ -107,8 +107,8 @@
                   </sapn>
                 </span>
               </template>
-              <template slot="operation">
-                <span v-if="personnelSet">
+              <template slot="operation" slot-scope="text,record">
+                <span v-if="personnelRowShow">
                   <span style="font-size: 18px;color: #0ca5ec;cursor: pointer">
                       {{"确定"}}
                     </span>
@@ -119,7 +119,7 @@
                 </span>
                 <span v-else>
                   <span style="font-size: 18px;color: #0ca5ec;cursor: pointer"
-                        @click="personnelSettings">{{"设置"}}</span>
+                        @click="personnelSettings(record,'3')">{{"设置"}}</span>
                 </span>
               </template>
               <span slot="footer">
@@ -1127,7 +1127,18 @@
         equipPositionArray: [],
 
 
-        showLearningAndTrainingProjectManagementModal: false
+        showLearningAndTrainingProjectManagementModal: false,
+
+        /**
+         * @Author:     风中的那朵云
+         * @Description:  人员设置参数
+         * @Date:    2020/5/6
+         * @Version:    1.0
+         */
+        personnelPosition: [],
+
+        personnelRowShow: false,
+        personnelRowId:''
 
       }
     },
@@ -1194,12 +1205,16 @@
         this.optionalModal = true
       },
       //人员配置管理设置
-      personnelSettings() {
-        if (this.personnelSet === false) {
-          this.personnelSet = true
-        } else {
-          this.personnelSet = false
+      personnelSettings(record,v) {
+
+        this.personnelRowId = record.id
+        // this.personnelPosition = record.equipPosition
+        if(v=="3") {
+          this.personnelRowShow = true
+        }else {
+          this.personnelRowShow = false
         }
+
       },
       //试题管理
       testManagementSettings() {
@@ -1209,6 +1224,11 @@
           this.testManagementSet = false
         }
       },
+      positionSetting(v,p){
+        this.position = v
+        console.log(v,p)
+      },
+
       /**
        * @Author:     风中的那朵云
        * @Description:  ${description}
