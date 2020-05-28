@@ -31,4 +31,8 @@
           </if>
         </where>
     </select>
+
+    <update id="editPersonnel">
+        UPDATE t_sys_staff SET equip_position = #{personnelEquipPosition} where id = #{id}
+    </update>
 </mapper>

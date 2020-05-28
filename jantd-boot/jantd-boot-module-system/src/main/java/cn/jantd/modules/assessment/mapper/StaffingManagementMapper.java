@@ -18,4 +18,5 @@ import java.util.List;
 public interface StaffingManagementMapper extends BaseMapper<PersonnelSettings> {
     List<PersonnelSettings> queryPageList(int pageNo, @Param(value="equipPosition") String equipPosition);
     int queryPageTotal(String equipPosition);
+    void editPersonnel(String id,String personnelEquipPosition);
 }

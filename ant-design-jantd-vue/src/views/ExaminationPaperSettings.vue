@@ -108,8 +108,8 @@
                 </span>
               </template>
               <template slot="operation" slot-scope="text,record">
-                <span v-if="personnelRowShow">
-                  <span style="font-size: 18px;color: #0ca5ec;cursor: pointer">
+                <span v-if="record.id == personnelRowId & personnelRowShow ==true ">
+                  <span style="font-size: 18px;color: #0ca5ec;cursor: pointer" @click="OKPersonnelRow(record,'1')">
                       {{"确定"}}
                     </span>
                   <span style="font-size: 18px;color: #ff0000;cursor: pointer;margin-left: 20px"
@@ -119,7 +119,9 @@
                 </span>
                 <span v-else>
                   <span style="font-size: 18px;color: #0ca5ec;cursor: pointer"
-                        @click="personnelSettings(record,'3')">{{"设置"}}</span>
+                        @click="personnelSettings(record,'3')">
+                    {{"设置"}}
+                  </span>
                 </span>
               </template>
               <span slot="footer">
@@ -717,7 +719,7 @@
 
 <script>
   import './ExaminationPaperSettings.less'
-  import {initStaffingManagement} from '@/api/staffingManagement.js'
+  import {initStaffingManagement,editStaffingManagement} from '@/api/staffingManagement.js'
 
   const rowSelection = {
     onChange: (selectedRowKeys, selectedRows) => {
@@ -1138,7 +1140,8 @@
         personnelPosition: [],
 
         personnelRowShow: false,
-        personnelRowId:''
+        personnelRowId: '',
+        personnelEquipPosition: []
 
       }
     },
@@ -1205,13 +1208,13 @@
         this.optionalModal = true
       },
       //人员配置管理设置
-      personnelSettings(record,v) {
+      personnelSettings(record, v) {
 
         this.personnelRowId = record.id
         // this.personnelPosition = record.equipPosition
-        if(v=="3") {
+        if (v == "3") {
           this.personnelRowShow = true
-        }else {
+        } else {
           this.personnelRowShow = false
         }
 
@@ -1224,9 +1227,9 @@
           this.testManagementSet = false
         }
       },
-      positionSetting(v,p){
-        this.position = v
-        console.log(v,p)
+      positionSetting(v, p) {
+        this.personnelEquipPosition = v
+        console.log(v, p)
       },
 
       /**
@@ -1267,7 +1270,7 @@
           that.initStaffingManagementData.map(item => {
             item.No = i
             i++
-            if(item.equipPosition !== "" || item.equipPosition.length > 0){
+            if (item.equipPosition !== "" && item.equipPosition !== null && item.equipPosition.length > 0) {
               let a = item.equipPosition.replace("1", "武器装备_总体");
               let b = a.replace("2", "指控车_指挥");
               let c = b.replace("3", "指控车_操作");
@@ -1284,37 +1287,6 @@
         })
 
       },
-      //
-      // transformationEquipPosition(item){
-      //   let s = item.split(",")
-      //   for(let i = 0;i<s.length; i++){
-      //     if(s[i].equals("1")){
-      //       this.equipPositionArray.push("武器装备_总体")
-      //     }
-      //     if(s[i].equals("2")){
-      //       this.equipPositionArray.push("指控车_指挥")
-      //     }
-      //     if(s[i].equals("3")){
-      //       this.equipPositionArray.push("指控车_操作")
-      //     }
-      //     if(s[i].equals("4")){
-      //       this.equipPositionArray.push("武器装备_维修")
-      //     }
-      //     if(s[i].equals("5")){
-      //       this.equipPositionArray.push("发射车_操作")
-      //     }
-      //     if(s[i].equals("6")){
-      //       this.equipPositionArray.push("发射车_维修")
-      //     }
-      //     if(s[i].equals("7")){
-      //       this.equipPositionArray.push("雷达车_操作")
-      //     }
-      //     if(s[i].equals("8")){
-      //       this.equipPositionArray.push("雷达车_维修")
-      //     }
-      //   }
-      // },
-
       //  人员配置搜索管理
       searchStaffing(v, p) {
         console.log(v, p);
@@ -1328,8 +1300,33 @@
         this.staffingManagementPage = page
         this.initStaffingManagement()
       },
+      /**
+       * @Author:     风中的那朵云
+       * @Description:  人员配置修改
+       * @Date:    2020/5/6
+       * @Version:    1.0
+       */
+      OKPersonnelRow(record, v) {
+        let that = this
+        editStaffingManagement({
+          personnelId: record.id,
+          personnelEquipPosition: that.personnelEquipPosition.toString()
+        }).then(function (res) {
+          console.log(res)
+          that.initStaffingManagement();
+          if (res === 1) {
 
+            that.$message.success("修改成功");
+          } else {
+            that.$message.warning("修改失败");
+          }
 
+        }).catch(function (err) {
+          console.log(err)
+        })
+        this.personnelRowShow = false
+
+      },
       //试题管理
       /**
        * @Author:     风中的那朵云

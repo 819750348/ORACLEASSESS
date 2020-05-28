@@ -28,4 +28,16 @@ public class StaffingManagementController {
         PersonnelResult personnelResult = staffingManagementService.queryPageList(pageNo,equipPosition);
         return personnelResult;
     }
+
+    @RequestMapping("/editPersonnel")
+    public String editPersonnel(String personnelId,String personnelEquipPosition){
+        try {
+            staffingManagementService.editPersonnel(personnelId,personnelEquipPosition);
+            return "1";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "0";
+        }
+    }
+
 }

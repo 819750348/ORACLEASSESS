@@ -7,3 +7,12 @@ export function initStaffingManagement(parameter) {
     params: parameter
   })
 }
+
+
+export function editStaffingManagement(parameter) {
+  return axios({
+    url: '/api/staffingManagement/editPersonnel',
+    method: 'get',
+    params: parameter
+  })
+}

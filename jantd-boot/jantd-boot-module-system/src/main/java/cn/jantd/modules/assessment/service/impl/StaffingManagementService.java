@@ -24,17 +24,33 @@ public class StaffingManagementService {
     @Autowired
     StaffingManagementMapper staffingManagementMapper;
 
-    public PersonnelResult queryPageList(int pageNo, String equipPosition){
+    /**
+     * @Author: 风中的那朵云
+     * @Description: 查询
+     * @Date: 2020/5/6
+     * @Version: 1.0
+     */
+    public PersonnelResult queryPageList(int pageNo, String equipPosition) {
 
 //        String[] equipPositionList=EquipPosition.split(equipPosition);
 
-        int pageSize = (pageNo-1) * 10;
-        List<PersonnelSettings> personnelSettingsList= staffingManagementMapper.queryPageList(pageSize, "%" + equipPosition + "%");
+        int pageSize = (pageNo - 1) * 10;
+        List<PersonnelSettings> personnelSettingsList = staffingManagementMapper.queryPageList(pageSize, "%" + equipPosition + "%");
 
-        int total= staffingManagementMapper.queryPageTotal("%" + equipPosition + "%");
+        int total = staffingManagementMapper.queryPageTotal("%" + equipPosition + "%");
         PersonnelResult personnelResult = new PersonnelResult();
         personnelResult.setPersonnelList(personnelSettingsList);
         personnelResult.setTotal(total);
         return personnelResult;
+    }
+
+    /**
+     * @Author: 风中的那朵云
+     * @Description: 编辑
+     * @Date: 2020/5/6
+     * @Version: 1.0
+     */
+    public void editPersonnel(String personnelId,String personnelEquipPosition){
+        staffingManagementMapper.editPersonnel(personnelId, personnelEquipPosition);
     }
 }
