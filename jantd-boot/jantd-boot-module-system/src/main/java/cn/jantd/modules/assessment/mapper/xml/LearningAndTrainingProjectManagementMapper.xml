@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.jantd.modules.assessment.mapper.LearningAndTrainingProjectManagementMapper">
+    <resultMap id="TBusiStudy" type="cn.jantd.modules.assessment.entity.TBusiStudy" >
+        <result column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="study_type" property="studyType" jdbcType="VARCHAR"/>
+        <result column="equip" property="equip" jdbcType="VARCHAR"/>
+        <result column="position" property="position" jdbcType="VARCHAR"/>
+        <result column="equip_position" property="equipPosition" jdbcType="VARCHAR"/>
+        <result column="study_time" property="studyTime" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="queryPageList" parameterType="int"  resultMap="TBusiStudy">
+        select * from t_busi_study_temp ORDER BY id desc LIMIT #{pageNo}, 10;
+    </select>
+
+    <select id="queryPageTotal" resultType="int">
+        SELECT COUNT(*) FROM t_busi_study_temp
+    </select>
+
+
+    <insert id="addLearningAndTrainingProject">
+        insert into t_busi_study_temp (
+        name,
+        study_type,
+        equip_position,
+        study_time
+        ) VALUES
+        (
+        #{name},
+        #{studyType},
+        #{equipPosition},
+        #{studyTime}
+        )
+    </insert>
+
+    <update id="editAndTrainingProjectManagement">
+        UPDATE t_busi_study_temp SET equip_position = #{equipPosition} where id = #{id}
+    </update>
+</mapper>

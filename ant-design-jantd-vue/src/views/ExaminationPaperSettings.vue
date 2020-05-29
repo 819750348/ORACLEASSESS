@@ -79,27 +79,37 @@
                             总体
                           </a-select-option>
                         </a-select-opt-group>
-                        <a-select-opt-group>
-                          <span slot="label"><a-icon type="rocket"/>指控车</span>
-                          <a-select-option value="2">
-                            总体
-                          </a-select-option>
-                          <a-select-option value="3">
-                            指挥
-                          </a-select-option>
-                        </a-select-opt-group>
-                        <a-select-opt-group>
-                          <span slot="label"><a-icon type="rocket"/>发射车</span>
-                          <a-select-option value="4">
-                            操作
-                          </a-select-option>
-                        </a-select-opt-group>
-                        <a-select-opt-group>
-                          <span slot="label"><a-icon type="rocket"/>雷达车</span>
-                          <a-select-option value="5">
-                            维修
-                          </a-select-option>
-                        </a-select-opt-group>
+                <a-select-opt-group>
+                  <span slot="label"><a-icon type="rocket"/>指控车</span>
+                  <a-select-option value="2">
+                    指挥
+                  </a-select-option>
+                  <a-select-option value="3">
+                    操作
+                  </a-select-option>
+                  <a-select-option value="4">
+                    维修
+                  </a-select-option>
+                </a-select-opt-group>
+                <a-select-opt-group>
+                  <span slot="label"><a-icon type="rocket"/>发射车</span>
+                  <a-select-option value="5">
+                    操作
+                  </a-select-option>
+                  <a-select-option value="6">
+                    维修
+                  </a-select-option>
+                </a-select-opt-group>
+                <a-select-opt-group>
+                  <span slot="label"><a-icon type="rocket"/>雷达车</span>
+                  <a-select-option value="7">
+                    操作
+                  </a-select-option>
+                  <a-select-option value="8">
+                    维修
+                  </a-select-option>
+                </a-select-opt-group>
+
               </a-select>
                   </span>
                   <sapn v-else>
@@ -154,39 +164,50 @@
           justify="center"
           align="center">
           <a-col :span="24">
-            <a-table :dataSource="learningManagementData" :pagination="false" :columns="learningManagementColumns">
+            <a-table :dataSource="initLearningAndTrainingProjectManagementData" :pagination="false"
+                     :columns="learningManagementColumns">
               <template slot="equipPosition" slot-scope="text,record">
                 <span>
                    <span>
-                  <span v-if="learningManagementSet">
-                    <a-select style="width: 200px" @change="" mode="multiple">
+                  <span v-if="staffingManagementRowShow == true && staffingManagementRowId == record.id">
+                    <a-select style="width: 200px" @change="positionSetting" mode="multiple">
                         <a-select-opt-group>
                           <span slot="label"><a-icon type="rocket"/>武器系统</span>
                           <a-select-option value="1">
                             总体
                           </a-select-option>
                         </a-select-opt-group>
-                        <a-select-opt-group>
-                          <span slot="label"><a-icon type="rocket"/>指控车</span>
-                          <a-select-option value="2">
-                            总体
-                          </a-select-option>
-                          <a-select-option value="3">
-                            指挥
-                          </a-select-option>
-                        </a-select-opt-group>
-                        <a-select-opt-group>
-                          <span slot="label"><a-icon type="rocket"/>发射车</span>
-                          <a-select-option value="4">
-                            操作
-                          </a-select-option>
-                        </a-select-opt-group>
-                        <a-select-opt-group>
-                          <span slot="label"><a-icon type="rocket"/>雷达车</span>
-                          <a-select-option value="5">
-                            维修
-                          </a-select-option>
-                        </a-select-opt-group>
+                                      <a-select-opt-group>
+                  <span slot="label"><a-icon type="rocket"/>指控车</span>
+                  <a-select-option value="2">
+                    指挥
+                  </a-select-option>
+                  <a-select-option value="3">
+                    操作
+                  </a-select-option>
+                  <a-select-option value="4">
+                    维修
+                  </a-select-option>
+                </a-select-opt-group>
+                <a-select-opt-group>
+                  <span slot="label"><a-icon type="rocket"/>发射车</span>
+                  <a-select-option value="5">
+                    操作
+                  </a-select-option>
+                  <a-select-option value="6">
+                    维修
+                  </a-select-option>
+                </a-select-opt-group>
+                <a-select-opt-group>
+                  <span slot="label"><a-icon type="rocket"/>雷达车</span>
+                  <a-select-option value="7">
+                    操作
+                  </a-select-option>
+                  <a-select-option value="8">
+                    维修
+                  </a-select-option>
+                </a-select-opt-group>
+
               </a-select>
                   </span>
                   <sapn v-else>
@@ -196,17 +217,19 @@
                 </span>
               </template>
               <template slot="operation" slot-scope="text,record">
-                <sapn v-if="learningManagementSet">
-                  <span style="font-size: 18px;color: #0ca5ec;cursor: pointer">
+                <sapn v-if="staffingManagementRowShow == true && staffingManagementRowId == record.id">
+                  <span style="font-size: 18px;color: #0ca5ec;cursor: pointer"
+                        @click="OKLearningManagementRow(record,'1')">
                       {{"确定"}}
                     </span>
                   <span style="font-size: 18px;color: #ff0000;cursor: pointer;margin-left: 20px"
-                        @click="learningManagementSetUp">
+                        @click="staffingManagementSettings">
                       {{"取消"}}
                     </span>
                 </sapn>
                 <span v-else>
-                  <span style="font-size: 18px;color: #0ca5ec;cursor: pointer" @click="learningManagementSetUp">
+                  <span style="font-size: 18px;color: #0ca5ec;cursor: pointer"
+                        @click="staffingManagementSettings(record, 3)">
                       {{"设置"}}
                     </span>
                 </span>
@@ -218,7 +241,7 @@
                     <a-pagination
                       size="small"
                       style="text-align: center;"
-                      :total="3"
+                      :total="learningAndTrainingProjectManagementTotal"
                       :showSizeChanger="false"
                       showQuickJumper
                       :showTotal="total => `共 ${total} 条`"/>
@@ -257,7 +280,8 @@
             </a-col>
             <a-col :span="4">
                <span>
-                 <a-textarea placeholder="" allow-clear @change="" style="width: 220px"/>
+                 <a-textarea v-model="LearningAndTrainingProjectManagementForm.name" placeholder="" allow-clear
+                             @change="" style="width: 220px"/>
               </span>
             </a-col>
           </a-row>
@@ -269,12 +293,18 @@
             </a-col>
             <a-col :span="4">
               <span>
-                <a-input style="width: 220px"></a-input>
+                    <a-select default-value="lucy" style="width: 220px"
+                              v-model="LearningAndTrainingProjectManagementForm.studyType">
+                        <a-select-option value="1">
+                          {{"理论学习"}}
+                        </a-select-option>
+                        <a-select-option value="2">
+                          {{"操作训练学习"}}
+                        </a-select-option>
+                    </a-select>
               </span>
             </a-col>
           </a-row>
-
-
           <a-row type="flex" style="margin-top: 30px" justify="center">
             <a-col :span="3">
             <span style="color: #ffffff;font-size: 18px">
@@ -283,39 +313,50 @@
             </a-col>
             <a-col :span="4">
               <span>
-                <a-select style="width: 220px" @change="">
-                <a-select-opt-group>
-                  <span slot="label"><a-icon type="rocket"/>武器系统</span>
-                  <a-select-option value="1">
-                    总体
-                  </a-select-option>
-                </a-select-opt-group>
-                <a-select-opt-group>
+                     <a-select style="width: 220px" v-model="LearningAndTrainingProjectManagementForm.equipPosition"
+                               :maxTagCount="0" mode="multiple">
+                        <a-select-opt-group>
+                          <span slot="label"><a-icon type="rocket"/>武器系统</span>
+                          <a-select-option value="1">
+                            总体
+                          </a-select-option>
+                        </a-select-opt-group>
+
+                                       <a-select-opt-group>
                   <span slot="label"><a-icon type="rocket"/>指控车</span>
                   <a-select-option value="2">
-                    总体
+                    指挥
                   </a-select-option>
                   <a-select-option value="3">
-                    指挥
+                    操作
+                  </a-select-option>
+                  <a-select-option value="4">
+                    维修
                   </a-select-option>
                 </a-select-opt-group>
                 <a-select-opt-group>
                   <span slot="label"><a-icon type="rocket"/>发射车</span>
-                  <a-select-option value="4">
+                  <a-select-option value="5">
                     操作
+                  </a-select-option>
+                  <a-select-option value="6">
+                    维修
                   </a-select-option>
                 </a-select-opt-group>
                 <a-select-opt-group>
                   <span slot="label"><a-icon type="rocket"/>雷达车</span>
-                  <a-select-option value="5">
+                  <a-select-option value="7">
+                    操作
+                  </a-select-option>
+                  <a-select-option value="8">
                     维修
                   </a-select-option>
                 </a-select-opt-group>
-              </a-select>
+
+                  </a-select>
               </span>
             </a-col>
           </a-row>
-
 
           <a-row type="flex" style="margin-top: 30px" justify="center">
             <a-col :span="3">
@@ -325,7 +366,7 @@
             </a-col>
             <a-col :span="4">
                <span>
-                 <a-input style="width: 220px"></a-input>
+                 <a-input style="width: 220px" v-model="LearningAndTrainingProjectManagementForm.studyTime"></a-input>
                </span>
             </a-col>
           </a-row>
@@ -333,7 +374,7 @@
           <span slot="footer">
                 <a-row type="flex" justify="center">
                   <a-col :span="4">
-                    <a-button>
+                    <a-button @click="addLearningAndTrainingProjectManagementForm">
                       <a-icon type="upload"/>
                       确定
                     </a-button>
@@ -353,7 +394,13 @@
               {{"所属岗位:"}}
             </span>
             <template>
-              <a-select style="width: 200px" @change="">
+              <a-select style="width: 200px" defaultValue="all" @change="searchTestManagement">
+                <a-select-opt-group>
+                  <span slot="label"><a-icon type="rocket"/>全部</span>
+                  <a-select-option value="all">
+                    全部
+                  </a-select-option>
+                </a-select-opt-group>
                 <a-select-opt-group>
                   <span slot="label"><a-icon type="rocket"/>武器系统</span>
                   <a-select-option value="1">
@@ -363,21 +410,30 @@
                 <a-select-opt-group>
                   <span slot="label"><a-icon type="rocket"/>指控车</span>
                   <a-select-option value="2">
-                    总体
+                    指挥
                   </a-select-option>
                   <a-select-option value="3">
-                    指挥
+                    操作
+                  </a-select-option>
+                  <a-select-option value="4">
+                    维修
                   </a-select-option>
                 </a-select-opt-group>
                 <a-select-opt-group>
                   <span slot="label"><a-icon type="rocket"/>发射车</span>
-                  <a-select-option value="4">
+                  <a-select-option value="5">
                     操作
+                  </a-select-option>
+                  <a-select-option value="6">
+                    维修
                   </a-select-option>
                 </a-select-opt-group>
                 <a-select-opt-group>
                   <span slot="label"><a-icon type="rocket"/>雷达车</span>
-                  <a-select-option value="5">
+                  <a-select-option value="7">
+                    操作
+                  </a-select-option>
+                  <a-select-option value="8">
                     维修
                   </a-select-option>
                 </a-select-opt-group>
@@ -386,7 +442,7 @@
           </a-col>
           <a-col :span="5">
             <span>
-              <a-input style="width: 220px" placeholder="请输入描述内容"/>
+              <a-input v-model="testManagementDescribe" style="width: 220px" placeholder="请输入描述内容"/>
               <a-button style="margin-left: 10px">
                 {{"搜索"}}
               </a-button>
@@ -425,35 +481,44 @@
               <template slot="equipPosition" slot-scope="text,record">
                 <span>
                   <span v-if="testManagementSet === true">
-                    <a-select style="width: 200px" @change="" mode="multiple">
+                      <a-select style="width: 200px" @change="positionSetting" mode="multiple">
                         <a-select-opt-group>
                           <span slot="label"><a-icon type="rocket"/>武器系统</span>
                           <a-select-option value="1">
                             总体
                           </a-select-option>
                         </a-select-opt-group>
-                        <a-select-opt-group>
-                          <span slot="label"><a-icon type="rocket"/>指控车</span>
-                          <a-select-option value="2">
-                            总体
-                          </a-select-option>
-                          <a-select-option value="3">
-                            指挥
-                          </a-select-option>
-                        </a-select-opt-group>
-                        <a-select-opt-group>
-                          <span slot="label"><a-icon type="rocket"/>发射车</span>
-                          <a-select-option value="4">
-                            操作
-                          </a-select-option>
-                        </a-select-opt-group>
-                        <a-select-opt-group>
-                          <span slot="label"><a-icon type="rocket"/>雷达车</span>
-                          <a-select-option value="5">
-                            维修
-                          </a-select-option>
-                        </a-select-opt-group>
-              </a-select>
+                <a-select-opt-group>
+                  <span slot="label"><a-icon type="rocket"/>指控车</span>
+                  <a-select-option value="2">
+                    指挥
+                  </a-select-option>
+                  <a-select-option value="3">
+                    操作
+                  </a-select-option>
+                  <a-select-option value="4">
+                    维修
+                  </a-select-option>
+                </a-select-opt-group>
+                <a-select-opt-group>
+                  <span slot="label"><a-icon type="rocket"/>发射车</span>
+                  <a-select-option value="5">
+                    操作
+                  </a-select-option>
+                  <a-select-option value="6">
+                    维修
+                  </a-select-option>
+                </a-select-opt-group>
+                <a-select-opt-group>
+                  <span slot="label"><a-icon type="rocket"/>雷达车</span>
+                  <a-select-option value="7">
+                    操作
+                  </a-select-option>
+                  <a-select-option value="8">
+                    维修
+                  </a-select-option>
+                </a-select-opt-group>
+                    </a-select>
                   </span>
                   <sapn v-else>
                       {{text}}
@@ -462,7 +527,6 @@
 
               </template>
               <template slot="operation" slot-scope="text,record">
-
                 <sapn v-if="testManagementSet">
                   <span style="font-size: 18px;color: #0ca5ec;cursor: pointer">
                       {{"确定"}}
@@ -480,9 +544,6 @@
                   <span style="font-size: 18px;color: #0ca5ec;cursor: pointer;margin-left: 20px"
                         @click="testManagementSettings">
                       {{"设置"}}
-                    </span>
-                      <span style="font-size: 18px;color: #ff0000;cursor: pointer;margin-left: 20px">
-                      {{"删除"}}
                     </span>
                 </span>
               </template>
@@ -719,7 +780,14 @@
 
 <script>
   import './ExaminationPaperSettings.less'
-  import {initStaffingManagement,editStaffingManagement} from '@/api/staffingManagement.js'
+  import {initStaffingManagement, editStaffingManagement} from '@/api/staffingManagement.js'
+  import {
+    initLearningAndTrainingProjectManagement,
+    addLearningAndTrainingProjectManagement,
+    editAndTrainingProjectManagement
+  } from '@/api/learningAndTrainingProjectManagement.js'
+
+  import {initTestManagement} from "@/api/testManagement.js"
 
   const rowSelection = {
     onChange: (selectedRowKeys, selectedRows) => {
@@ -882,23 +950,17 @@
   const learningManagementColumns = [
     {
       title: "序号",
-      dataIndex: 'NO',
+      dataIndex: 'No',
       align: 'center'
     },
     {
       title: '学习与培训项目',
-      dataIndex: 'learningAndTrainingPrograms',
+      dataIndex: 'name',
       align: 'center'
     },
-    // {
-    //   title: '所属装备',
-    //   dataIndex: 'system',
-    //   align: 'center'
-    //
-    // },
     {
       title: '学习类型',
-      dataIndex: 'typesOfLearning',
+      dataIndex: 'studyType',
       align: 'center'
 
     },
@@ -910,7 +972,7 @@
     },
     {
       title: '学时',
-      dataIndex: 'classHour',
+      dataIndex: 'studyTime',
       align: 'center'
     },
     {
@@ -1051,7 +1113,7 @@
         testManagementSet: true,
 
         personnelModal: false,
-        learningManagementSet: true,
+        learningManagementSet: false,
         tabsVisible3: false,
         tabsVisible1: true,
         tabsVisible2: false,
@@ -1112,8 +1174,13 @@
          */
         equipPosition: 'all',
         staffingManagementPage: 1,
+        LearningAndTrainingProjectManagementPage: 1,
         staffingManagementTotal: 0,
         initStaffingManagementData: [],
+
+
+        initLearningAndTrainingProjectManagementData: [],
+        learningAndTrainingProjectManagementTotal: 0,
 
 
         testQuestionsModal: false,
@@ -1141,7 +1208,19 @@
 
         personnelRowShow: false,
         personnelRowId: '',
-        personnelEquipPosition: []
+        personnelEquipPosition: [],
+        LearningAndTrainingProjectManagementForm: {
+          name: '',
+          studyType: '',
+          equipPosition: "1",
+          studyTime: ''
+        },
+        staffingManagementRowId: '',
+        staffingManagementRowShow: false,
+
+        testManagementPage: 1,
+        testManagementequipPosition: [],
+        testManagementDescribe: ""
 
       }
     },
@@ -1209,7 +1288,7 @@
       },
       //人员配置管理设置
       personnelSettings(record, v) {
-
+        this.personnelEquipPosition = []
         this.personnelRowId = record.id
         // this.personnelPosition = record.equipPosition
         if (v == "3") {
@@ -1287,11 +1366,28 @@
         })
 
       },
+
+      staffingManagementSettings(record, v) {
+        this.personnelEquipPosition = []
+        this.staffingManagementRowId = record.id
+        if (v == "3") {
+          this.staffingManagementRowShow = true
+        } else {
+          this.staffingManagementRowShow = false
+        }
+
+      },
       //  人员配置搜索管理
       searchStaffing(v, p) {
         console.log(v, p);
         this.equipPosition = v
         this.initStaffingManagement()
+      },
+
+      searchTestManagement(v, p) {
+        console.log(v, p);
+        this.testManagementequipPosition = v
+        this.initTestManagement()
       },
 
 
@@ -1327,6 +1423,29 @@
         this.personnelRowShow = false
 
       },
+
+
+      OKLearningManagementRow(record, v) {
+        let that = this
+        editAndTrainingProjectManagement({
+          learningManagementId: record.id,
+          equipPosition: that.personnelEquipPosition.toString()
+        }).then(function (res) {
+          console.log(res)
+          that.initLearningAndTrainingProjectManagement();
+          if (res === 1) {
+            that.$message.success("修改成功");
+          } else {
+            that.$message.warning("修改失败");
+          }
+
+        }).catch(function (err) {
+          console.log(err)
+        })
+        this.staffingManagementRowShow = false
+
+      },
+
       //试题管理
       /**
        * @Author:     风中的那朵云
@@ -1343,6 +1462,93 @@
       },
 
 
+      /**
+       * @Author:     风中的那朵云
+       * @Description:  学习与训练项目管理
+       * @Date:    2020/5/28
+       * @Version:    1.0
+       */
+      initLearningAndTrainingProjectManagement() {
+        let that = this
+        initLearningAndTrainingProjectManagement({
+          pageNo: that.LearningAndTrainingProjectManagementPage
+        }).then(function (res) {
+          console.log(res)
+          that.initLearningAndTrainingProjectManagementData = res.personnelList
+          that.learningAndTrainingProjectManagementTotal = res.total
+          let i = 1
+          that.initLearningAndTrainingProjectManagementData.map(item => {
+            item.No = i
+            i++
+
+            if (item.studyType === '1') {
+              item.studyType = "理论学习"
+            } else if (item.studyType === '2') {
+              item.studyType = "操作训练学习"
+            }
+            if (item.equipPosition !== "" && item.equipPosition !== null && item.equipPosition.length > 0) {
+              let a = item.equipPosition.replace("1", "武器装备_总体");
+              let b = a.replace("2", "指控车_指挥");
+              let c = b.replace("3", "指控车_操作");
+              let d = c.replace("4", "武器装备_维修");
+              let e = d.replace("5", "发射车_操作");
+              let f = e.replace("6", "发射车_维修");
+              let g = f.replace("7", "雷达车_操作");
+              let h = g.replace("8", "雷达车_维修");
+              item.equipPosition = h;
+            }
+          })
+        }).catch(function (err) {
+          console.log(err)
+        })
+
+      },
+
+
+      addLearningAndTrainingProjectManagementForm() {
+        let that = this
+        let name = that.LearningAndTrainingProjectManagementForm.name
+        let studyType = that.LearningAndTrainingProjectManagementForm.studyType
+        let equipPosition = that.LearningAndTrainingProjectManagementForm.equipPosition.toString()
+        let studyTime = that.LearningAndTrainingProjectManagementForm.studyTime
+
+        if (name === null || name === "") {
+          that.$message.warning("描述不能为空");
+          return;
+        } else if (name.length > 6) {
+          that.$message.warning("名称太长了");
+          return;
+        }
+        if (studyType === null || studyType === "") {
+          that.$message.warning("学习类型不能为空");
+          return;
+        }
+        if (equipPosition === null || equipPosition === "") {
+          that.$message.warning("使用岗位不能为空");
+          return;
+        } else if (studyTime === null || studyTime === "") {
+          that.$message.warning("学时不能为空");
+          return;
+        }
+        that.showLearningAndTrainingProjectManagementModal = false;
+        addLearningAndTrainingProjectManagement({
+          name: name,
+          studyType: studyType,
+          equipPosition: equipPosition,
+          studyTime: studyTime
+        }).then(function (res) {
+          console.log(res)
+          if (res === 1) {
+            that.initLearningAndTrainingProjectManagement();
+            that.$message.success("添加成功");
+          } else {
+            that.$message.warning("添加失败");
+          }
+
+        }).catch(function (err) {
+          console.log(err)
+        })
+      },
       //  学习和训练项目管理
       showLearningAndTrainingProjectManagement() {
         this.showLearningAndTrainingProjectManagementModal = true
@@ -1352,8 +1558,56 @@
     },
 
 
+
+    /**
+     * @Author:     风中的那朵云
+     * @Description:  试卷管理
+     * @Date:    2020/5/6
+     * @Version:    1.0
+     */
+    initTestManagement() {
+      let that = this
+      initTestManagement({
+        pageNo: that.testManagementPage,
+        equipPosition: that.testManagementequipPosition.toString(),
+        testDescribe: that.testManagementDescribe
+      }).then(function (res) {
+        console.log(res)
+        that.initLearningAndTrainingProjectManagementData = res.personnelList
+        that.learningAndTrainingProjectManagementTotal = res.total
+        let i = 1
+        that.initLearningAndTrainingProjectManagementData.map(item => {
+          item.No = i
+          i++
+
+          if (item.studyType === '1') {
+            item.studyType = "理论学习"
+          } else if (item.studyType === '2') {
+            item.studyType = "操作训练学习"
+          }
+          if (item.equipPosition !== "" && item.equipPosition !== null && item.equipPosition.length > 0) {
+            let a = item.equipPosition.replace("1", "武器装备_总体");
+            let b = a.replace("2", "指控车_指挥");
+            let c = b.replace("3", "指控车_操作");
+            let d = c.replace("4", "武器装备_维修");
+            let e = d.replace("5", "发射车_操作");
+            let f = e.replace("6", "发射车_维修");
+            let g = f.replace("7", "雷达车_操作");
+            let h = g.replace("8", "雷达车_维修");
+            item.equipPosition = h;
+          }
+        })
+      }).catch(function (err) {
+        console.log(err)
+      })
+
+    },
+
+
     mounted() {
       this.initStaffingManagement()
+      this.initLearningAndTrainingProjectManagement()
+      this.initTestManagement()
     }
   }
 </script>
