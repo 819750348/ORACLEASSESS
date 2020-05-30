@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.jantd.modules.assessment.mapper.TestManagementMapper">
+    <resultMap id="personnelSettings" type="cn.jantd.modules.assessment.entity.TBusiExamProblemTemp" >
+        <result column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="problem_title" property="problemTitle" jdbcType="VARCHAR"/>
+        <result column="problem_type" property="problemType" jdbcType="VARCHAR"/>
+        <result column="equip" property="equip" jdbcType="VARCHAR"/>
+        <result column="position" property="position" jdbcType="VARCHAR"/>
+        <result column="equip_position" property="equipPosition" jdbcType="VARCHAR"/>
+        <result column="scores_count" property="scoresCount" jdbcType="VARCHAR"/>
+        <result column="del_flag" property="delFlag" jdbcType="VARCHAR"/>
+        <result column="create_by" property="createBy" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="VARCHAR"/>
+        <result column="update_by" property="updateBy" jdbcType="VARCHAR"/>
+        <result column="update_time" property="updateTime" jdbcType="VARCHAR"/>
+        <result column="problem_classify" property="problemClassify" jdbcType="VARCHAR"/>
+        <result column="answer_str" property="answerStr" jdbcType="VARCHAR"/>
+        <result column="success_answer" property="successAnswer" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="queryPageList"   resultMap="personnelSettings">
+        select * from t_busi_exam_problem_temp where
+        <if test="equipPosition != 'all' ">
+            equip_position = #{equipPosition} and
+        </if>
+        problem_title like #{problemTitle} ORDER BY id desc LIMIT #{pageNo}, 10;
+    </select>
+
+    <select id="queryPageTotal" resultType="int" parameterType="String">
+        select count(*) from t_busi_exam_problem_temp where
+            <if test="equipPosition != 'all' ">
+                equip_position like #{equipPosition} and
+            </if>
+            problem_title like #{problemTitle};
+    </select>
+
+    <update id="editTestManagement">
+        UPDATE t_busi_exam_problem_temp SET equip_position = #{testManagementEquipPosition}
+        where id = #{testManagementId}
+    </update>
+
+    <delete id="deleteTestManagement">
+        DELETE FROM t_busi_exam_problem_temp WHERE id in
+        <foreach collection ="objs" item="obj" open="(" separator="," close=")">
+            #{obj}
+        </foreach >
+    </delete>
+
+</mapper>

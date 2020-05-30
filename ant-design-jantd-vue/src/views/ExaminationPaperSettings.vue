@@ -443,7 +443,7 @@
           <a-col :span="5">
             <span>
               <a-input v-model="testManagementDescribe" style="width: 220px" placeholder="请输入描述内容"/>
-              <a-button style="margin-left: 10px">
+              <a-button style="margin-left: 10px" @click="searchTestManagementDescribe">
                 {{"搜索"}}
               </a-button>
             </span>
@@ -464,7 +464,7 @@
           </a-col>
           <a-col :span="2">
             <span>
-                <a-button>
+                <a-button @click="removeTestManagement">
                   {{"删除"}}
                 </a-button>
             </span>
@@ -476,12 +476,22 @@
           justify="center"
           align="center">
           <a-col :span="24">
-            <a-table :dataSource="testManagementData" :pagination="false" :columns="testManagementColumns"
-                     :rowSelection="rowSelection">
+            <a-table :dataSource="initTestManagementData" :pagination="false" :columns="testManagementColumns"
+                     :rowSelection="{ onChange: onSelectChange }">
+              <template slot="problemTitle" slot-scope="text,record">
+                <span>
+                  <span v-if="text.length > 8" :title="text">
+                      {{text.substring(0,8) + "..."}}
+                  </span>
+                  <sapn v-else>
+                      {{text}}
+                  </sapn>
+                </span>
+              </template>
               <template slot="equipPosition" slot-scope="text,record">
                 <span>
-                  <span v-if="testManagementSet === true">
-                      <a-select style="width: 200px" @change="positionSetting" mode="multiple">
+                  <span v-if="testManagementSet=== true && testManagementRowId === record.id">
+                      <a-select style="width: 200px" @change="testManagementPositionSetting" mode="multiple">
                         <a-select-opt-group>
                           <span slot="label"><a-icon type="rocket"/>武器系统</span>
                           <a-select-option value="1">
@@ -527,8 +537,8 @@
 
               </template>
               <template slot="operation" slot-scope="text,record">
-                <sapn v-if="testManagementSet">
-                  <span style="font-size: 18px;color: #0ca5ec;cursor: pointer">
+                <sapn v-if="testManagementSet=== true && testManagementRowId === record.id">
+                  <span style="font-size: 18px;color: #0ca5ec;cursor: pointer" @click="OKTestManagementRow(record, '1')">
                       {{"确定"}}
                     </span>
                   <span style="font-size: 18px;color: #ff0000;cursor: pointer;margin-left: 20px"
@@ -542,7 +552,7 @@
                       {{"详情"}}
                     </span>
                   <span style="font-size: 18px;color: #0ca5ec;cursor: pointer;margin-left: 20px"
-                        @click="testManagementSettings">
+                        @click="testManagementSettings(record,'3')">
                       {{"设置"}}
                     </span>
                 </span>
@@ -554,7 +564,7 @@
                     <a-pagination
                       size="small"
                       style="text-align: center;"
-                      :total="5"
+                      :total="testManagementDataTotal"
                       :showSizeChanger="false"
                       showQuickJumper
                       :showTotal="total => `共 ${total} 条`"/>
@@ -690,6 +700,7 @@
         <a-modal
           v-model="testManagementDetailsModal"
           width="800px"
+          :footer="null"
         >
               <span slot="title">
                 <img src="@/assets/img/tianjiaB.png" style="width: 24px;height: 24px;">
@@ -703,7 +714,7 @@
             </a-col>
             <a-col :span="4">
                <span style="font-size: 18px;color: #ffffff">
-                 {{testManagementDetails.name}}
+                 {{testManagementDetails.problemTitle}}
               </span>
             </a-col>
           </a-row>
@@ -715,7 +726,7 @@
             </a-col>
             <a-col :span="4">
               <span style="font-size: 18px;color: #ffffff">
-                {{testManagementDetails.examType}}
+                {{testManagementDetails.problemClassify}}
               </span>
             </a-col>
           </a-row>
@@ -742,7 +753,7 @@
             </a-col>
             <a-col :span="4">
                <span style="font-size: 18px;color: #ffffff">
-                 {{testManagementDetails.topicType}}
+                 {{testManagementDetails.problemType}}
                </span>
             </a-col>
           </a-row>
@@ -756,21 +767,21 @@
             </a-col>
             <a-col :span="4">
                <span style="font-size: 18px;color: #ffffff">
-                 {{testManagementDetails.answer}}
+                 {{testManagementDetails.successAnswer}}
                </span>
             </a-col>
           </a-row>
 
-          <span slot="footer">
-                <a-row type="flex" justify="center">
-                  <a-col :span="4">
-                    <a-button>
-                      <a-icon type="upload"/>
-                      确定
-                    </a-button>
-                  </a-col>
-                </a-row>
-              </span>
+<!--          <span slot="footer">-->
+<!--                <a-row type="flex" justify="center">-->
+<!--                  <a-col :span="4">-->
+<!--                    <a-button>-->
+<!--                      <a-icon type="upload"/>-->
+<!--                      确定-->
+<!--                    </a-button>-->
+<!--                  </a-col>-->
+<!--                </a-row>-->
+<!--              </span>-->
         </a-modal>
       </div>
     </a-card>
@@ -787,7 +798,7 @@
     editAndTrainingProjectManagement
   } from '@/api/learningAndTrainingProjectManagement.js'
 
-  import {initTestManagement} from "@/api/testManagement.js"
+  import {initTestManagement,editTestManagement,deleteTestManagement} from "@/api/testManagement.js"
 
   const rowSelection = {
     onChange: (selectedRowKeys, selectedRows) => {
@@ -851,24 +862,20 @@
   const testManagementColumns = [
     {
       title: "序号",
-      dataIndex: 'NO',
+      dataIndex: 'No',
       align: 'center'
     },
     {
       title: "试题描述",
-      dataIndex: 'name',
+      dataIndex: 'problemTitle',
+      scopedSlots: {customRender: 'problemTitle'},
       align: 'center'
     },
     {
       title: '试题类型',
-      dataIndex: 'examType',
+      dataIndex: 'problemClassify',
       align: 'center'
     },
-    // {
-    //   title: '所属系统',
-    //   dataIndex: 'system',
-    //   align: 'center'
-    // },
     {
       title: '适用岗位',
       dataIndex: 'equipPosition',
@@ -877,7 +884,7 @@
     },
     {
       title: '题型',
-      dataIndex: 'topicType',
+      dataIndex: 'problemType',
       align: 'center'
     },
     // {
@@ -1110,7 +1117,7 @@
         LMM: false,
 
 
-        testManagementSet: true,
+        testManagementSet: false,
 
         personnelModal: false,
         learningManagementSet: false,
@@ -1173,6 +1180,8 @@
          * @Version:    1.0
          */
         equipPosition: 'all',
+        searchtestManagementequipPosition: 'all',
+
         staffingManagementPage: 1,
         LearningAndTrainingProjectManagementPage: 1,
         staffingManagementTotal: 0,
@@ -1219,8 +1228,15 @@
         staffingManagementRowShow: false,
 
         testManagementPage: 1,
-        testManagementequipPosition: [],
-        testManagementDescribe: ""
+        testManagementDescribe: "",
+        initTestManagementData : [],
+        testManagementDataTotal: 0,
+
+
+        testManagementEquipPosition : [],
+        testManagementRowId : '',
+
+        removeTestManagementId: ''
 
       }
     },
@@ -1299,8 +1315,9 @@
 
       },
       //试题管理
-      testManagementSettings() {
-        if (this.testManagementSet === false) {
+      testManagementSettings(record,v) {
+        this.testManagementRowId = record.id
+        if (v == "3") {
           this.testManagementSet = true
         } else {
           this.testManagementSet = false
@@ -1308,6 +1325,11 @@
       },
       positionSetting(v, p) {
         this.personnelEquipPosition = v
+        console.log(v, p)
+      },
+
+      testManagementPositionSetting(v, p){
+        this.testManagementEquipPosition = v
         console.log(v, p)
       },
 
@@ -1386,7 +1408,11 @@
 
       searchTestManagement(v, p) {
         console.log(v, p);
-        this.testManagementequipPosition = v
+        this.searchtestManagementequipPosition = v
+        this.initTestManagement()
+      },
+
+      searchTestManagementDescribe() {
         this.initTestManagement()
       },
 
@@ -1445,6 +1471,28 @@
         this.staffingManagementRowShow = false
 
       },
+
+      OKTestManagementRow(record, v) {
+        let that = this
+        editTestManagement({
+          testManagementId: record.id,
+          testManagementEquipPosition: that.testManagementEquipPosition.toString()
+        }).then(function (res) {
+          console.log(res)
+          that.initTestManagement();
+          if (res === 1) {
+            that.$message.success("修改成功");
+          } else {
+            that.$message.warning("修改失败");
+          }
+
+        }).catch(function (err) {
+          console.log(err)
+        })
+        this.testManagementSet = false
+
+      },
+
 
       //试题管理
       /**
@@ -1555,59 +1603,96 @@
       },
 
 
-    },
+
+      /**
+       * @Author:     风中的那朵云
+       * @Description:  试卷管理
+       * @Date:    2020/5/6
+       * @Version:    1.0
+       */
+      initTestManagement() {
+        let that = this
+        initTestManagement({
+          pageNo: that.testManagementPage,
+          equipPosition: that.searchtestManagementequipPosition.toString(),
+          testDescribe: that.testManagementDescribe
+        }).then(function (res) {
+          console.log(res)
+          that.initTestManagementData = res.personnelList
+          that.testManagementDataTotal = res.total
+          let i = 1
+          that.initTestManagementData.map(item => {
+            item.No = i
+            i++
+
+            if (item.problemType === '1') {
+              item.problemType = "单选"
+            } else if (item.problemType === '2') {
+              item.problemType = "多选"
+            }else if(item.problemType === '3'){
+              item.problemType = "判断"
+            }
+
+            if(item.problemClassify ==="1"){
+              item.problemClassify = "理论学习"
+            }else if(item.problemClassify ==="2"){
+              item.problemClassify = "操作训练学习"
+            }
 
 
-
-    /**
-     * @Author:     风中的那朵云
-     * @Description:  试卷管理
-     * @Date:    2020/5/6
-     * @Version:    1.0
-     */
-    initTestManagement() {
-      let that = this
-      initTestManagement({
-        pageNo: that.testManagementPage,
-        equipPosition: that.testManagementequipPosition.toString(),
-        testDescribe: that.testManagementDescribe
-      }).then(function (res) {
-        console.log(res)
-        that.initLearningAndTrainingProjectManagementData = res.personnelList
-        that.learningAndTrainingProjectManagementTotal = res.total
-        let i = 1
-        that.initLearningAndTrainingProjectManagementData.map(item => {
-          item.No = i
-          i++
-
-          if (item.studyType === '1') {
-            item.studyType = "理论学习"
-          } else if (item.studyType === '2') {
-            item.studyType = "操作训练学习"
-          }
-          if (item.equipPosition !== "" && item.equipPosition !== null && item.equipPosition.length > 0) {
-            let a = item.equipPosition.replace("1", "武器装备_总体");
-            let b = a.replace("2", "指控车_指挥");
-            let c = b.replace("3", "指控车_操作");
-            let d = c.replace("4", "武器装备_维修");
-            let e = d.replace("5", "发射车_操作");
-            let f = e.replace("6", "发射车_维修");
-            let g = f.replace("7", "雷达车_操作");
-            let h = g.replace("8", "雷达车_维修");
-            item.equipPosition = h;
-          }
+            if (item.equipPosition !== "" && item.equipPosition !== null && item.equipPosition.length > 0) {
+              let a = item.equipPosition.replace("1", "武器装备_总体");
+              let b = a.replace("2", "指控车_指挥");
+              let c = b.replace("3", "指控车_操作");
+              let d = c.replace("4", "武器装备_维修");
+              let e = d.replace("5", "发射车_操作");
+              let f = e.replace("6", "发射车_维修");
+              let g = f.replace("7", "雷达车_操作");
+              let h = g.replace("8", "雷达车_维修");
+              item.equipPosition = h;
+            }
+          })
+        }).catch(function (err) {
+          console.log(err)
         })
-      }).catch(function (err) {
-        console.log(err)
-      })
 
+      },
+      removeTestManagement(){
+        let that = this
+        deleteTestManagement({
+          testManagementId: that.removeTestManagementId
+        }).then(function (res) {
+          console.log(res)
+          if (res === 1) {
+            that.initTestManagement();
+            that.$message.success("删除成功");
+          } else {
+            that.$message.warning("删除失败");
+          }
+        }).catch(function (err) {
+          console.log(err)
+        })
+      },
+      onSelectChange(selectedRowKeys, selectedRows) {
+        console.log(selectedRowKeys, selectedRows);
+        if (selectedRows.length > 0) {
+          let x;
+          let keys = [];
+          for (let i = 0; i < selectedRows.length; i++) {
+            keys.push(selectedRows[i].id);
+          }
+          this.removeTestManagementId = keys.toString();
+        }
+      }
     },
+
 
 
     mounted() {
+      this.initTestManagement()
       this.initStaffingManagement()
       this.initLearningAndTrainingProjectManagement()
-      this.initTestManagement()
+
     }
   }
 </script>

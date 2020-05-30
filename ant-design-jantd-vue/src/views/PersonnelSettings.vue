@@ -474,9 +474,9 @@
           console.log(res)
           if (res === 1) {
             that.initData();
-            that.$message.success("添加成功");
+            that.$message.success("删除成功");
           } else {
-            that.$message.warning("添加失败");
+            that.$message.warning("删除失败");
           }
 
         }).catch(function (err) {
