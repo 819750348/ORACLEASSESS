@@ -113,7 +113,12 @@
               </a-select>
                   </span>
                   <sapn v-else>
+                    <span :title="text" v-if="text !==null && text !=='' && text.length > 18 ">
+                      {{text.substring(0,18) + '...'}}
+                    </span>
+                    <span v-else>
                       {{text}}
+                    </span>
                   </sapn>
                 </span>
               </template>
@@ -211,7 +216,12 @@
               </a-select>
                   </span>
                   <sapn v-else>
+                    <span :title="text" v-if="text !==null && text !=='' && text.length > 18 ">
+                      {{text.substring(0,18) + '...'}}
+                    </span>
+                    <span v-else>
                       {{text}}
+                    </span>
                   </sapn>
                 </span>
                 </span>
@@ -241,6 +251,8 @@
                     <a-pagination
                       size="small"
                       style="text-align: center;"
+                      @change="setLearningAndTrainingProjectManagementPage"
+                      v-model="LearningAndTrainingProjectManagementPage"
                       :total="learningAndTrainingProjectManagementTotal"
                       :showSizeChanger="false"
                       showQuickJumper
@@ -314,7 +326,7 @@
             <a-col :span="4">
               <span>
                      <a-select style="width: 220px" v-model="LearningAndTrainingProjectManagementForm.equipPosition"
-                               :maxTagCount="0" mode="multiple">
+                               mode="multiple">
                         <a-select-opt-group>
                           <span slot="label"><a-icon type="rocket"/>武器系统</span>
                           <a-select-option value="1">
@@ -569,6 +581,9 @@
                       size="small"
                       style="text-align: center;"
                       :total="testManagementDataTotal"
+
+                      @change="setTestManagementPage"
+                      v-model="testManagementPage"
                       :showSizeChanger="false"
                       showQuickJumper
                       :showTotal="total => `共 ${total} 条`"/>
@@ -774,10 +789,10 @@
                         <a-select-option value="B">
                           B
                         </a-select-option>
-                        <a-select-option value="C">
+                        <a-select-option value="C" v-if="questionType">
                           C
                         </a-select-option>
-                       <a-select-option value="D">
+                       <a-select-option value="D" v-if="questionType">
                           D
                         </a-select-option>
                       </a-select>
@@ -1296,7 +1311,7 @@
         LearningAndTrainingProjectManagementForm: {
           name: '',
           studyType: '',
-          equipPosition: "1",
+          // equipPosition: "1",
           studyTime: ''
         },
         staffingManagementRowId: '',
@@ -1464,7 +1479,7 @@
               let a = item.equipPosition.replace("1", "武器装备_总体");
               let b = a.replace("2", "指控车_指挥");
               let c = b.replace("3", "指控车_操作");
-              let d = c.replace("4", "武器装备_维修");
+              let d = c.replace("4", "指控车_维修");
               let e = d.replace("5", "发射车_操作");
               let f = e.replace("6", "发射车_维修");
               let g = f.replace("7", "雷达车_操作");
@@ -1510,6 +1525,17 @@
         console.log(page)
         this.staffingManagementPage = page
         this.initStaffingManagement()
+      },
+      setLearningAndTrainingProjectManagementPage(page) {
+        console.log(page)
+        this.LearningAndTrainingProjectManagementPage = page
+        this.initLearningAndTrainingProjectManagement()
+      },
+
+      setTestManagementPage(page) {
+        console.log(page)
+        this.testManagementPage = page
+        this.initTestManagement()
       },
       /**
        * @Author:     风中的那朵云
@@ -1591,6 +1617,14 @@
        * @Version:    1.0
        */
       addTestQuestions() {
+        this.addTestForm ={
+          problemTitle: '',
+          problemType: '',
+          equipPosition: [],
+          problemClassify: '',
+          answerStr: [],
+          // successAnswer: null
+        }
         this.testQuestionsModal = true
       },
       showTestManagementDetails(record) {
@@ -1628,7 +1662,7 @@
               let a = item.equipPosition.replace("1", "武器装备_总体");
               let b = a.replace("2", "指控车_指挥");
               let c = b.replace("3", "指控车_操作");
-              let d = c.replace("4", "武器装备_维修");
+              let d = c.replace("4", "指控车_维修");
               let e = d.replace("5", "发射车_操作");
               let f = e.replace("6", "发射车_维修");
               let g = f.replace("7", "雷达车_操作");
@@ -1689,6 +1723,7 @@
       },
       //  学习和训练项目管理
       showLearningAndTrainingProjectManagement() {
+        this.LearningAndTrainingProjectManagementForm= {}
         this.showLearningAndTrainingProjectManagementModal = true
       },
 
@@ -1733,7 +1768,7 @@
               let a = item.equipPosition.replace("1", "武器装备_总体");
               let b = a.replace("2", "指控车_指挥");
               let c = b.replace("3", "指控车_操作");
-              let d = c.replace("4", "武器装备_维修");
+              let d = c.replace("4", "指控车_维修");
               let e = d.replace("5", "发射车_操作");
               let f = e.replace("6", "发射车_维修");
               let g = f.replace("7", "雷达车_操作");
@@ -1813,6 +1848,7 @@
           console.log(info.file, info.fileList);
         }
         if (info.file.status === 'done') {
+          this.initTestManagement();
           this.$message.success(`${info.file.name} file uploaded successfully`);
         } else if (info.file.status === 'error') {
           this.$message.error(`${info.file.name} file upload failed.`);

@@ -19,7 +19,7 @@
         <if test="staffGroup !=null and staffGroup != '' and staffGroup !='全部'">
             staff_group = #{staffGroup} and
         </if>
-	    name like #{name} ORDER BY id desc LIMIT #{pageNo}, 10;
+	    name like #{name} ORDER BY create_time desc LIMIT #{pageNo}, 10;
 	</select>
 
     <select id="queryPageTotal" resultType="int">
@@ -48,11 +48,11 @@
     </insert>
 
     <select id="searchPersonnel" resultMap="personnelSettings">
-	   select * from t_sys_staff where name like #{name} and staff_group = #{staffGroup} ORDER BY id desc LIMIT 0, 10;
+	   select * from t_sys_staff where name like #{name} and staff_group = #{staffGroup} ORDER BY create_time desc LIMIT 0, 10;
 	</select>
 
     <select id="searchPersonnelName" resultMap="personnelSettings">
-	   select * from t_sys_staff where name like #{name}  ORDER BY id desc LIMIT 0, 10;
+	   select * from t_sys_staff where name like #{name}  ORDER BY create_time desc LIMIT 0, 10;
 	</select>
 
     <select id="querySearchPageTotalName" resultType="int">

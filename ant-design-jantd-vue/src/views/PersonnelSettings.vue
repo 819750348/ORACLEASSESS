@@ -331,6 +331,9 @@
        * @Version:    1.0
        */
       addData() {
+        this.addForm.name=""
+        this.addForm.staffGroup = ""
+        this.addForm.password = ""
         if (this.roleModal === false) {
           this.roleModal = true
         } else {

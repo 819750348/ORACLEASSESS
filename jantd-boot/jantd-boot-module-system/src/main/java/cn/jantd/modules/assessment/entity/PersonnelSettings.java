@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @ProjectName: jantd-boot-parent
@@ -43,13 +44,7 @@ public class PersonnelSettings implements Serializable {
         this.name = name;
     }
 
-    public String getCreateTime() {
-        return createTime;
-    }
 
-    public void setCreateTime(String createTime) {
-        this.createTime = createTime;
-    }
 
     public String getEquip() {
         return equip;
@@ -130,10 +125,18 @@ public class PersonnelSettings implements Serializable {
     private String name;
 
 
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
     /**
      * 创建时间
      */
-    private String createTime;
+    private Date createTime;
     /**
      * 装备
      */

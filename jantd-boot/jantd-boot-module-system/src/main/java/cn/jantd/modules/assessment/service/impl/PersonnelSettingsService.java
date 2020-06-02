@@ -44,7 +44,14 @@ public class PersonnelSettingsService {
      * @Version:    1.0
      */
     public void addPersonnel(PersonnelSettings personnelSettings){
-        personnelSettingsMapper.addPersonnel(personnelSettings.getName(),personnelSettings.getStaffGroup(),personnelSettings.getPassword());
+//        personnelSettingsMapper.addPersonnel(personnelSettings.getName(),personnelSettings.getStaffGroup(),personnelSettings.getPassword());
+
+        if(personnelSettings.getStaffGroup().equals("教学管理人员")){
+            personnelSettings.setStaffType("1");
+        }else if(personnelSettings.getStaffGroup().equals("学员")){
+            personnelSettings.setStaffType("2");
+        }
+        personnelSettingsMapper.insert(personnelSettings);
     }
 
 
@@ -84,7 +91,7 @@ public class PersonnelSettingsService {
         String[]  listIds = personnelId.split(",");
         List listId = new ArrayList();
         for(int i = 0;i<listIds.length;i++){
-            listId.add(Integer.parseInt(listIds[i]));
+            listId.add(listIds[i]);
         }
         personnelSettingsMapper.deletePersonnel(listId);
     }

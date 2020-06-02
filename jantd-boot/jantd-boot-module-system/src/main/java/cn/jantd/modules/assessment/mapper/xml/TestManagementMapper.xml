@@ -24,7 +24,7 @@
         <if test="equipPosition != 'all' ">
             equip_position = #{equipPosition} and
         </if>
-        problem_title like #{problemTitle} ORDER BY id desc LIMIT #{pageNo}, 10;
+        problem_title like #{problemTitle} ORDER BY create_time desc LIMIT #{pageNo}, 10;
     </select>
 
     <select id="queryPageTotal" resultType="int" parameterType="String">

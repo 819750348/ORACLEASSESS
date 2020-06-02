@@ -9,10 +9,11 @@
         <result column="position" property="position" jdbcType="VARCHAR"/>
         <result column="equip_position" property="equipPosition" jdbcType="VARCHAR"/>
         <result column="study_time" property="studyTime" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="VARCHAR"/>
     </resultMap>
 
     <select id="queryPageList" parameterType="int"  resultMap="TBusiStudy">
-        select * from t_busi_study_temp ORDER BY id desc LIMIT #{pageNo}, 10;
+        select * from t_busi_study_temp ORDER BY create_time desc LIMIT #{pageNo}, 10;
     </select>
 
     <select id="queryPageTotal" resultType="int">

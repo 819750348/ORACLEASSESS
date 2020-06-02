@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @ProjectName: jantd-boot-parent
@@ -28,4 +29,5 @@ public class TBusiStudy  implements Serializable {
     private String position;
     private String StudyTime;
     private String equipPosition;
+    private Date createTime;
 }

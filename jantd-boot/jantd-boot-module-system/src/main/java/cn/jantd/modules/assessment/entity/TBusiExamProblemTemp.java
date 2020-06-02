@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
+import java.util.Date;
+
 /**
  * @ProjectName: jantd-boot-parent
  * @Package: cn.jantd.modules.assessment.entity
@@ -91,13 +93,7 @@ public class TBusiExamProblemTemp {
         this.createBy = createBy;
     }
 
-    public String getCreateTime() {
-        return createTime;
-    }
 
-    public void setCreateTime(String createTime) {
-        this.createTime = createTime;
-    }
 
     public String getUpdateBy() {
         return updateBy;
@@ -107,13 +103,7 @@ public class TBusiExamProblemTemp {
         this.updateBy = updateBy;
     }
 
-    public String getUpdateTime() {
-        return updateTime;
-    }
 
-    public void setUpdateTime(String updateTime) {
-        this.updateTime = updateTime;
-    }
 
     public String getProblemClassify() {
         return problemClassify;
@@ -150,9 +140,26 @@ public class TBusiExamProblemTemp {
     private String scoresCount;
     private String delFlag;
     private String createBy;
-    private String createTime;
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    private Date createTime;
     private String updateBy;
-    private String updateTime;
+    private Date updateTime;
     private String problemClassify;
     private String answerStr;
     private String successAnswer;

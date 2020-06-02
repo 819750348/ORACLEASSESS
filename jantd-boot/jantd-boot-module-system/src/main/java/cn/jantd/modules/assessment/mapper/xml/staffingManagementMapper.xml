@@ -16,20 +16,20 @@
     </resultMap>
 
     <select id="queryPageList"  resultMap="personnelSettings">
-        select * from t_sys_staff
+        select * from t_sys_staff where  staff_group = '学员'
         <if test="equipPosition != '%all%' ">
-            where equip_position like #{equipPosition}
+            and equip_position like #{equipPosition}
         </if>
-        ORDER BY id desc LIMIT #{pageNo}, 10;
+        ORDER BY create_time desc LIMIT #{pageNo}, 10;
     </select>
 
     <select id="queryPageTotal" resultType="int" parameterType="string">
-        select count(*) from t_sys_staff
-        <where>
+        select count(*) from t_sys_staff where  staff_group = '学员'
+
           <if test="_parameter != '%all%' ">
-            equip_position like #{equipPosition}
+           and equip_position like #{equipPosition}
           </if>
-        </where>
+
     </select>
 
     <update id="editPersonnel">
