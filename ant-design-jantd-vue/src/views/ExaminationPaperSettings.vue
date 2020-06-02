@@ -293,7 +293,7 @@
             </a-col>
             <a-col :span="4">
               <span>
-                    <a-select default-value="lucy" style="width: 220px"
+                    <a-select default-value="1" style="width: 220px"
                               v-model="LearningAndTrainingProjectManagementForm.studyType">
                         <a-select-option value="1">
                           {{"理论学习"}}
@@ -453,10 +453,13 @@
           <a-col :span="3">
             <span>
                           <a-upload
-                            action="http://192.168.5.253:8080/jantd-boot/teacher/problem/importExcel"
+                            name="file"
+                            :multiple="true"
+                            :headers="headers"
+                            action="http://localhost:8080/jantd-boot/api/testManagement/importExcel"
                             accept=".xlsx"
                             @change="handleImportExcel">
-                                <a-button @click="batchImport">
+                                <a-button>
                                   {{'批量导入'}}
                                 </a-button>
                           </a-upload>
@@ -538,7 +541,8 @@
               </template>
               <template slot="operation" slot-scope="text,record">
                 <sapn v-if="testManagementSet=== true && testManagementRowId === record.id">
-                  <span style="font-size: 18px;color: #0ca5ec;cursor: pointer" @click="OKTestManagementRow(record, '1')">
+                  <span style="font-size: 18px;color: #0ca5ec;cursor: pointer"
+                        @click="OKTestManagementRow(record, '1')">
                       {{"确定"}}
                     </span>
                   <span style="font-size: 18px;color: #ff0000;cursor: pointer;margin-left: 20px"
@@ -600,7 +604,7 @@
             </a-col>
             <a-col :span="4">
                <span>
-                 <a-textarea placeholder="请输入描述" allow-clear @change="" style="width: 220px"/>
+                 <a-textarea placeholder="" allow-clear v-model="addTestForm.problemTitle" style="width: 220px"/>
               </span>
             </a-col>
           </a-row>
@@ -612,11 +616,18 @@
             </a-col>
             <a-col :span="4">
               <span>
-                <a-input style="width: 220px"></a-input>
+                    <a-select default-value="1" style="width: 220px"
+                              v-model="addTestForm.problemClassify">
+                        <a-select-option value="1">
+                          {{"理论学习"}}
+                        </a-select-option>
+                        <a-select-option value="2">
+                          {{"操作训练学习"}}
+                        </a-select-option>
+                    </a-select>
               </span>
             </a-col>
           </a-row>
-
 
           <a-row type="flex" style="margin-top: 30px" justify="center">
             <a-col :span="3">
@@ -626,35 +637,44 @@
             </a-col>
             <a-col :span="4">
               <span>
-                <a-select style="width: 220px" @change="">
-                <a-select-opt-group>
-                  <span slot="label"><a-icon type="rocket"/>武器系统</span>
-                  <a-select-option value="1">
-                    总体
-                  </a-select-option>
-                </a-select-opt-group>
+                <a-select style="width: 220px" @change="" mode="multiple" v-model="addTestForm.equipPosition">
+                        <a-select-opt-group>
+                          <span slot="label"><a-icon type="rocket"/>武器系统</span>
+                          <a-select-option value="1">
+                            总体
+                          </a-select-option>
+                        </a-select-opt-group>
                 <a-select-opt-group>
                   <span slot="label"><a-icon type="rocket"/>指控车</span>
                   <a-select-option value="2">
-                    总体
+                    指挥
                   </a-select-option>
                   <a-select-option value="3">
-                    指挥
+                    操作
+                  </a-select-option>
+                  <a-select-option value="4">
+                    维修
                   </a-select-option>
                 </a-select-opt-group>
                 <a-select-opt-group>
                   <span slot="label"><a-icon type="rocket"/>发射车</span>
-                  <a-select-option value="4">
+                  <a-select-option value="5">
                     操作
+                  </a-select-option>
+                  <a-select-option value="6">
+                    维修
                   </a-select-option>
                 </a-select-opt-group>
                 <a-select-opt-group>
                   <span slot="label"><a-icon type="rocket"/>雷达车</span>
-                  <a-select-option value="5">
+                  <a-select-option value="7">
+                    操作
+                  </a-select-option>
+                  <a-select-option value="8">
                     维修
                   </a-select-option>
                 </a-select-opt-group>
-              </a-select>
+                </a-select>
               </span>
             </a-col>
           </a-row>
@@ -663,19 +683,20 @@
           <a-row type="flex" style="margin-top: 30px" justify="center">
             <a-col :span="3">
                   <span style="font-size: 18px;color: #ffffff">
-                    {{"试题描述:"}}
+                    {{"题型:"}}
                   </span>
             </a-col>
             <a-col :span="4">
                <span>
-                     <a-select default-value="单选" style="width: 220px" @change="">
-                        <a-select-option value="单选">
+                     <a-select default-value="1" style="width: 220px" v-model="addTestForm.problemType"
+                               @change="selectQuestionType">
+                        <a-select-option value="1">
                           单选
                         </a-select-option>
-                        <a-select-option value="多选">
+                        <a-select-option value="2">
                           多选
                         </a-select-option>
-                        <a-select-option value="判断">
+                        <a-select-option value="3">
                           判断
                         </a-select-option>
                       </a-select>
@@ -683,10 +704,90 @@
             </a-col>
           </a-row>
 
+          <template>
+            <a-row type="flex" style="margin-top: 30px" justify="center">
+              <a-col :span="3">
+                  <span style="font-size: 18px;color: #ffffff">
+                    {{"选项A:"}}
+                  </span>
+              </a-col>
+              <a-col :span="4">
+               <span>
+                 <a-textarea placeholder="" v-model="addTestForm.answerStr[0]" allow-clear @change=""
+                             style="width: 220px"/>
+               </span>
+              </a-col>
+            </a-row>
+            <a-row type="flex" style="margin-top: 30px" justify="center">
+              <a-col :span="3">
+                  <span style="font-size: 18px;color: #ffffff">
+                    {{"选项B:"}}
+                  </span>
+              </a-col>
+              <a-col :span="4">
+               <span>
+                 <a-textarea placeholder="" allow-clear @change="" v-model="addTestForm.answerStr[1]"
+                             style="width: 220px"/>
+               </span>
+              </a-col>
+            </a-row>
+            <a-row type="flex" style="margin-top: 30px" justify="center" v-if="questionType">
+              <a-col :span="3">
+                  <span style="font-size: 18px;color: #ffffff">
+                    {{"选项C:"}}
+                  </span>
+              </a-col>
+              <a-col :span="4">
+               <span>
+                 <a-textarea placeholder="" v-model="addTestForm.answerStr[2]" allow-clear @change=""
+                             style="width: 220px"/>
+               </span>
+              </a-col>
+            </a-row>
+            <a-row type="flex" style="margin-top: 30px" justify="center" v-if="questionType">
+              <a-col :span="3">
+                  <span style="font-size: 18px;color: #ffffff">
+                    {{"选项D:"}}
+                  </span>
+              </a-col>
+              <a-col :span="4">
+               <span>
+                 <a-textarea placeholder="" v-model="addTestForm.answerStr[3]" allow-clear @change=""
+                             style="width: 220px"/>
+               </span>
+              </a-col>
+            </a-row>
+          </template>
+
+          <a-row type="flex" style="margin-top: 30px" justify="center">
+            <a-col :span="3">
+                  <span style="font-size: 18px;color: #ffffff">
+                    {{"正确答案:"}}
+                  </span>
+            </a-col>
+            <a-col :span="4">
+               <span>
+                     <a-select style="width: 220px" mode="multiple" v-model="addTestForm.successAnswer">
+                        <a-select-option value="A">
+                          A
+                        </a-select-option>
+                        <a-select-option value="B">
+                          B
+                        </a-select-option>
+                        <a-select-option value="C">
+                          C
+                        </a-select-option>
+                       <a-select-option value="D">
+                          D
+                        </a-select-option>
+                      </a-select>
+              </span>
+            </a-col>
+          </a-row>
           <span slot="footer">
                 <a-row type="flex" justify="center">
                   <a-col :span="4">
-                    <a-button>
+                    <a-button @click="addTest">
                       <a-icon type="upload"/>
                       确定
                     </a-button>
@@ -706,82 +807,55 @@
                 <img src="@/assets/img/tianjiaB.png" style="width: 24px;height: 24px;">
                 <span style="font-size: 24px;position: relative;left: 12px;top:5px;">{{ "详情" }}</span>
               </span>
-          <a-row type="flex" style="margin-top: 30px" justify="center">
-            <a-col :span="3">
+          <a-row type="flex" style="margin-top: 30px">
+            <a-col :span="3" offset="3">
                   <span style="font-size: 18px;color: #ffffff">
                     {{"试题描述:"}}
                   </span>
             </a-col>
-            <a-col :span="4">
+            <a-col :span="18">
                <span style="font-size: 18px;color: #ffffff">
                  {{testManagementDetails.problemTitle}}
               </span>
             </a-col>
           </a-row>
-          <a-row type="flex" style="margin-top: 30px" justify="center">
-            <a-col :span="3">
-            <span style="color: #ffffff;font-size: 18px">
-              {{"试题类型:"}}
-            </span>
+          <a-row type="flex" style="margin-top: 30px" justify="center" v-for="item in testManagementDetails.answerArray" :key="item">
+            <a-col :span="3" offset="3">
+              <span style="color: #ffffff;font-size: 18px">
+                {{item.No + ':'}}
+              </span>
             </a-col>
-            <a-col :span="4">
+            <a-col :span="18">
               <span style="font-size: 18px;color: #ffffff">
-                {{testManagementDetails.problemClassify}}
+                {{item.answerStr}}
               </span>
             </a-col>
           </a-row>
-
-          <a-row type="flex" style="margin-top: 30px" justify="center">
-            <a-col :span="3">
-            <span style="color: #ffffff;font-size: 18px">
-              {{"适用岗位:"}}
-            </span>
-            </a-col>
-            <a-col :span="4">
-              <span style="font-size: 18px;color: #ffffff">
-                {{testManagementDetails.equipPosition}}
-              </span>
-            </a-col>
-          </a-row>
-
-
-          <a-row type="flex" style="margin-top: 30px" justify="center">
-            <a-col :span="3">
+          <a-row type="flex" style="margin-top: 30px">
+            <a-col :span="3" :offset="3">
                   <span style="font-size: 18px;color: #ffffff">
-                    {{"题型:"}}
+                    {{"正确答案:"}}
                   </span>
             </a-col>
-            <a-col :span="4">
-               <span style="font-size: 18px;color: #ffffff">
-                 {{testManagementDetails.problemType}}
-               </span>
-            </a-col>
-          </a-row>
-
-
-          <a-row type="flex" style="margin-top: 30px" justify="center">
-            <a-col :span="3">
-                  <span style="font-size: 18px;color: #ffffff">
-                    {{"答案:"}}
-                  </span>
-            </a-col>
-            <a-col :span="4">
+            <a-col :span="18">
                <span style="font-size: 18px;color: #ffffff">
                  {{testManagementDetails.successAnswer}}
                </span>
+
+
             </a-col>
           </a-row>
 
-<!--          <span slot="footer">-->
-<!--                <a-row type="flex" justify="center">-->
-<!--                  <a-col :span="4">-->
-<!--                    <a-button>-->
-<!--                      <a-icon type="upload"/>-->
-<!--                      确定-->
-<!--                    </a-button>-->
-<!--                  </a-col>-->
-<!--                </a-row>-->
-<!--              </span>-->
+          <!--          <span slot="footer">-->
+          <!--                <a-row type="flex" justify="center">-->
+          <!--                  <a-col :span="4">-->
+          <!--                    <a-button>-->
+          <!--                      <a-icon type="upload"/>-->
+          <!--                      确定-->
+          <!--                    </a-button>-->
+          <!--                  </a-col>-->
+          <!--                </a-row>-->
+          <!--              </span>-->
         </a-modal>
       </div>
     </a-card>
@@ -798,7 +872,7 @@
     editAndTrainingProjectManagement
   } from '@/api/learningAndTrainingProjectManagement.js'
 
-  import {initTestManagement,editTestManagement,deleteTestManagement} from "@/api/testManagement.js"
+  import {initTestManagement, editTestManagement, deleteTestManagement, addTest} from "@/api/testManagement.js"
 
   const rowSelection = {
     onChange: (selectedRowKeys, selectedRows) => {
@@ -1199,7 +1273,8 @@
           examType: '',
           equipPosition: '',
           topicType: '',
-          answer: ''
+          answer: '',
+          answerArray: []
         },
 
         equipPositionArray: [],
@@ -1229,14 +1304,28 @@
 
         testManagementPage: 1,
         testManagementDescribe: "",
-        initTestManagementData : [],
+        initTestManagementData: [],
         testManagementDataTotal: 0,
 
 
-        testManagementEquipPosition : [],
-        testManagementRowId : '',
+        testManagementEquipPosition: [],
+        testManagementRowId: '',
 
-        removeTestManagementId: ''
+        removeTestManagementId: '',
+
+        questionType: true,
+
+        addTestForm: {
+          problemTitle: '',
+          problemType: '',
+          equipPosition: [],
+          problemClassify: '',
+          answerStr: [],
+          // successAnswer: null
+        },
+        headers: {
+          authorization: 'authorization-text',
+        }
 
       }
     },
@@ -1315,7 +1404,7 @@
 
       },
       //试题管理
-      testManagementSettings(record,v) {
+      testManagementSettings(record, v) {
         this.testManagementRowId = record.id
         if (v == "3") {
           this.testManagementSet = true
@@ -1328,7 +1417,7 @@
         console.log(v, p)
       },
 
-      testManagementPositionSetting(v, p){
+      testManagementPositionSetting(v, p) {
         this.testManagementEquipPosition = v
         console.log(v, p)
       },
@@ -1506,6 +1595,7 @@
       },
       showTestManagementDetails(record) {
         this.testManagementDetails = record
+        this.testManagementDetails.answerArray = JSON.parse(record.answerStr)
         this.testManagementDetailsModal = true
       },
 
@@ -1603,7 +1693,6 @@
       },
 
 
-
       /**
        * @Author:     风中的那朵云
        * @Description:  试卷管理
@@ -1629,13 +1718,13 @@
               item.problemType = "单选"
             } else if (item.problemType === '2') {
               item.problemType = "多选"
-            }else if(item.problemType === '3'){
+            } else if (item.problemType === '3') {
               item.problemType = "判断"
             }
 
-            if(item.problemClassify ==="1"){
+            if (item.problemClassify === "1") {
               item.problemClassify = "理论学习"
-            }else if(item.problemClassify ==="2"){
+            } else if (item.problemClassify === "2") {
               item.problemClassify = "操作训练学习"
             }
 
@@ -1657,7 +1746,7 @@
         })
 
       },
-      removeTestManagement(){
+      removeTestManagement() {
         let that = this
         deleteTestManagement({
           testManagementId: that.removeTestManagementId
@@ -1683,9 +1772,53 @@
           }
           this.removeTestManagementId = keys.toString();
         }
+      },
+      selectQuestionType(v) {
+        if (v === "1") {
+          this.questionType = true
+        } else if (v === "2") {
+          this.questionType = true
+        } else if (v === "3") {
+          this.questionType = false
+        }
+      },
+
+
+      addTest() {
+        let that = this
+        addTest({
+          problemTitle: that.addTestForm.problemTitle,
+          problemClassify: that.addTestForm.problemClassify,
+          problemType: that.addTestForm.problemType,
+          equipPosition: that.addTestForm.equipPosition.toString(),
+          answerStr: that.addTestForm.answerStr.toString(),
+          successAnswer: that.addTestForm.successAnswer.toString()
+        }).then(function (res) {
+          that.testQuestionsModal = false
+          console.log(res)
+          if (res === 1) {
+            that.initTestManagement();
+            that.$message.success("添加成功");
+          } else {
+            that.$message.warning("添加失败");
+          }
+
+        }).catch(function (err) {
+          console.log(err)
+        })
+
+      },
+      handleImportExcel(info) {
+        if (info.file.status !== 'uploading') {
+          console.log(info.file, info.fileList);
+        }
+        if (info.file.status === 'done') {
+          this.$message.success(`${info.file.name} file uploaded successfully`);
+        } else if (info.file.status === 'error') {
+          this.$message.error(`${info.file.name} file upload failed.`);
+        }
       }
     },
-
 
 
     mounted() {

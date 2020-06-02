@@ -55,6 +55,10 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/sys/common/download/**", "anon");
         // pdf预览
         filterChainDefinitionMap.put("/sys/common/pdf/**", "anon");
+        //考核上传
+        filterChainDefinitionMap.put("/api/testManagement/**", "anon");
+
+
         // pdf预览需要文件
         filterChainDefinitionMap.put("/generic/**", "anon");
         filterChainDefinitionMap.put("/", "anon");

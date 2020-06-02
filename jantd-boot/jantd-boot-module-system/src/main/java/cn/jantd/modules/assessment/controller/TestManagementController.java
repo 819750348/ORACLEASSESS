@@ -1,12 +1,20 @@
 package cn.jantd.modules.assessment.controller;
 
+import cn.jantd.core.api.vo.Result;
+import cn.jantd.modules.assessment.entity.PersonnelSettings;
 import cn.jantd.modules.assessment.model.PersonnelResult;
 import cn.jantd.modules.assessment.service.impl.TestManagementService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @ProjectName: jantd-boot-parent
@@ -20,6 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/testManagement")
+@Slf4j
 public class TestManagementController {
     @Autowired
     TestManagementService testManagementService;
@@ -54,4 +63,55 @@ public class TestManagementController {
             return "0";
         }
     }
+
+
+    @RequestMapping("addTest")
+    @ResponseBody
+    public String addTest(String problemTitle,String problemClassify,String problemType,String equipPosition,String answerStr, String successAnswer){
+        try {
+            testManagementService.addTest(problemTitle, problemClassify, problemType, equipPosition, answerStr,  successAnswer);
+            return "1";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "0";
+        }
+
+    }
+
+
+
+
+    @PostMapping("importExcel")
+    @ResponseBody
+    public Result<Object> importExcel(HttpServletRequest request, HttpServletResponse response) {
+        MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+        Map<String, MultipartFile> fileMap = multipartRequest.getFileMap();
+        Map<String,String> returnMap = new HashMap<String,String>();
+        for (Map.Entry<String, MultipartFile> entity : fileMap.entrySet()) {
+            // 获取上传文件对象
+            MultipartFile file = entity.getValue();
+            try {
+                returnMap = testManagementService.importExcel(file.getInputStream());
+                if("0".equals(returnMap.get("code"))){
+                    System.out.println(Result.ok("文件导入成功！数据行数：" + returnMap.get("num") + "\n" + returnMap.get("message")));
+                    return Result.ok("文件导入成功！数据行数：" + returnMap.get("num") + "\n" + returnMap.get("message"));
+                }else {
+                    System.out.println(Result.error("文件导入失败.失败原因：" + returnMap.get("message")));
+                    return Result.error("文件导入失败.失败原因：" + returnMap.get("message"));
+                }
+            } catch (Exception e) {
+                log.error(e.getMessage(), e);
+                System.out.println(Result.ok("文件导入成功！数据行数：" + returnMap.get("num") + "\n" + returnMap.get("message")));
+                return Result.error("导入失败.\n" + returnMap.get("message"));
+            } finally {
+                try {
+                    file.getInputStream().close();
+                } catch (IOException e) {
+                    log.error(e.getMessage(), e);
+                }
+            }
+        }
+        return Result.error("文件导入失败.失败原因：" + returnMap.get("message"));
+    }
 }
+

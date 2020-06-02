@@ -25,3 +25,12 @@ export function deleteTestManagement(parameter) {
     params: parameter
   })
 }
+
+
+export function addTest(parameter) {
+  return axios({
+    url: '/api/testManagement/addTest',
+    method: 'get',
+    params: parameter
+  })
+}

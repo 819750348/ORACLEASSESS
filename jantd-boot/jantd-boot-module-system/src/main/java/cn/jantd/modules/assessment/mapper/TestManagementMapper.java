@@ -16,7 +16,7 @@ import java.util.List;
  * @Date: 2020/5/29 13:07
  * @Version: 1.0
  */
-public interface TestManagementMapper extends BaseMapper<PersonnelSettings> {
+public interface TestManagementMapper extends BaseMapper<TBusiExamProblemTemp> {
     List<TBusiExamProblemTemp> queryPageList(int pageNo, @Param(value="equipPosition") String equipPosition, @Param(value="problemTitle") String problemTitle);
     int queryPageTotal( @Param(value="equipPosition") String equipPosition,@Param(value="problemTitle") String problemTitle);
 
