@@ -30,9 +30,14 @@
               <a-icon type="search"/>
             </a-button>
           </span>
-          <a-button style="margin-left: 10px;position: relative;bottom:7px" @click="removeData">
-            {{"删除"}}
-          </a-button>
+
+          <a-popconfirm title="确定删除吗?" @confirm="removeData">
+            <a-button style="margin-left: 10px;position: relative;bottom:7px">
+              {{"删除"}}
+            </a-button>
+          </a-popconfirm>
+
+
           <span style="margin-left: 10px;position: relative;bottom:7px">
               <a-button @click="addData">
                 {{"添加"}}

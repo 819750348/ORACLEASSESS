@@ -479,9 +479,11 @@
           </a-col>
           <a-col :span="2">
             <span>
-                <a-button @click="removeTestManagement">
+            <a-popconfirm title="确定删除吗?" @confirm="removeTestManagement">
+              <a-button>
                   {{"删除"}}
-                </a-button>
+              </a-button>
+          </a-popconfirm>
             </span>
           </a-col>
         </a-row>
@@ -1849,9 +1851,9 @@
         }
         if (info.file.status === 'done') {
           this.initTestManagement();
-          this.$message.success(`${info.file.name} file uploaded successfully`);
+          this.$message.success(`${info.file.name} 上传成功`);
         } else if (info.file.status === 'error') {
-          this.$message.error(`${info.file.name} file upload failed.`);
+          this.$message.error(`${info.file.name} 上传失败.`);
         }
       }
     },
