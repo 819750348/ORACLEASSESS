@@ -463,12 +463,13 @@
 
 
           <a-col :span="3">
+            <!--:action="http://localhost:8080/jantd-boot/api/testManagement/importExcel"-->
             <span>
                           <a-upload
                             name="file"
                             :multiple="true"
                             :headers="headers"
-                            action="http://localhost:8080/jantd-boot/api/testManagement/importExcel"
+                            :action="url.fileUpload"
                             accept=".xlsx"
                             @change="handleImportExcel">
                                 <a-button>
@@ -1342,8 +1343,10 @@
         },
         headers: {
           authorization: 'authorization-text',
+        },
+        url: {
+          fileUpload: window._CONFIG['domianURL']+"/api/testManagement/importExcel"
         }
-
       }
     },
     methods: {
@@ -1382,14 +1385,17 @@
           this.tabsVisible1 = true
           this.tabsVisible2 = false
           this.tabsVisible3 = false
+          this.initStaffingManagement()
         } else if (key === '2') {
           this.tabsVisible2 = true
           this.tabsVisible1 = false
           this.tabsVisible3 = false
+          this.initLearningAndTrainingProjectManagement()
         } else if (key === '3') {
           this.tabsVisible2 = false
           this.tabsVisible1 = false
           this.tabsVisible3 = true
+          this.initTestManagement()
         }
       },
       /**
@@ -1860,9 +1866,9 @@
 
 
     mounted() {
-      this.initTestManagement()
+      //this.initTestManagement()
       this.initStaffingManagement()
-      this.initLearningAndTrainingProjectManagement()
+      //this.initLearningAndTrainingProjectManagement()
 
     }
   }

@@ -31,7 +31,7 @@ public class PersonnelResult {
         this.personnelList = personnelList;
     }
 
-    public int total;
+    public int total = 0;
 
     public List personnelList;
 }

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.jantd.modules.teacher.mapper.TBusiStudyTempMapper">
+
+    <!-- 分页查询题目信息mysql -->
+    <select id="searchPageForMysql" resultType="cn.jantd.modules.teacher.VO.TBusiStudyTempVO">
+        select s1.* from t_busi_study_temp s1
+        where s1.del_flag = '0'
+        <if test="equip != 'null' and equip != ''">
+            and s1.equip = #{equip}
+        </if>
+        <if test="position != 'null' and position != ''">
+            and s1.position = #{position}
+        </if>
+        order by s1.id
+        limit #{pageStart,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+    </select>
+
+    <!-- 查询题目信息总数 -->
+    <select id="searchPageTotal" resultType="java.lang.Integer">
+        select count(s1.id) from t_busi_study_temp s1
+        where s1.del_flag = '0'
+        <if test="equip != 'null' and equip != ''">
+            and s1.equip = #{equip}
+        </if>
+        <if test="position != 'null' and position != ''">
+            and s1.position = #{position}
+        </if>
+    </select>
+</mapper>

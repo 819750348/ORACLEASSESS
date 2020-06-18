@@ -1,12 +1,10 @@
 package cn.jantd.modules.assessment.controller;
 
-import cn.jantd.modules.assessment.entity.PersonnelSettings;
 import cn.jantd.modules.assessment.model.PersonnelResult;
 import cn.jantd.modules.assessment.service.impl.PersonnelSettingsService;
+import cn.jantd.modules.teacher.entity.TSysStaff;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 
 /**
@@ -38,7 +36,7 @@ public class PersonnelSettingsController {
     }
     @RequestMapping("addPersonnel")
     @ResponseBody
-    public String addPersonnel(PersonnelSettings personnelSettings){
+    public String addPersonnel(TSysStaff personnelSettings){
         try {
             personnelSettingsService.addPersonnel(personnelSettings);
             return "1";
@@ -51,7 +49,7 @@ public class PersonnelSettingsController {
 
     @RequestMapping("searchPersonnel")
     @ResponseBody
-    public PersonnelResult searchPersonnel(PersonnelSettings personnelSettings){
+    public PersonnelResult searchPersonnel(TSysStaff personnelSettings){
         PersonnelResult personnelResult = personnelSettingsService.searchPersonnel(personnelSettings);
         return personnelResult;
 

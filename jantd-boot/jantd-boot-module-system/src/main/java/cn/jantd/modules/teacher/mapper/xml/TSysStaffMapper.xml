@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.jantd.modules.teacher.mapper.TSysStaffMapper">
+
+    <!-- 查询所有人员 -->
+    <select id="selectStaffAll" resultType="cn.jantd.modules.teacher.VO.TSysStaffVO">
+		select * from t_sys_staff
+		where del_flag = '0'
+		<if test="type!=null and type!=''">
+			and staff_type = #{type}
+		</if>
+		<if test="dictCode!=null and dictCode!=''">
+			and ${dictCode} like '%#{itemValue}%'
+		</if>
+	</select>
+
+    <!-- 根据账户查询人员信息 -->
+    <select id="getStaffbyId" resultType="cn.jantd.modules.teacher.VO.TSysStaffVO">
+		select s.*,(select count(e.id) from t_busi_exam_copy e where e.send_by = s.id and e.del_flag = '0') exam_count from t_sys_staff s
+		where s.id = #{staffid} and s.del_flag = '0'
+	</select>
+
+	<!-- 根据下发人员id查找所有试卷指定学员 -->
+	<select id="getStaffbyTeacherid" resultType="cn.jantd.modules.teacher.VO.TSysStaffVO">
+		select s.*,es.exam_id,es.send_status from t_rel_exam_staff es
+		left join t_sys_staff s on es.student_id = s.id
+		where es.send_by = #{staffid} and s.del_flag = '0'
+		order by es.exam_id
+	</select>
+
+	<!-- 查询所有学员教学进度 -->
+	<select id="getStudentsCourse" resultType="cn.jantd.modules.teacher.VO.TSysStaffVO">
+		select s.*,es.exam_id,es.send_status from t_rel_exam_staff es
+		left join t_sys_staff s on es.student_id = s.id
+		where es.send_by = #{staffid} and s.del_flag = '0'
+		order by es.exam_id
+	</select>
+
+	<!-- 根据试卷查询试卷指定人员下发列表 -->
+	<select id="getStaffByExamid" resultType="cn.jantd.modules.teacher.VO.TSysStaffVO">
+		select s.*,es.exam_id,es.send_status,et.name exam_name,et.total_scores from t_rel_exam_staff es
+		left join t_sys_staff s on es.student_id = s.id
+		left join t_busi_exam_temp et on et.id = es.exam_id
+		where es.exam_id = #{examid} and s.del_flag = '0' and et.del_flag = '0'
+		order by s.name
+	</select>
+
+	<!-- 分页查询人员信息,如果参数中有teacherid则查询某教学管理员名下学员信息 -->
+	<select id="searchStaffPage" resultType="cn.jantd.modules.teacher.VO.TSysStaffVO" parameterType="map">
+		select * from
+			(select staff.*, rownum as rn from
+				(select s1.*
+				<if test="teacherid != 'null' and teacherid != ''">
+					,st.teacher_id
+				</if>
+				from t_sys_staff s1
+				<if test="teacherid != 'null' and teacherid != ''">
+					right join t_rel_student_teacher st on st.student_id = s1.id
+				</if>
+				where s1.staff_type = #{staffType} and s1.del_flag = '0'
+				<if test="teacherid != 'null' and teacherid != ''">
+					and st.teacher_id = #{teacherid}
+				</if>
+				<if test="orderValue != 'null' and orderValue != ''">
+					order by s1.${orderValue}
+					<choose>
+						<when test="orderDirection != 'null' and orderDirection != ''">
+							 ${orderDirection}
+						</when>
+						<otherwise>
+							 asc
+						</otherwise>
+					</choose>
+				</if>
+			  	) staff
+			where rownum &lt;= (#{pageSize,jdbcType=INTEGER}*#{pageNo,jdbcType=INTEGER}))
+		where rn &gt; (#{pageSize,jdbcType=INTEGER}*(#{pageNo,jdbcType=INTEGER}-1))
+	</select>
+
+	<!-- mysql分页查询人员信息,如果参数中有teacherid则查询某教学管理员名下学员信息 -->
+	<select id="searchStaffPageForMysql" resultType="cn.jantd.modules.teacher.VO.TSysStaffVO" parameterType="map">
+		select s1.*
+		from t_sys_staff s1
+		where s1.del_flag = '0'
+		<if test="staffType != 'null' and staffType != ''">
+			and s1.staff_type = #{staffType}
+		</if>
+		<if test="name != 'null' and name != ''">
+			and s1.name like #{name}
+		</if>
+		order by s1.id desc
+		limit #{pageStart,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+	</select>
+
+	<!-- 查询人员信息总数,如果参数中有teacherid则查询某教学管理员名下学员信息 -->
+	<select id="searchStaffTotal" resultType="java.lang.Integer" parameterType="map">
+		select count(s1.id) from t_sys_staff s1
+		where s1.del_flag = '0'
+		<if test="staffType != 'null' and staffType != ''">
+			and s1.staff_type = #{staffType}
+		</if>
+		<if test="name != 'null' and name != ''">
+			and s1.name like #{name}
+		</if>
+	</select>
+
+	<!-- 根据id和username验证用户唯一性 -->
+	<select id="checkUser" resultType="cn.jantd.modules.teacher.entity.TSysStaff">
+		select t.* from t_sys_staff t where t.del_flag = '0'
+		and t.user_name = #{username}
+		<if test="id!=null and id!=''">
+			and t.id!=#{id}
+		</if>
+	</select>
+
+	<!-- 查询教学管理员名下所有学员 -->
+	<select id="searchStudentByTeacher" resultType="cn.jantd.modules.teacher.VO.TSysStaffVO">
+		select s1.*,st.teacher_id from t_rel_student_teacher st
+		left join t_sys_staff s1 on st.student_id = s1.id
+		where s1.del_flag = '0' and s1.staff_type = '2' and st.teacher_id = #{teacherid}
+	</select>
+
+    <select id="getSutdentByPosition" resultType="cn.jantd.modules.teacher.entity.TSysStaff">
+		select bc.* from t_sys_staff bc
+		where bc.del_flag = '0' and bc.staff_type = '2'
+		<if test="strings != 'null' and strings != null and strings != ''">
+			and
+			<foreach collection ="strings" item="ep" open="(" separator="or" close=")">
+				bc.equip_position like CONCAT('%',#{ep},'%')
+			</foreach >
+		</if>
+	</select>
+
+    <select id="searchStaffByLogin" resultType="cn.jantd.modules.teacher.VO.TSysStaffVO" parameterType="map">
+		select bc.* from t_sys_staff bc
+		where bc.del_flag = '0'
+		<if test="username != 'null' and username != null and username != ''">
+			and bc.name = #{username}
+		</if>
+		<if test="password != 'null' and password != null and password != ''">
+			and bc.password = #{password}
+		</if>
+	</select>
+
+
+</mapper>

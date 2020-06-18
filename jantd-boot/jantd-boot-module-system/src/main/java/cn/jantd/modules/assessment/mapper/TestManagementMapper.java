@@ -1,7 +1,6 @@
 package cn.jantd.modules.assessment.mapper;
 
-import cn.jantd.modules.assessment.entity.PersonnelSettings;
-import cn.jantd.modules.assessment.entity.TBusiExamProblemTemp;
+import cn.jantd.modules.teacher.entity.TBusiExamProblemTemp;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import io.lettuce.core.dynamic.annotation.Param;
 

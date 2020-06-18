@@ -124,9 +124,9 @@
                           <span style="margin-left: 5px">
                             {{ ":" }}
                           </span>
-                          <span>
+
                             {{ singleChoiceQuestion.plainOptions[1] }}
-                          </span>
+                               <span></span>
                         </span>
                       </a-radio>
                     </a-col>
@@ -188,6 +188,7 @@
 
 <script>
   import downTime from './DownTime'
+  import {toEditByExamAndStaff} from '@/api/PracticeOperation'
   import './PracticeOperation.less'
     export default {
       name: "PracticeOperation",
@@ -207,6 +208,30 @@
       },
       components: {
         downTime
+      },
+      methods: {
+        initToEditExam(){
+          let that = this
+          toEditByExamAndStaff({
+            examId: '4cff867e808aa65787daa767e336cb33',
+            staffId: '72'
+          }).then(function (res) {
+            that.testQuestionsModal = false
+            console.log(res)
+            if (res === 1) {
+              that.initTestManagement();
+              that.$message.success("添加成功");
+            } else {
+              that.$message.warning("添加失败");
+            }
+
+          }).catch(function (err) {
+            console.log(err)
+          })
+        }
+      },
+      mounted() {
+        this.initEditExam()
       }
     }
 </script>

@@ -1,7 +1,6 @@
 package cn.jantd.modules.assessment.controller;
 
 import cn.jantd.core.api.vo.Result;
-import cn.jantd.modules.assessment.entity.PersonnelSettings;
 import cn.jantd.modules.assessment.model.PersonnelResult;
 import cn.jantd.modules.assessment.service.impl.TestManagementService;
 import lombok.extern.slf4j.Slf4j;

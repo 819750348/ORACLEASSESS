@@ -6,7 +6,6 @@
       <a-row type="flex" align="center" justify="center">
         <acol :span="24">
           <span style="font-size: 72px;color: RGB(132,210,250)">
-            <span>{{ myHours }}</span> :
             <span>{{ myMinutes }}</span> :
             <span>{{ mySeconds }}</span>
           </span>
@@ -31,8 +30,6 @@
         isShow: false, // 控制显示结束或还未结束显示的内容
         clocker: '', // 结束后显示的内容
         timeObj: null, // 时间对象,下方会用到
-        myDay: 0, // 我定义来接收计算出来的 天 的
-        myHours: 0, // 我定义来接收计算出来的 小时 的
         myMinutes: 0, // 我定义来接收计算出来的 分钟 的
         mySeconds: 0// 我定义来接收计算出来的 秒钟 的
       }
@@ -52,12 +49,8 @@
         that.timeObj = { // 时间对象
           seconds: Math.floor(time % 60),
           minutes: Math.floor(time / 60) % 60,
-          hours: Math.floor(time / 60 / 60) % 24,
-          days: Math.floor(time / 60 / 60 / 24)
         }
         // 计算出时分秒
-        that.myDay = `${add(that.timeObj.days)}`
-        that.myHours = `${add(that.timeObj.hours)}`
         that.myMinutes = `${add(that.timeObj.minutes)}`
         that.mySeconds = `${add(that.timeObj.seconds)}`
         // 当时间差小于等于0时,停止倒计时

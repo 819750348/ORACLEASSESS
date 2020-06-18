@@ -1,10 +1,8 @@
 package cn.jantd.modules.assessment.service.impl;
 
-import cn.jantd.modules.assessment.entity.PersonnelSettings;
-import cn.jantd.modules.assessment.entity.TBusiExamProblemTemp;
 import cn.jantd.modules.assessment.mapper.TestManagementMapper;
 import cn.jantd.modules.assessment.model.PersonnelResult;
-import cn.jantd.modules.assessment.util.AnswerStrObejct;
+import cn.jantd.modules.teacher.entity.TBusiExamProblemTemp;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.poi.POIXMLDocument;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -13,9 +11,8 @@ import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.configurationprocessor.json.JSONArray;
-import org.springframework.boot.configurationprocessor.json.JSONException;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,7 +30,7 @@ import java.util.*;
  * @Version: 1.0
  */
 @Service
-public class TestManagementService extends ServiceImpl<TestManagementMapper,TBusiExamProblemTemp> {
+public class TestManagementService extends ServiceImpl<TestManagementMapper, TBusiExamProblemTemp> {
     @Autowired
     TestManagementMapper testManagementMapper;
 
@@ -84,8 +81,8 @@ public class TestManagementService extends ServiceImpl<TestManagementMapper,TBus
                         jsonObject1.put("order","1");
                         jsonObject1.put("No","A");
                         jsonObject1.put("answerStr",o[i]);
-                        jsonArray.put(jsonObject1);
-                    } catch (JSONException e) {
+                        jsonArray.add(jsonObject1);
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }else if(i == 1){
@@ -93,8 +90,8 @@ public class TestManagementService extends ServiceImpl<TestManagementMapper,TBus
                         jsonObject2.put("order","2");
                         jsonObject2.put("No","B");
                         jsonObject2.put("answerStr",o[i]);
-                        jsonArray.put(jsonObject2);
-                    } catch (JSONException e) {
+                        jsonArray.add(jsonObject2);
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }else if(i== 2){
@@ -102,8 +99,8 @@ public class TestManagementService extends ServiceImpl<TestManagementMapper,TBus
                         jsonObject3.put("order","3");
                         jsonObject3.put("No","C");
                         jsonObject3.put("answerStr",o[i]);
-                        jsonArray.put(jsonObject3);
-                    } catch (JSONException e) {
+                        jsonArray.add(jsonObject3);
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }else if(i ==3){
@@ -111,8 +108,8 @@ public class TestManagementService extends ServiceImpl<TestManagementMapper,TBus
                         jsonObject4.put("order","4");
                         jsonObject4.put("No","D");
                         jsonObject4.put("answerStr",o[i]);
-                        jsonArray.put(jsonObject4);
-                    } catch (JSONException e) {
+                        jsonArray.add(jsonObject4);
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
@@ -181,7 +178,7 @@ public class TestManagementService extends ServiceImpl<TestManagementMapper,TBus
 
             int a = 5;
             int b = 0;
-            String[] s = {"A","B","C","D"};
+            String[] s = {"A","B","C","D","E","F","G"};
             JSONArray jsonArray = new JSONArray();
 
             while (null != book.getSheetAt(0).getRow(i).getCell(a) && !"".equals(book.getSheetAt(0).getRow(i).getCell(a).getStringCellValue())) {
@@ -191,7 +188,7 @@ public class TestManagementService extends ServiceImpl<TestManagementMapper,TBus
                     jsonObject.put("answerStr",answerStr );
                     jsonObject.put("No",s[b]);
                     jsonObject.put("order",b+1);
-                    jsonArray.put(jsonObject);
+                    jsonArray.add(jsonObject);
                     a++;
                     b++;
                 }else{

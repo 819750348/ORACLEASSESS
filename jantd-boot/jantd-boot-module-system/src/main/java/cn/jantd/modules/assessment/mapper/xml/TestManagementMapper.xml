@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.jantd.modules.assessment.mapper.TestManagementMapper">
-    <resultMap id="personnelSettings" type="cn.jantd.modules.assessment.entity.TBusiExamProblemTemp" >
+    <resultMap id="personnelSettings" type="cn.jantd.modules.teacher.entity.TBusiExamProblemTemp" >
         <result column="id" property="id" jdbcType="VARCHAR"/>
         <result column="problem_title" property="problemTitle" jdbcType="VARCHAR"/>
         <result column="problem_type" property="problemType" jdbcType="VARCHAR"/>

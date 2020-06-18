@@ -1,8 +1,8 @@
 package cn.jantd.modules.assessment.service.impl;
 
-import cn.jantd.modules.assessment.entity.PersonnelSettings;
 import cn.jantd.modules.assessment.mapper.PersonnelSettingsMapper;
 import cn.jantd.modules.assessment.model.PersonnelResult;
+import cn.jantd.modules.teacher.entity.TSysStaff;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +30,7 @@ public class PersonnelSettingsService {
     PersonnelSettingsMapper personnelSettingsMapper;
     public PersonnelResult queryPageList(int pageNo,String staffGroup,String  name){
         int pageSize = (pageNo-1) * 10;
-        List<PersonnelSettings> personnelSettingsList= personnelSettingsMapper.queryPageList(pageSize,staffGroup,"%"+ name + "%");
+        List<TSysStaff> personnelSettingsList= personnelSettingsMapper.queryPageList(pageSize,staffGroup,"%"+ name + "%");
         int total= personnelSettingsMapper.queryPageTotal(staffGroup,"%"+ name + "%");
         PersonnelResult personnelResult = new PersonnelResult();
         personnelResult.setPersonnelList(personnelSettingsList);
@@ -43,14 +43,17 @@ public class PersonnelSettingsService {
      * @Date:    2020/5/6
      * @Version:    1.0
      */
-    public void addPersonnel(PersonnelSettings personnelSettings){
+    public void addPersonnel(TSysStaff personnelSettings){
 //        personnelSettingsMapper.addPersonnel(personnelSettings.getName(),personnelSettings.getStaffGroup(),personnelSettings.getPassword());
 
         if(personnelSettings.getStaffGroup().equals("教学管理人员")){
             personnelSettings.setStaffType("1");
         }else if(personnelSettings.getStaffGroup().equals("学员")){
             personnelSettings.setStaffType("2");
+        }else if(personnelSettings.getStaffGroup().equals("管理员")){
+            personnelSettings.setStaffType("3");
         }
+        personnelSettings.setDelFlag("0");
         personnelSettingsMapper.insert(personnelSettings);
     }
 
@@ -61,7 +64,7 @@ public class PersonnelSettingsService {
      * @Date:    2020/5/6
      * @Version:    1.0
      */
-    public PersonnelResult searchPersonnel(PersonnelSettings personnelSettings){
+    public PersonnelResult searchPersonnel(TSysStaff personnelSettings){
 
         List personnelSettingsList;
         int total;

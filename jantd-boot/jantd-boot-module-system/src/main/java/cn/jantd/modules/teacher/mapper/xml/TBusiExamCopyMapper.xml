@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.jantd.modules.teacher.mapper.TBusiExamCopyMapper">
+
+    <!-- 学生成绩记录总数 -->
+    <select id="searchTotalByTeacher" resultType="java.lang.Integer">
+        select count(a.id) from (
+          select ec.* from t_rel_exam_staff es
+          left join t_busi_exam_copy ec on ec.batch_id=es.batch_id and ec.staff_id = es.student_id
+          where es.del_flag = '0' and ec.del_flag = '0' and es.send_by = #{teacherId}
+        ) a
+    </select>
+
+    <!-- 学生成绩分页查询 -->
+    <select id="searchPageByTeacher" resultType="cn.jantd.modules.teacher.VO.TBusiExamCopyVO">
+        select ec.*,st.`name` staff_name from t_rel_exam_staff es
+        left join t_busi_exam_copy ec on ec.batch_id=es.batch_id and ec.staff_id = es.student_id
+        left join t_sys_staff st on st.id = es.student_id
+        where es.del_flag = '0' and ec.del_flag = '0' and es.send_by = #{teacherId}
+        limit #{pageStart,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+    </select>
+
+    <!-- 倒序查询该学员所有的试卷 -->
+    <select id="queryLastExamByStudent" resultType="cn.jantd.modules.teacher.VO.TBusiExamVO">
+        select es.* from t_busi_exam_copy ec
+        right join t_rel_exam_staff es on es.exam_id = ec.id
+        where ec.del_flag = '0' and es.send_status='1' and es.student_id = #{id}
+        order by ec.exam_time desc
+    </select>
+
+    <!-- 试卷详情 -->
+    <select id="examDetail" resultType="cn.jantd.modules.teacher.VO.TBusiExamVO">
+      select ec.* from t_busi_exam_copy ec
+      left join t_rel_exam_staff es on es.exam_id = ec.id
+      where ec.del_flag = '0' and es.student_id = #{staffid} and es.exam_id = #{examid}
+    </select>
+
+    <!-- 根据学员id查询试卷总数 -->
+    <select id="searchTotalByStaff" resultType="java.lang.Integer" parameterType="map">
+      select count(ec.id) from t_busi_exam_copy ec
+      where ec.del_flag='0' and ec.exam_status='1' and staff_id = #{studentid}
+    </select>
+
+    <!-- 根据学员id分页查询试卷 -->
+    <select id="searchLastPageByStaff" resultType="cn.jantd.modules.teacher.VO.TBusiExamVO" parameterType="map">
+        select * from
+            (select e.*, rownum as rn from
+                (select ec.* from t_busi_exam_copy ec
+                  where ec.del_flag='0' and ec.exam_status='1' and staff_id = #{studentid}
+                <if test="orderValue != 'null' and orderValue != ''">
+                    order by ec.${orderValue}
+                    <choose>
+                        <when test="orderDirection != 'null' and orderDirection != ''">
+                            ${orderDirection}
+                        </when>
+                        <otherwise>
+                            asc
+                        </otherwise>
+                    </choose>
+                </if>
+            ) e
+            where rownum &lt;= (#{pageSize,jdbcType=INTEGER}*#{pageNo,jdbcType=INTEGER}))
+        where rn &gt; (#{pageSize,jdbcType=INTEGER}*(#{pageNo,jdbcType=INTEGER}-1))
+    </select>
+
+    <!-- 根据学员id查询最后一批试卷的所有人员成绩 -->
+    <select id="searchBatchByStaff" resultType="cn.jantd.modules.teacher.VO.TBusiExamVO">
+        select ec.* from t_busi_exam_copy ec
+        left join (select e.batch_id from t_busi_exam_copy e
+                    where e.del_flag='0' and e.exam_status='1' and e.staff_id = #{studentid} and rownum &lt;= 1
+                    order by e.exam_time desc) ea on ea.batch_id = ec.batch_id
+        where ec.del_flag = '0'
+        order by ec.scores_count desc;
+    </select>
+
+    <select id="searchExamByStudent" resultType="cn.jantd.modules.teacher.VO.TBusiExamCopyVO">
+        select bec.* from t_busi_exam_copy bec
+        where bec.staff_id = '72'
+        order by create_by desc
+        <!-- limit #{pageStart,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER} -->
+    </select>
+
+
+</mapper>

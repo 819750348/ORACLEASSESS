@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.jantd.modules.teacher.mapper.TRelStaffCourseMapper">
+
+    <!-- mysql分页查询信息 -->
+    <select id="searchPageForMysql" resultType="cn.jantd.modules.teacher.VO.TBusiStudyTempVO" parameterType="map">
+        select study.id,study.`name`,study.equip_position,count(rsc.id) course_num,sum(rsc.course_status) course_complete_num from t_rel_staff_course rsc
+        left join T_Busi_Study_Temp study on rsc.study_id = study.id
+        where rsc.del_flag='0' and study.del_flag='0'
+        group by study.id,study.`name`,study.equip_position
+        order by study.id desc
+        limit #{pageStart,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+    </select>
+
+    <!-- 查询信息总数 -->
+    <select id="searchPageTotal" resultType="java.lang.Integer" parameterType="map">
+        select count(a.study_id) from (
+            select rsc.study_id from t_rel_staff_course rsc
+            where rsc.del_flag='0'
+            group by rsc.study_id
+        ) a
+    </select>
+
+    <select id="searchStaffTotal" resultType="java.lang.Integer">
+        select count(a.staff_id) from (
+            select rsc.staff_id from t_rel_staff_course rsc
+            where rsc.study_id = #{studyId}
+            group by rsc.staff_id
+        ) a
+    </select>
+
+    <select id="searchStaffPageByStudy" resultType="cn.jantd.modules.teacher.VO.TRelStaffCourseVO">
+        select rsc.staff_id,staff.`name` staff_name,count(rsc.id) course_num,sum(rsc.course_status) course_complete_num from t_rel_staff_course rsc
+        left join t_sys_staff staff on rsc.staff_id = staff.id
+        where rsc.study_id = #{studyId}
+        group by rsc.staff_id,staff.`name`
+        order by rsc.id desc
+        limit #{pageStart,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+    </select>
+
+    <select id="searchStudyByStudent" resultType="cn.jantd.modules.teacher.VO.TBusiStudyTempVO">
+        select bst.* from t_rel_staff_course rsc
+        left join t_busi_study_temp bst on bst.id = rsc.study_id
+        where rsc.staff_id=#{studentId}
+        order by rsc.course_order asc
+        <!-- limit #{pageStart,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER} -->
+    </select>
+
+
+</mapper>

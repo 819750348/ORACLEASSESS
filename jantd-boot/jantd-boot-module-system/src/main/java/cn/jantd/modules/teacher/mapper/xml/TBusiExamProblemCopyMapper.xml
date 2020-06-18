@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.jantd.modules.teacher.mapper.TBusiExamProblemCopyMapper">
+
+    <!-- 根据下发的试卷查询试卷中的题目 -->
+    <select id="searchByExam" resultType="cn.jantd.modules.teacher.VO.TBusiExamProblemVO">
+      select pc.* from t_busi_exam_problem_copy pc
+      where pc.del_flag='0' and pc.exam_id = #{examid} order by pc.problem_order asc
+    </select>
+
+
+</mapper>

@@ -45,6 +45,10 @@ public class ShiroConfig {
         // 配置不会被拦截的链接 顺序判断
         // 登录接口排除
         filterChainDefinitionMap.put("/sys/login", "anon");
+        // 九室业务略过验证
+        filterChainDefinitionMap.put("/api/**", "anon");
+        // 九室业务略过验证
+        filterChainDefinitionMap.put("/teacher/**", "anon");
         // 登录验证码
         filterChainDefinitionMap.put("/auth/2step-code", "anon");
         // 获取加密串
@@ -55,10 +59,6 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/sys/common/download/**", "anon");
         // pdf预览
         filterChainDefinitionMap.put("/sys/common/pdf/**", "anon");
-        //考核上传
-        filterChainDefinitionMap.put("/api/testManagement/**", "anon");
-
-
         // pdf预览需要文件
         filterChainDefinitionMap.put("/generic/**", "anon");
         filterChainDefinitionMap.put("/", "anon");

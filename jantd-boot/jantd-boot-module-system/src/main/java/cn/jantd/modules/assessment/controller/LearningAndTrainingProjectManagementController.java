@@ -1,9 +1,8 @@
 package cn.jantd.modules.assessment.controller;
 
-import cn.jantd.modules.assessment.entity.PersonnelSettings;
-import cn.jantd.modules.assessment.entity.TBusiStudy;
 import cn.jantd.modules.assessment.model.PersonnelResult;
 import cn.jantd.modules.assessment.service.impl.LearningAndTrainingProjectManagementService;
+import cn.jantd.modules.teacher.entity.TBusiStudyTemp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -40,7 +39,7 @@ public class LearningAndTrainingProjectManagementController {
 
     @RequestMapping("addLearningAndTrainingProject")
     @ResponseBody
-    public String addLearningAndTrainingProject(TBusiStudy tBusiStudy){
+    public String addLearningAndTrainingProject(TBusiStudyTemp tBusiStudy){
         try {
             learningAndTrainingProjectManagementService.addLearningAndTrainingProject(tBusiStudy);
             return "1";

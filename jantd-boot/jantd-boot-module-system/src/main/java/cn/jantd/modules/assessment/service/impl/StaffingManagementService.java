@@ -1,9 +1,8 @@
 package cn.jantd.modules.assessment.service.impl;
 
-import cn.jantd.modules.assessment.entity.PersonnelSettings;
 import cn.jantd.modules.assessment.mapper.StaffingManagementMapper;
 import cn.jantd.modules.assessment.model.PersonnelResult;
-import cn.jantd.modules.assessment.util.EquipPosition;
+import cn.jantd.modules.teacher.entity.TSysStaff;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +34,7 @@ public class StaffingManagementService {
 //        String[] equipPositionList=EquipPosition.split(equipPosition);
 
         int pageSize = (pageNo - 1) * 10;
-        List<PersonnelSettings> personnelSettingsList = staffingManagementMapper.queryPageList(pageSize, "%" + equipPosition + "%");
+        List<TSysStaff> personnelSettingsList = staffingManagementMapper.queryPageList(pageSize, "%" + equipPosition + "%");
 
         int total = staffingManagementMapper.queryPageTotal("%" + equipPosition + "%");
         PersonnelResult personnelResult = new PersonnelResult();

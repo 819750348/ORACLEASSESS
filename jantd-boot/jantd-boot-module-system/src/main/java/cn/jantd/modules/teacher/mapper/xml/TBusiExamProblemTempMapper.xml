@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.jantd.modules.teacher.mapper.TBusiExamProblemTempMapper">
+
+    <!-- 分页查询题目信息 -->
+    <select id="searchProblemPage" resultType="cn.jantd.modules.teacher.VO.TBusiExamProblemVO" parameterType="map">
+        select * from
+            (select p.*, rownum as rn from
+                (select p1.* from t_busi_exam_problem_temp p1
+                where p1.del_flag = '0'
+                <if test="orderValue!='null' and orderValue!=''">
+                    order by p1.${orderValue}
+                    <choose>
+                        <when test="orderDirection!='null' and orderDirection!=''">
+                            ${orderDirection}
+                        </when>
+                        <otherwise>
+                            asc
+                        </otherwise>
+                    </choose>
+                </if>
+                ) p
+            where rownum &lt;= (#{pageSize,jdbcType=INTEGER}*#{pageNo,jdbcType=INTEGER}))
+        where rn &gt; (#{pageSize,jdbcType=INTEGER}*(#{pageNo,jdbcType=INTEGER}-1))
+    </select>
+
+    <!-- 分页查询题目信息mysql -->
+    <select id="searchProblemPageForMysql" resultType="cn.jantd.modules.teacher.VO.TBusiExamProblemVO" parameterType="map">
+        select p1.* from t_busi_exam_problem_temp p1
+        where p1.del_flag = '0'
+        <if test="equip != 'null' and equip != ''">
+            and p1.equip = #{equip}
+        </if>
+        <if test="position != 'null' and position != ''">
+            and p1.position = #{position}
+        </if>
+        order by p1.id
+        limit #{pageStart,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+    </select>
+    <!-- 查询题目信息总数 -->
+    <select id="searchProblemTotal" resultType="java.lang.Integer" parameterType="map">
+        select count(p1.id) from t_busi_exam_problem_temp p1
+		where p1.del_flag = '0'
+        <if test="equip != 'null' and equip != ''">
+            and p1.equip = #{equip}
+        </if>
+        <if test="position != 'null' and position != ''">
+            and p1.position = #{position}
+        </if>
+	</select>
+
+    <!-- 根据title验证唯一性 -->
+    <select id="checkProblem" resultType="cn.jantd.modules.teacher.entity.TBusiExamProblemTemp">
+        select t.* from t_busi_exam_problem_temp t where t.del_flag = '0'
+        and t.problem_title = #{title}
+    </select>
+    <select id="searchProblemByType" resultType="cn.jantd.modules.teacher.VO.TBusiExamProblemVO">
+        select id,problem_title,problem_type,scores_count
+        from t_busi_exam_problem_temp
+        where del_flag='0' and problem_type=#{problemType}
+    </select>
+    <select id="searchByExam" resultType="cn.jantd.modules.teacher.VO.TBusiExamProblemVO">
+        select pt.*,rept.problem_order from t_busi_exam_problem_temp pt
+        left join t_rel_exam_problem_temp rept on rept.problem_id = pt.id
+        left join t_busi_exam_temp ep on ep.id = rept.exam_id
+        where pt.del_flag='0' and ep.del_flag='0' and ep.id=#{examid}
+        order by rept.problem_order desc
+    </select>
+    <select id="checkRelExamProblem" resultType="cn.jantd.modules.teacher.VO.TBusiExamProblemVO">
+        select ept.* from t_rel_exam_problem_temp ept
+        where ept.problem_id in
+        <foreach collection="list" index="index" item="item" open="(" close=")" separator=",">
+            #{item, jdbcType=VARCHAR}
+        </foreach>
+    </select>
+
+</mapper>

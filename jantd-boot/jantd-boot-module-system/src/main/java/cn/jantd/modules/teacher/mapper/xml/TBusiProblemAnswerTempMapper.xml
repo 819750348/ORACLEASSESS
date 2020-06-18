@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.jantd.modules.teacher.mapper.TBusiProblemAnswerTempMapper">
+
+    <!-- 根据题目id查询答案 -->
+    <select id="searchAnswerByProblem" resultType="cn.jantd.modules.teacher.VO.TBusiProblemAnswerVO">
+      select * from t_busi_problem_answer_temp where del_flag = '0' and  problem_id = #{problemId}
+      order by answer_order asc
+    </select>
+    <select id="searchByExam" resultType="cn.jantd.modules.teacher.VO.TBusiProblemAnswerVO">
+        select pat.*,rept.problem_order from t_busi_problem_answer_temp pat
+        left join t_rel_exam_problem_temp rept on rept.problem_id = pat.problem_id
+        left join t_busi_exam_temp ep on ep.id = rept.exam_id
+        where pat.del_flag='0' and ep.del_flag='0' and ep.id=#{examid}
+        order by rept.problem_order desc,pat.answer_order desc
+    </select>
+
+</mapper>

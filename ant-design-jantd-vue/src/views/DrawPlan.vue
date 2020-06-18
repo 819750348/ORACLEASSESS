@@ -14,27 +14,34 @@
           justify="center"
           align="center">
           <a-col :span="24">
-            <a-table :dataSource="courseConfigurationData" :pagination="false" :columns="courseConfigurationColumns" :rowSelection="rowSelection">
+            <a-table :dataSource="courseConfigurationData" :pagination="false" :columns="courseConfigurationColumns" :rowSelection="{onChange:onChangeRow}">
               <span slot="footer">
                 <a-row type="flex">
                   <a-col :span="2" style="margin-left: 25px">
-                    <a-button>
+                    <a-button @click="sendCourse">
                       {{"课时推送"}}
                     </a-button>
                   </a-col>
                   <a-col :span="2" style="margin-left: 25px">
-                    <a-button>
+                    <a-button @click="createExam">
+                      {{"生成试卷"}}
+                    </a-button>
+                  </a-col>
+                  <a-col :span="2" style="margin-left: 25px">
+                    <a-button @click="batchDeleteStudyCourse">
                       {{"批量删除"}}
                     </a-button>
                   </a-col>
-                  <a-col :span="16">
+                  <a-col :span="14">
                     <a-pagination
                       size="small"
                       style="text-align: center;"
-                      :total="10"
+                      @change="courseSetPage"
+                      v-model="courseConfigurationPage"
+                      :total="courseConfigurationTotal"
                       :showSizeChanger="false"
                       showQuickJumper
-                      :showTotal="total => `共 ${total} 条`"/>
+                      :showTotal="total => `共 ${courseConfigurationTotal} 条`"/>
                   </a-col>
                   <a-col :span="1">
                     <span>
@@ -53,50 +60,10 @@
           v-model="addTimetableModal"
           width="800px"
         >
-              <span slot="title">
-                <img src="@/assets/img/tianjiaB.png" style="width: 24px;height: 24px;">
-                <span style="font-size: 24px;position: relative;left: 12px;top:5px;">{{ "设置" }}</span>
-              </span>
-          <a-row type="flex" style="margin-top: 30px" justify="center">
-            <a-col :span="3">
-            <span style="color: #ffffff;font-size: 18px">
-              {{"所属岗位:"}}
-            </span>
-            </a-col>
-            <a-col :span="4" style="margin-left: 30px">
-              <template>
-                <a-select style="width: 220px" @change="">
-                  <a-select-opt-group>
-                    <span slot="label"><a-icon type="rocket"/>武器系统</span>
-                    <a-select-option value="1">
-                      总体
-                    </a-select-option>
-                  </a-select-opt-group>
-                  <a-select-opt-group>
-                    <span slot="label"><a-icon type="rocket"/>指控车</span>
-                    <a-select-option value="2">
-                      总体
-                    </a-select-option>
-                    <a-select-option value="3">
-                      指挥
-                    </a-select-option>
-                  </a-select-opt-group>
-                  <a-select-opt-group>
-                    <span slot="label"><a-icon type="rocket"/>发射车</span>
-                    <a-select-option value="4">
-                      操作
-                    </a-select-option>
-                  </a-select-opt-group>
-                  <a-select-opt-group>
-                    <span slot="label"><a-icon type="rocket"/>雷达车</span>
-                    <a-select-option value="5">
-                      维修
-                    </a-select-option>
-                  </a-select-opt-group>
-                </a-select>
-              </template>
-            </a-col>
-          </a-row>
+          <span slot="title">
+            <img src="@/assets/img/tianjiaB.png" style="width: 24px;height: 24px;">
+            <span style="font-size: 24px;position: relative;left: 12px;top:5px;">{{ "新增" }}</span>
+          </span>
           <a-row type="flex" style="margin-top: 30px" justify="center">
             <a-col :span="3">
             <span style="color: #ffffff;font-size: 18px">
@@ -105,9 +72,9 @@
             </a-col>
             <a-col :span="4" style="margin-left: 30px">
               <span>
-                <a-input style="width: 220px">
-
-                </a-input>
+                <a-select style="width: 220px" @change="onChangeStudySelect">
+                  <a-select-option v-for="item in selectAllData" :key="item.name" :value="item.id">{{ item.name }}</a-select-option>
+                </a-select>
               </span>
             </a-col>
           </a-row>
@@ -120,14 +87,14 @@
             </a-col>
             <a-col :span="4" style="margin-left: 30px">
                 <span>
-                  <a-input style="width: 220px"></a-input>
+                  <a-input style="width: 220px" v-model="studyCourseTemp.studyTime"></a-input>
                 </span>
             </a-col>
           </a-row>
           <span slot="footer">
                 <a-row type="flex" justify="center">
                   <a-col :span="4">
-                    <a-button>
+                    <a-button @click="submitStudyCourse">
                       <a-icon type="upload"/>
                       确定
                     </a-button>
@@ -135,8 +102,6 @@
                 </a-row>
               </span>
         </a-modal>
-
-
       </div>
       <div v-if="tabsVisible2 ===true " class="examination">
         <div>
@@ -147,8 +112,8 @@
           align="center">
           <a-col :span="24">
             <a-table :dataSource="LATPData" :pagination="false" :columns="LATPColumns">
-              <template slot="details">
-                <span style="font-size: 18px;color: #0ca5ec;cursor: pointer" @click="personalCompletion">{{"查看"}}</span>
+              <template slot="details" slot-scope="text,record">
+                <span style="font-size: 18px;color: #0ca5ec;cursor: pointer" @click="personalCompletion(record)">{{"查看"}}</span>
               </template>
               <span slot="footer">
                 <a-row type="flex">
@@ -157,10 +122,12 @@
                     <a-pagination
                       size="small"
                       style="text-align: center;"
-                      :total="10"
+                      @change="LATPSetPage"
+                      v-model="LATPPage"
+                      :total="LATPTotal"
                       :showSizeChanger="false"
                       showQuickJumper
-                      :showTotal="total => `共 ${total} 条`"/>
+                      :showTotal="total => `共 ${LATPTotal} 条`"/>
                   </a-col>
                   <a-col :span="1"></a-col>
                 </a-row>
@@ -182,10 +149,12 @@
                     <a-pagination
                       size="small"
                       style="text-align: center;"
-                      :total="10"
+                      @change="personalCompletionSetPage"
+                      v-model="personalCompletionPage"
+                      :total="personalCompletionTotal"
                       :showSizeChanger="false"
                       showQuickJumper
-                      :showTotal="total => `共 ${total} 条`"/>
+                      :showTotal="total => `共 ${personalCompletionTotal} 条`"/>
                   </a-col>
                   <a-col :span="1"></a-col>
                 </a-row>
@@ -193,15 +162,15 @@
             </a-table>
 
             <span slot="footer">
-                        <a-row type="flex" justify="center">
-                          <a-col :span="4">
-                            <a-button>
-                              <a-icon type="upload"/>
-                              确定
-                            </a-button>
-                          </a-col>
-                        </a-row>
-                      </span>
+              <!--<a-row type="flex" justify="center">
+                <a-col :span="4">
+                  <a-button>
+                    <a-icon type="upload"/>
+                    确定
+                  </a-button>
+                </a-col>
+              </a-row>-->
+            </span>
           </a-modal>
         </div>>
       </div>
@@ -212,67 +181,43 @@
 
 <script>
 
-  const rowSelection = {
-    onChange: (selectedRowKeys, selectedRows) => {
-      console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-    },
-    onSelect: (record, selected, selectedRows) => {
-      console.log(record, selected, selectedRows);
-    },
-    onSelectAll: (selected, selectedRows, changeRows) => {
-      console.log(selected, selectedRows, changeRows);
-    },
-  };
-
 
   const courseConfigurationColumns = [
     {
+      title: "序号",
+      dataIndex: 'No',
+      align: 'center'
+    },
+    {
       title: '学习和操作训练项目',
-      dataIndex: 'LAOTP',
+      dataIndex: 'studyName',
       align: 'center'
     },
     {
       title: '课时',
-      dataIndex: 'classHour',
+      dataIndex: 'studyTime',
       align: 'center'
     },
     {
       title: '适用岗位',
-      dataIndex: 'equipPosition',
+      dataIndex: 'equipPositionStr',
       align: 'center'
     }
   ];
-  const courseConfigurationData = [
-    {
-      LAOTP: '指挥车操作训练学习',
-      classHour: '2',
-      equipPosition: '指挥车_总体，指挥车_操作',
-    },
-    {
-      LAOTP: '指挥车操作训练学习',
-      classHour: '2',
-      equipPosition: '指挥车_总体，指挥车_操作',
-    },
-    {
-      LAOTP: '雷达车操作训练学习',
-      classHour: '2',
-      equipPosition: '指挥车_总体，指挥车_操作'
-    }
-  ]
   const LATPColumns = [
     {
-      title: '所属装备',
-      dataIndex: 'systemOrEquipment',
+      title: '适用岗位',
+      dataIndex: 'equipPosition',
       align: 'center'
     },
     {
       title: '学习与训练项目',
-      dataIndex: 'LATP',
+      dataIndex: 'name',
       align: 'center'
     },
     {
       title: '完成率',
-      dataIndex: 'completionRate',
+      dataIndex: 'percentage',
       align: 'center'
     },
     {
@@ -281,138 +226,241 @@
       align: 'center'
     }
   ];
-  const LATPData = [
-    {
-      systemOrEquipment: '武器系统',
-      LATP: '武器系统学习',
-      completionRate: '100%'
-    },
-    {
-      systemOrEquipment: '指挥车',
-      LATP: '指挥车操作训练学习',
-      completionRate: '100%'
-    },
-    {
-      systemOrEquipment: '雷达车',
-      LATP: '雷达车操作训练学习',
-      completionRate: '100%'
-    },
-    {
-      systemOrEquipment: '指挥车',
-      LATP: '指挥车维修训练学习',
-      completionRate: '100%'
-    },
-    {
-      systemOrEquipment: '发射车',
-      LATP: '发射车理论学习',
-      completionRate: '100%'
-    },
-    {
-      systemOrEquipment: '武器系统',
-      LATP: '武器系统学习',
-      completionRate: '100%'
-    },
-    {
-      systemOrEquipment: '发射车',
-      LATP: '发射车维修训练学习',
-      completionRate: '100%'
-    },
-    {
-      systemOrEquipment: '雷达车',
-      LATP: '雷达车理论学习',
-      completionRate: '100%'
-    },
-    {
-      systemOrEquipment: '武器系统',
-      LATP: '武器系统学习',
-      completionRate: '100%'
-    },
-    {
-      systemOrEquipment: '指挥车',
-      LATP: '指挥车操作训练学习',
-      completionRate: '100%'
-    }
-  ];
-
-
-
   const personalCompletionColumns = [
     {
       title: '姓名',
-      dataIndex: 'name',
+      dataIndex: 'staffName',
       align: 'center'
     },
     {
       title: '完成率',
-      dataIndex: 'completionRate',
+      dataIndex: 'percentage',
       align: 'center'
     }
   ];
 
-  const personalCompletionData = [
-    {
-      name: '赵燕',
-      completionRate: '70%'
-    },
-    {
-      name: '李瑞',
-      completionRate: '60%'
-    }
-  ];
 
   import './DrawPlam.less'
-
+  import { initCourseConfigurationData,deleteStudyCourseData,
+    sendCourse,getStudySelect,editStudyCourse,
+    initRateQueryPageList,initPersonalCompletionData,
+    createExam } from '@/api/DrawPlan.js'
   export default {
     name: "DrawPlan",
     data() {
       return {
+        //切换选项卡
         tabsVisible1: true,
         tabsVisible2: false,
+        //课表配置列表
         courseConfigurationColumns,
-        courseConfigurationData,
-
-        personalCompletionData,
-        personalCompletionColumns,
-
-        rowSelection,
-
-        equipments: ['武器系统', '指挥车','发射车', '雷达车'],
-
-        /**
-         * @Author:     风中的那朵云
-         * @Description:  ${description}
-         * @Date:    2020/5/6
-         * @Version:    1.0
-         */
-        timetableModal: false,
+        courseConfigurationData: [],
+        courseConfigurationPage: 1,
+        courseConfigurationTotal: 0,
+        courseConfigurationSelectIndex: [],
+        //新增计划
         addTimetableModal: false,
-
+        selectAllData: [], //下拉选项
+        studyCourseTemp: {
+          studyId: '',
+          studyTime: ''
+        },
+        //学习和训练进度
         LATPColumns,
-        LATPData,
-
-
-        showPersonalCompletionModal: false
+        LATPData: [],
+        LATPPage: 1,
+        LATPTotal: 0,
+        //进度查看详情列表
+        showPersonalCompletionModal: false,
+        personalCompletionData: [],
+        personalCompletionColumns,
+        personalCompletionPage: 1,
+        personalCompletionTotal: 0,
       }
     },
     methods: {
+      //选项卡切换
       tabsChang(key) {
         if (key === '1') {
+          this.initCourseConfiguration();
           this.tabsVisible1 = true
           this.tabsVisible2 = false
         } else if (key === '2') {
+          this.initRateQueryPageList();
           this.tabsVisible2 = true
           this.tabsVisible1 = false
         }
       },
-      updateTimetableModal() {
+      /*updateTimetableModal() {
         this.timetableModal = true
-      },
+      },*/
+      //打开计划新增弹窗
       addTimetable(){
         this.addTimetableModal = true
       },
-      personalCompletion(){
+      //进度查看详情弹窗
+      personalCompletion(id){
+        this.initPersonalCompletion(id);
         this.showPersonalCompletionModal = true
+      },
+      //课表分页跳转
+      courseSetPage(page) {
+        console.log(page)
+        this.courseConfigurationPage = page
+        this.initCourseConfiguration()
+      },
+      //进度分页跳转
+      LATPSetPage(page) {
+        console.log(page)
+        this.LATPPage = page
+        this.initCourseConfiguration()
+      },
+      //进度查看详情分页跳转
+      personalCompletionSetPage(page) {
+        console.log(page)
+        this.personalCompletionPage = page
+        this.initPersonalCompletion()
+      },
+      //批量删除课表
+      batchDeleteStudyCourse() {
+        let that = this;
+        let ids = '';
+        that.courseConfigurationSelectIndex.map((item) => {
+          ids += item+",";
+        });
+        deleteStudyCourseData({
+          ids: ids.substr(0,ids.length-1)
+
+        }).then(function (res) {
+          console.log(res)
+          that.initCourseConfiguration();
+        }).catch(function (err) {
+          console.log(err)
+        })
+      },
+      //初始化课表配置列表
+      initCourseConfiguration() {
+        let that = this
+        initCourseConfigurationData({
+          pageNo: that.courseConfigurationPage
+        }).then(function (res) {
+          console.log(res)
+          that.courseConfigurationData = res.personnelList
+          that.courseConfigurationTotal = res.total
+          let i = 1
+          that.courseConfigurationData.map(item => {
+            item.No = i
+            i++
+          })
+        }).catch(function (err) {
+          console.log(err)
+        })
+      },
+      //行选择事件
+      onChangeRow(selectedRowKeys, selectedRows) {
+        this.courseConfigurationSelectIndex = [];
+        selectedRows.map((item) => {
+          this.courseConfigurationSelectIndex.push(item.id)
+        });
+      },
+      //初始化学习和训练进度列表
+      initRateQueryPageList() {
+        let that = this
+        initRateQueryPageList({
+          pageNo: that.LATPPage
+        }).then(function (res) {
+          console.log(res)
+          that.LATPData = res.personnelList
+          that.LATPTotal = res.total
+        }).catch(function (err) {
+          console.log(err)
+        })
+      },
+      //初始化进度详情列表
+      initPersonalCompletion(record) {
+        //console.log("aL:               " + record.id);
+        let that = this
+        initPersonalCompletionData({
+          pageNo: that.personalCompletionPage,
+          studyId: record.id
+        }).then(function (res) {
+          console.log(res)
+          that.personalCompletionData = res.personnelList
+          that.personalCompletionTotal = res.total
+        }).catch(function (err) {
+          console.log(err)
+        })
+      },
+      //初始项目下拉列表
+      getStudySelect(){
+        let that = this
+        that.selectAllData = [];
+        getStudySelect({}).then(function (res) {
+          //console.log("res:            "+res.result.records)
+          if(res.success == true){
+            that.selectAllData = res.result.records
+          }
+        }).catch(function (err) {
+          console.log(err)
+        })
+      },
+      //下拉选择项目事件
+      onChangeStudySelect(data){
+        let that = this;
+        //console.log("afafafafaf:    "+data);
+        that.studyCourseTemp.studyId = data;
+      },
+      //新增事件
+      submitStudyCourse(){
+        //editStudyCourse
+        let that = this;
+        editStudyCourse({
+          studyCourseTemp: that.studyCourseTemp
+        }).then(function (res) {
+          console.log(res)
+          if(res.success){
+            that.initCourseConfiguration();
+            that.getStudySelect();
+            that.addTimetableModal = false
+          }
+          //that.$message.info("a");
+        }).catch(function (err) {
+          console.log(err)
+        })
+      },
+      //推送课程
+      sendCourse(){
+        let that = this;
+        sendCourse({}).then(function (res) {
+          console.log(res)
+          if(res.success){
+            that.$message.info(res.message);
+            that.initRateQueryPageList();
+          }else{
+            that.$message.info(res.message);
+          }
+        }).catch(function (err) {
+          console.log(err)
+        })
+      },
+      createExam(){
+        let that = this;
+        createExam({}).then(function (res) {
+          console.log(res)
+          if(res.success){
+            that.$message.info(res.message);
+          }else{
+            that.$message.info(res.message);
+          }
+        }).catch(function (err) {
+          console.log(err)
+        })
       }
+    },
+    mounted() {
+      this.initCourseConfiguration();
+      //this.initRateQueryPageList();
+      this.getStudySelect();
     }
   }
 </script>

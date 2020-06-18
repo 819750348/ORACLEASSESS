@@ -1,7 +1,6 @@
 package cn.jantd.modules.assessment.mapper;
 
-import cn.jantd.modules.assessment.entity.PersonnelSettings;
-import cn.jantd.modules.assessment.entity.TBusiStudy;
+import cn.jantd.modules.teacher.entity.TBusiStudyTemp;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 import java.util.List;
@@ -15,8 +14,8 @@ import java.util.List;
  * @Date: 2020/5/28 15:14
  * @Version: 1.0
  */
-public interface LearningAndTrainingProjectManagementMapper extends BaseMapper<TBusiStudy> {
-    List<TBusiStudy> queryPageList(int pageNo);
+public interface LearningAndTrainingProjectManagementMapper extends BaseMapper<TBusiStudyTemp> {
+    List<TBusiStudyTemp> queryPageList(int pageNo);
     int queryPageTotal();
 
 

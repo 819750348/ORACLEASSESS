@@ -17,8 +17,8 @@
             <a-select-option value="全部">
               全部
             </a-select-option>
-            <a-select-option value="教员">
-              教员
+            <a-select-option value="教学管理人员">
+              教学管理人员
             </a-select-option>
             <a-select-option value="学员">
               学员
@@ -57,8 +57,8 @@
                             v-model="personnelRole"
                             @select="editPersonnel"
                             :defaultActiveFirstOption="false">
-                      <a-select-option value="教员">
-                        教员
+                      <a-select-option value="教学管理人员">
+                        教学管理人员
                       </a-select-option>
                       <a-select-option value="学员">
                         学员
@@ -136,10 +136,10 @@
              </span>
         </a-col>
         <a-col :span="4">
-          <a-select :defaultActiveFirstOption="false" default-value="教员" v-model="addForm.staffGroup"
+          <a-select :defaultActiveFirstOption="false" default-value="" v-model="addForm.staffGroup"
                     style="width: 220px" @change="">
-            <a-select-option value="教员">
-              {{"教员"}}
+            <a-select-option value="教学管理人员">
+              {{"教学管理人员"}}
             </a-select-option>
             <a-select-option value="学员">
               {{"学员"}}

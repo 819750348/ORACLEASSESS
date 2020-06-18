@@ -1,6 +1,6 @@
 package cn.jantd.modules.assessment.mapper;
 
-import cn.jantd.modules.assessment.entity.PersonnelSettings;
+import cn.jantd.modules.teacher.entity.TSysStaff;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -15,20 +15,19 @@ import java.util.List;
  * @Date: 2020/5/20 14:11
  * @Version: 1.0
  */
-public interface PersonnelSettingsMapper extends BaseMapper<PersonnelSettings> {
-    List<PersonnelSettings> queryPageList(int pageNo,String staffGroup,String name);
+public interface PersonnelSettingsMapper extends BaseMapper<TSysStaff> {
+    List<TSysStaff> queryPageList(int pageNo, String staffGroup, String name);
 
     int queryPageTotal(String staffGroup,String name);
 
     void addPersonnel(String name,String staffGroup,String password);
 
-    List<PersonnelSettings> searchPersonnel(String  name,String staffGroup);
+    List<TSysStaff> searchPersonnel(String  name,String staffGroup);
 
     int querySearchPageTotal(String  name,String staffGroup);
 
+    List<TSysStaff> searchPersonnelName(String  name);
 
-
-    List<PersonnelSettings> searchPersonnelName(String  name);
     int querySearchPageTotalName(String  name);
 
     void deletePersonnel(@Param("objs") List listIds);

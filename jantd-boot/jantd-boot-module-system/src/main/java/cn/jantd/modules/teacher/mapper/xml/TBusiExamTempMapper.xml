@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.jantd.modules.teacher.mapper.TBusiExamTempMapper">
+
+    <!-- 根据教师人员id查询名下试卷列表 -->
+    <select id="getExamByStaffid" resultType="cn.jantd.modules.teacher.entity.TBusiExamTemp">
+		select * from t_busi_exam_temp where staff_id = #{staffid} and del_flag = '0'
+		order by create_time desc
+	</select>
+    <select id="examDetail" resultType="cn.jantd.modules.teacher.VO.TBusiExamVO">
+        select * from t_busi_exam_temp where id = #{examid} and del_flag = '0'
+    </select>
+
+    <!-- 分页查询试卷信息 -->
+    <select id="searchExamPage" resultType="cn.jantd.modules.teacher.VO.TBusiExamVO" parameterType="map">
+        select * from
+            (select ete.*, rownum as rn from
+                (select et.*
+                    from t_busi_exam_temp et
+                    where et.del_flag = '0'
+                    <if test="orderValue != 'null' and orderValue != ''">
+                        order by et.${orderValue}
+                        <choose>
+                            <when test="orderDirection != 'null' and orderDirection != ''">
+                                ${orderDirection}
+                            </when>
+                            <otherwise>
+                                asc
+                            </otherwise>
+                        </choose>
+                    </if>
+                ) ete
+            where rownum &lt;= (#{pageSize,jdbcType=INTEGER}*#{pageNo,jdbcType=INTEGER}))
+        where rn &gt; (#{pageSize,jdbcType=INTEGER}*(#{pageNo,jdbcType=INTEGER}-1))
+    </select>
+
+    <!-- mysql分页查询试卷信息 -->
+    <select id="searchExamPageForMysql" resultType="cn.jantd.modules.teacher.VO.TBusiExamVO" parameterType="map">
+        select et.*
+        from t_busi_exam_temp et
+        where et.del_flag = '0' and et.staff_id = #{teacherId}
+        <if test="equipPosition != 'null' and equipPosition != ''">
+          and et.equip_position = #{equipPosition}
+        </if>
+        limit #{pageStart,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+    </select>
+
+    <!-- 查询试卷信息总数 -->
+    <select id="searchExamTotal" resultType="java.lang.Integer" parameterType="map">
+        select count(et.id) from t_busi_exam_temp et
+        where et.del_flag = '0' and et.staff_id = #{teacherId}
+        <if test="equipPosition != 'null' and equipPosition != ''">
+            and et.equip_position = #{equipPosition}
+        </if>
+    </select>
+</mapper>

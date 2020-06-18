@@ -1,6 +1,6 @@
 package cn.jantd.modules.assessment.mapper;
 
-import cn.jantd.modules.assessment.entity.PersonnelSettings;
+import cn.jantd.modules.teacher.entity.TSysStaff;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import io.lettuce.core.dynamic.annotation.Param;
 
@@ -15,8 +15,8 @@ import java.util.List;
  * @Date: 2020/5/21 19:44
  * @Version: 1.0
  */
-public interface StaffingManagementMapper extends BaseMapper<PersonnelSettings> {
-    List<PersonnelSettings> queryPageList(int pageNo, @Param(value="equipPosition") String equipPosition);
+public interface StaffingManagementMapper extends BaseMapper<TSysStaff> {
+    List<TSysStaff> queryPageList(int pageNo, @Param(value="equipPosition") String equipPosition);
     int queryPageTotal(String equipPosition);
     void editPersonnel(String id,String personnelEquipPosition);
 }

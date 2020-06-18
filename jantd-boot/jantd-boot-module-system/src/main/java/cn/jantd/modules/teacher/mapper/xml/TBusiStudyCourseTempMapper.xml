@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.jantd.modules.teacher.mapper.TBusiStudyCourseTempMapper">
+
+    <!-- mysql分页查询计划信息 -->
+    <select id="searchPageForMysql" resultType="cn.jantd.modules.teacher.VO.TBusiStudyCourseTempVO">
+        select s1.*,t.name study_name
+        from t_busi_study_course_temp s1
+        left join t_busi_study_temp t on t.id = s1.study_id
+        where s1.del_flag = '0' and s1.teacher_id = #{teacherId}
+        order by s1.id desc
+        limit #{pageStart,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}
+    </select>
+
+    <!-- 查询计划信息总数 -->
+    <select id="searchPageTotal" resultType="java.lang.Integer">
+        select count(s1.id) from t_busi_study_course_temp s1
+        where s1.del_flag = '0' and s1.teacher_id = #{teacherId}
+    </select>
+
+    <select id="searchByTeacher" resultType="cn.jantd.modules.teacher.entity.TBusiStudyCourseTemp">
+        select s1.*
+        from t_busi_study_course_temp s1
+        where s1.del_flag = '0' and s1.sc_status = '0' and s1.teacher_id = #{teacherId}
+    </select>
+
+</mapper>

@@ -1,137 +1,195 @@
 <template>
   <div>
-    <a-card style="background-color: RGB(2,31,73);height: 957px">
+    <a-modal
+      v-model="paperModal"
+      width="800px"
+      :footer="null"
+    >
+    <a-card style="background-color: RGB(2,31,73);overflow-y: scroll">
       <a-row type="flex" align="middle" justify="center" style="color: RGB(122,202,245)">
         <img src="@/assets/img/paper.png" style="width: 26px;height: 26px;">
         <sapn style="font-size: 30px;color:RGB(122,202,245);margin-left: 10px;">
-          {{paperName}}
+          {{result.examTitle}}
         </sapn>
         <span style="font-size: 24px;margin-left: 30px">
           {{'考试时间:'}}
         </span>
         <span style="font-size: 24px;margin-left: 15px">
-          {{paperTime}}
+          {{result.timing}}
         </span>
       </a-row>
-      <a-row style="color: RGB(122,202,245);font-size: 24px;margin-top: 60px">
-        <span>
-          {{"一、"}}
+
+
+      <template v-for="(item,index) in result.paper">
+        <a-row style="color: RGB(122,202,245);font-size: 24px;margin-top: 60px">
+          <span>
+          {{item.questionType}}
         </span>
-        <span>
-          {{paper.questionType}}
-        </span>
-        <span>
+          <span>
           {{"。"}}
         </span>
-        <span>
+          <span>
           {{'（共'}}
         </span>
-        <span>
-          {{paper.numbenOfQuestions}}
+          <span>
+          {{item.numbenOfQuestions}}
         </span>
-        <span>
+          <span>
           {{'题'}}
         </span>
-        <span>
+          <span>
           {{'每题'}}
         </span>
-        <span>
-          {{paper.fraction}}
+          <span>
+          {{item.fraction}}
         </span>
-        <span>
+          <span>
           {{'分）'}}
         </span>
-      </a-row>
-      <a-row v-for='(item,key) in paper.data' :key='key'
-             style="color: RGB(122,202,245);font-size: 18px;margin-left: 55px;margin-top: 70px">
-        <a-row>
+        </a-row>
+        <a-row v-for='(suboptions,ix,key) in item.data' :key='key'
+               style="color: RGB(122,202,245);font-size: 18px;margin-left: 55px;margin-top: 70px">
+          <a-row>
         <span>
-          {{item.serialNumber}}
+          {{ix + 1}}
         </span>
-          <span>
+            <span>
           {{'.'}}
         </span>
-          <span>
-          {{item.title}}
+            <span>
+          {{suboptions.title}}
         </span>
-        </a-row>
-        <a-row style="color: RGB(122,202,245);font-size: 16px;margin-left: 5px;margin-top: 20px">
-        <span v-for="(i,key) in item.option" :key="key" style="margin-left: 20px">
+          </a-row>
+          <a-row style="color: RGB(122,202,245);font-size: 16px;margin-left: 5px;margin-top: 20px">
+        <span v-for="(i,key) in suboptions.option" :key="key" style="margin-left: 20px">
           {{i}}
         </span>
-        </a-row>
-        <a-row style="color: RGB(122,202,245);font-size: 18px;margin-top: 20px;">
+          </a-row>
+          <a-row style="color: RGB(122,202,245);font-size: 18px;margin-top: 20px;">
         <span>
           {{'正确答案:'}}
         </span>
-          <span>
-          {{item.rightKey}}
+            <span>
+          {{suboptions.rightKey}}
         </span>
-          <span style="margin-left: 40px;color: RGB(233,122,129)">
-          {{'错误答案:'}}
-        </span>
-          <span style="color:RGB(233,122,129)">
-          {{item.stuKey}}
-        </span>
+          </a-row>
         </a-row>
-      </a-row>
+
+      </template>
 
     </a-card>
+    </a-modal>
   </div>
 </template>
 
 <script>
+  import {initPaper} from '@/api/paper.js'
   export default {
     name: "paper",
     data() {
       return {
-        paperName: '集成测试试卷',
-        paperTime: '2020-02-02 02:02:02',
-        paper: {
-          questionType: '单选题',
-          numbenOfQuestions: '30',
-          fraction: '2',
-          data: [
+        paperModal:false,
+        result: {
+          examTitle: '试卷标题',
+          timing: '120', //答题计时
+          paper: [
             {
-              serialNumber: '1',
-              title: '路中心的双黄实线，属于哪一类标线？',
-              option: [
-                'A: 指示标线', 'B:辅助标线', 'C:警告标线', 'D:禁止标线'
-              ],
-              rightKey: 'C',
-              stuKey: 'A'
+              No: '1',//编号
+              questionType: '一、单选题',//题型
+              numbenOfQuestions: '30',//总分
+              fraction: '2',//每题分值
+              data: [ //题目数组
+                {
+                  serialNumber: '1', //序号
+                  title: '路中心的双黄实线，属于哪一类标线？', //题目
+                  option: ['A: 指示标线', 'B:辅助标线', 'C:警告标线', 'D:禁止标线'], //答案数组
+                  rightKey: 'C' //正确答案
+                },
+                {
+                  serialNumber: '2', //序号
+                  title: '路中心的线，属于哪一类标线？', //题目
+                  option: ['A: 指示线', 'B:辅助线', 'C:警告线', 'D:禁止线'], //答案数组
+                  rightKey: 'C' //正确答案
+                },
+                {
+                  serialNumber: '3', //序号
+                  title: '路线，属于哪标线？', //题目
+                  option: ['A: 指示', 'B:辅助', 'C:警告', 'D:禁止'], //答案数组
+                  rightKey: 'C' //正确答案
+                }
+              ]
             },
             {
-              serialNumber: '2',
-              title: '上道路行驶的机动车有哪种情形交通警察可依法扣留车辆？',
-              option: [
-                'A:未携带机动车登记证书', 'B:未携带保险合同', 'C:未放置保险标志', 'D:未放置城市环保标志'
-              ],
-              rightKey: 'A',
-              stuKey: 'B'
+              No: '2',//编号
+              questionType: '二、复选题',//题型
+              numbenOfQuestions: '30',//总分
+              fraction: '2',//每题分值
+              data: [ //题目数组
+                {
+                  serialNumber: '4', //序号
+                  title: '路中心的双黄实线，属于哪一类标线？', //题目
+                  option: ['A: 指示标线', 'B:辅助标线', 'C:警告标线', 'D:禁止标线'], //答案数组
+                  rightKey: 'C' //正确答案
+                },
+                {
+                  serialNumber: '5', //序号
+                  title: '路中心的线，属于哪一类标线？', //题目
+                  option: ['A: 指示线', 'B:辅助线', 'C:警告线', 'D:禁止线'], //答案数组
+                  rightKey: 'C' //正确答案
+                },
+                {
+                  serialNumber: '6', //序号
+                  title: '路线，属于哪标线？', //题目
+                  option: ['A: 指示', 'B:辅助', 'C:警告', 'D:禁止'], //答案数组
+                  rightKey: 'C' //正确答案
+                }
+              ]
             },
             {
-              serialNumber: '3',
-              title: '驾驶机动车在高速公路上行驶，遇低能见度气象条件时，能见度在200米以下，车速不得超过每小时多少公里，与同车道前车至少保持多少米的距离？',
-              option: [
-                'A:60，100', 'B:70，100', 'C:40，80', 'D:30，80'
-              ],
-              rightKey: 'B',
-              stuKey: 'A'
-            },
-            {
-              serialNumber: '4',
-              title: '假如您在高速公路上不小心错过了准备驶出的路口，正确的操作应该是？',
-              option: [
-                'A:紧急刹车，倒车至想要驶出的路口', 'B:继续前行，到下一路口驶离高速公路掉头', 'C:在应急停车道上停车，等待车辆较少的时候再伺机倒车', 'D:借用应急车道进行掉头，逆向行驶'
-              ],
-              rightKey: 'D',
-              stuKey: 'B'
+              No: '3',//编号
+              questionType: '三、判断题',//题型
+              numbenOfQuestions: '30',//总分
+              fraction: '2',//每题分值
+              data: [ //题目数组
+                {
+                  serialNumber: '7', //序号
+                  title: '路中心的双黄实线，属于哪一类标线？', //题目
+                  option: ['A: 指示标线', 'B:辅助标线', 'C:警告标线', 'D:禁止标线'], //答案数组
+                  rightKey: 'C' //正确答案
+                },
+                {
+                  serialNumber: '8', //序号
+                  title: '路中心的线，属于哪一类标线？', //题目
+                  option: ['A: 指示线', 'B:辅助线', 'C:警告线', 'D:禁止线'], //答案数组
+                  rightKey: 'C' //正确答案
+                },
+                {
+                  serialNumber: '9', //序号
+                  title: '路线，属于哪标线？', //题目
+                  option: ['A: 指示', 'B:辅助', 'C:警告', 'D:禁止'], //答案数组
+                  rightKey: 'C' //正确答案
+                }
+              ]
             }
           ]
-
         }
       }
+    },
+    methods:{
+      initPaper(){
+        let that = this
+        initPaper({
+        }).then(function (res) {
+          console.log(res)
+          that.result = res
+        }).catch(function (err) {
+          console.log(err)
+        })
+
+      }
+    },
+    mounted() {
+      this.initPaper();
     }
   }
 </script>
