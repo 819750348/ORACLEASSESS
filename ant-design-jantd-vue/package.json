@@ -26,7 +26,7 @@
     "lodash.omit": "^4.5.0",
     "lodash.pick": "^4.4.0",
     "md5": "^2.2.1",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "nprogress": "^0.2.0",
     "qs": "^6.9.3",
     "tinymce": "^5.0.2",
